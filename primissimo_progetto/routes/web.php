@@ -21,6 +21,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('publications', 'PublicationController');
 
+Route::patch('publications/{idPublication}', 'PublicationController@update');
+
 Route::resource('users', 'UserController');
 
 Route::patch('users/{id}', 'UserController@update');
