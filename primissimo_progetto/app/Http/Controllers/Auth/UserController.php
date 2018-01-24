@@ -17,7 +17,7 @@ class UserController extends Controller
     public function index()
     {
         $id=Auth::id();
-        $users = DB::table('users')->select('name', 'cognome', 'email', 'nazionalita', 'affiliazione', 'linea_ricerca', 'telefono')->where('id', '=', $id)->get();
+        $users = DB::table('users')->select('name', 'cognome', 'email', 'nazionalita', 'affiliazione', 'linea_ricerca', 'telefono')->where('users.id', '=', $id)->get();
         return view ('users.index', ['users' => $users]);
     }
 
@@ -51,7 +51,7 @@ class UserController extends Controller
         
         User::create($user);
 
-        return back()->with('success', 'User has been added');;
+        return back()->with('success', 'User has been added');
     }
 
     /**
@@ -74,7 +74,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $id=Auth::id();
-        $users = DB::table('users')->select('name', 'cognome', 'email', 'nazionalita', 'affiliazione', 'linea_ricerca', 'telefono')->where('id', '=', $id)->get();
+        $users = DB::table('users')->select('name', 'cognome', 'email', 'nazionalita', 'affiliazione', 'linea_ricerca', 'telefono')->where('users.id', '=', $id)->get();
         return view('users.edit',compact('users','id'));
     }
 
@@ -87,8 +87,8 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user=User::find($id);
-        $this->validate(request(), [
+        $user=DB::table('users')->where('id', $id)->update(['name' => $request->get('name')], ['cognome' => $request->get('cognome')], ['email' => $request->get('email')], ['nazionalita' => $request->get('nazionalita')], ['affiliazione' => $request->get('affiliazione')], ['linea_ricerca' => $request->get('linea_ricerca')], ['telefono' => $request->get('telefono')]);
+        $this->validate($request, [
             'name' => 'required',
             'cognome' => 'required',
             'email' => 'email',
@@ -97,16 +97,7 @@ class UserController extends Controller
             'linea_ricerca' => 'required',
             'telefono' => 'required'
         ]);
-
-        $user->name = $request->get('name');
-        $user->cognome = $request->get('cognome');
-        $user->email = $request->get('email');
-        $user->nazionalita = $request->get('nazionalita');
-        $user->affiliazione = $request->get('affiliazione');
-        $user->linea_ricerca = $request->get('linea_ricerca');
-        $user->telefono = $request->get('telefono');
-        $user->save();
-        return redirect('users')->with('success','User profile details have been updated');
+        return redirect('home');
     }
 
     /**

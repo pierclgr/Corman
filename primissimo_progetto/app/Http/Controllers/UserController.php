@@ -17,7 +17,7 @@ class UserController extends Controller
     public function index()
     {
         $id=Auth::id();
-        $users = DB::table('users')->select('name', 'cognome', 'email', 'nazionalita', 'affiliazione', 'linea_ricerca', 'telefono')->where('id', '=', $id)->get();
+        $users = DB::table('users')->select('name', 'cognome', 'email', 'nazionalita', 'affiliazione', 'linea_ricerca', 'telefono')->where('users.id', '=', $id)->get();
         return view ('users.index', ['users' => $users]);
     }
 
@@ -39,7 +39,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = $this->validate(request(), [
+          'name' => '',
+          'cognome' => '',
+          'email' => '',
+          'nazionalita' => '',
+          'affiliazione' => '',
+          'linea_ricerca' => '',
+          'telefono' => ''
+        ]);
+        
+        User::create($user);
+
+        return back()->with('success', 'User has been added');;
     }
 
     /**
@@ -61,7 +73,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $id=Auth::id();
+        $users = DB::table('users')->select('name', 'cognome', 'email', 'nazionalita', 'affiliazione', 'linea_ricerca', 'telefono')->where('users.id', '=', $id)->get();
+        return view('users.edit',compact('users','id'));
     }
 
     /**
@@ -73,20 +87,18 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-         $this->validate(request(), [
+        $user=DB::table('users')->where('id', $id)->update(['name' => $request->get('name')], ['cognome' => $request->get('cognome')], ['email' => $request->get('email')], ['nazionalita' => $request->get('nazionalita')], ['affiliazione' => $request->get('affiliazione')], ['linea_ricerca' => $request->get('linea_ricerca')], ['telefono' => $request->get('telefono')]);
+        //$user=User::find($id);
+        $this->validate($request, [
             'name' => 'required',
             'cognome' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|confirmed'
+            'email' => 'email',
+            'nazionalita' => 'required',
+            'affiliazione' => 'required',
+            'linea_ricerca' => 'required',
+            'telefono' => 'required'
         ]);
-
-        $user->name = request('name');
-        $user->email = request('email');
-        $user->password = bcrypt(request('password'));
-
-        $user->save();
-
-        return back();
+        return redirect('home')->route('home');
     }
 
     /**

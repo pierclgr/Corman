@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Publication;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -24,7 +26,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $publications = Publication::all();
-        return view('publications.index', ['publications' => $publications]);
+        $publications = DB::table('publications')
+            ->select('idPublication', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'tags')
+            ->where('visibilita', '=', '1')->get();
+        return view('overviews.index', ['publications' => $publications]);
     }
 }

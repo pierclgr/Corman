@@ -31,7 +31,6 @@
                     <a class="navbar-brand" href="{{ url('/') }}">
                         CORMAN - Enhance research
                     </a>
-                        Qui va una barra di ricerca
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
