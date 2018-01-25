@@ -18,7 +18,7 @@
 		                    <table class="table table-condensed">
 							    <thead>
 							     	<tr>
-							       		<th>Field column</th>
+							       		<th>Field</th>
 							        	<th>Fill in the field</th>
 							      	</tr>
 							    </thead>
@@ -30,23 +30,6 @@
 							      	<tr>
 							        	<td>Paper type (*)</td>
 							        	<td><input class="form-control" id="tipo" name="tipo" type="text" placeholder="Enter the type of the paper (venue, scientific, ecc)" required /></td>
-							      	</tr>
-							      	<tr>
-							      		<td>Paper visibility (*)</td>
-							      		<td>
-							      			<div class="button-group">
-								      			<div class="radio">
-												  	<label><input type="radio" name="visibilita" value="1" checked="checked">Public</label>
-												</div>
-												<div class="radio">
-												  	<label><input type="radio" name="visibilita" value="0">Private</label>
-												</div>
-											</div>
-										</td>
-							      	</tr>	
-							      	<tr>
-							        	<td>Paper tags</td>
-							        	<td><input class="form-control" id="tags" name="tags" type="text" placeholder="Enter a list of tags separated by a ',' (max 255 chars)"></td>
 							      	</tr>
 							    </tbody>
 							</table>

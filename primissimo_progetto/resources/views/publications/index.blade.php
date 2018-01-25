@@ -34,8 +34,8 @@
                                             <th>Image</th>
                                             <th>Multimedia</th>
                                             <th>Type of publication</th>
-                                            <th>Publication Tags</th>
-                                            <th>Edit your paper</th>
+                                            <th>User ID</th>
+                                            <th>Edit your publication</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -48,7 +48,7 @@
                                                 <td>{{ $p->immagine }}</td>
                                                 <td>{{ $p->multimedia }}</td>
                                                 <td>{{ $p->tipo }}</td>
-                                                <td>{{ $p->tags }}</td>
+                                                <td>{{ $p->idUser }}</td>
                                                 <td><a href="{{action('PublicationController@edit', [$p->idPublication] )}}" class="btn btn-warning">Edit</a></td>
                                             </tr>
                                         @endforeach

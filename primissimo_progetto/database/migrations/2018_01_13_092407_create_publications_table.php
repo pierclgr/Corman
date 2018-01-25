@@ -21,8 +21,6 @@ class CreatePublicationsTable extends Migration
             $table->string('immagine');
             $table->string('multimedia');
             $table->string('tipo');
-            $table->boolean('visibilita');
-            $table->string('tags');
             $table->integer('idUser')->foreign('idPublication')->references('id')->on('users');
             $table->timestamps();
         });

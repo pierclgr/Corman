@@ -18,8 +18,7 @@ class PublicationController extends Controller
     {
         $id=Auth::id();
         $publications = DB::table('publications')
-            ->select('idPublication', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'tags')
-            ->where('idUser', '=', $id)->get();
+            ->select('idPublication', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'idUser')->where('idUser', '=', $id)->get();
         return view ('publications.index', ['publications' => $publications]);
     }
 
@@ -48,8 +47,6 @@ class PublicationController extends Controller
             'immagine' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'multimedia' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'tipo' => 'required',
-            'visibilita' => '',
-            'tags' => 'max:255',
             'idUser' => ''
         ]);
         Publication::create([
@@ -59,11 +56,21 @@ class PublicationController extends Controller
             'immagine' => '',
             'multimedia' => '',
             'tipo' => $request['tipo'],
-            'visibilita' => $request['visibilita'],
-            'tags' => $request['tags'],
             'idUser' => Auth::id()
         ]);
-        return redirect()->route('home');
+        /*$publication=new Publication;
+        $publication->titolo = $request->get('title');
+        $publication->dataPubblicazione = $request->timestamps();
+        if(Input::hasFile('pdf'))
+            $publication->pdf = Input::file('pdf');
+        if(Input::hasFile('immagine'))
+            $publication->immagine = Input::file('immagine');
+        if(Input::hasFile('multimedia'))
+            $publication->multimedia = Input::file('multimedia');
+        $publication->tipo = $request->get('tipo');
+        $publication->idUser = Auth::id();
+        $publication->save();*/
+        return back()->with('success', 'Publication has been added');
     }
 
     /**
@@ -121,7 +128,7 @@ class PublicationController extends Controller
         $publication->tipo = $request->get('tipo');
         $publication->idUser = Auth::id();
         $publication->save();*/
-        return redirect()->route('home');
+        return back()->with('success', 'Publication has been added');
     }
 
     /**
