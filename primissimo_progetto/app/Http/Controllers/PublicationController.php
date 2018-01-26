@@ -66,7 +66,19 @@ class PublicationController extends Controller
             'coautori' => $request['coautori'],
             'idUser' => Auth::id()
         ]);
-        return redirect()->route('home');
+        /*$publication=new Publication;
+        $publication->titolo = $request->get('title');
+        $publication->dataPubblicazione = $request->timestamps();
+        if(Input::hasFile('pdf'))
+            $publication->pdf = Input::file('pdf');
+        if(Input::hasFile('immagine'))
+            $publication->immagine = Input::file('immagine');
+        if(Input::hasFile('multimedia'))
+            $publication->multimedia = Input::file('multimedia');
+        $publication->tipo = $request->get('tipo');
+        $publication->idUser = Auth::id();
+        $publication->save();*/
+        return back()->with('success', 'Publication has been added');
     }
 
     /**
@@ -129,9 +141,14 @@ class PublicationController extends Controller
         $publication->tipo = $request->get('tipo');
         $publication->idUser = Auth::id();
         $publication->save();*/
-
+        
+        /* return vecchio
+        return back()->with('success', 'Publication has been added');
+        */
+      
+        //return piu recente
         return redirect()->route('home');
-    }
+}
 
     /**
      * Remove the specified resource from storage.

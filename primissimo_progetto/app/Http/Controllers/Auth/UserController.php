@@ -87,8 +87,8 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user=DB::table('users')->where('id', $id)->update(['name' => $request->get('name')], ['cognome' => $request->get('cognome')], ['email' => $request->get('email')], ['nazionalita' => $request->get('nazionalita')], ['affiliazione' => $request->get('affiliazione')], ['linea_ricerca' => $request->get('linea_ricerca')], ['telefono' => $request->get('telefono')]);
-        $this->validate($request, [
+        $user=User::find($id);
+        $this->validate(request(), [
             'name' => 'required',
             'cognome' => 'required',
             'email' => 'email',
@@ -97,7 +97,16 @@ class UserController extends Controller
             'linea_ricerca' => 'required',
             'telefono' => 'required'
         ]);
-        return redirect('home');
+
+        $user->name = $request->get('name');
+        $user->cognome = $request->get('cognome');
+        $user->email = $request->get('email');
+        $user->nazionalita = $request->get('nazionalita');
+        $user->affiliazione = $request->get('affiliazione');
+        $user->linea_ricerca = $request->get('linea_ricerca');
+        $user->telefono = $request->get('telefono');
+        $user->save();
+        return back()->with('success','User profile details have been updated');
     }
 
     /**

@@ -18,7 +18,6 @@
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
-
                     <!-- Collapsed Hamburger -->
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse" aria-expanded="false">
                         <span class="sr-only">Toggle Navigation</span>
@@ -26,19 +25,34 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        CORMAN - Enhance research
-                    </a>
                 </div>
-
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
-                        &nbsp;
-                    </ul>
-
+                    <!-- Branding -->
+                    <a class="navbar-brand navbar-left" href="{{ url('/home') }}">
+                        CORMAN
+                    </a>
+                    <!-- Searchbar -->
+                    @guest
+                        <!-- Niente -->
+                    @else
+                       <form class="navbar-form navbar-left">
+                            <div class="form-group has-feedback">
+                                <input type="text" class="form-control" id="searchBar" onkeyup="helpSearch()" onfocusout="hideDropdown()" placeholder="Search">
+                                
+                                <ul class="dropdown-menu" id="searchDropdown" style="display: none; style height: 500 overflow: auto;">
+                                        <a href="#">res1<br></a>
+                                        <a href="#">res2<br></a>
+                                        <a href="#">ris23<br></a>
+                                        <a href="#">wow7<br></a>
+                                        <a href="#">mop7<br></a>
+                                        <a href="#">res3</a>
+                                        <li id="NoResults" style="display: none">No Results :[</li>
+                                </ul>
+                                <span class="glyphicon glyphicon-search form-control-feedback">
+                                </span>
+                            </div>
+                        </form>
+                    @endguest
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
@@ -46,26 +60,60 @@
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
-                            <a href="" aria-expanded="false" aria-haspopup="false">
-                                <button type="button" class="btn btn-info" data-target="#demo">Notifiche</button>
-                            </a>
-                            <a href="" aria-expanded="false" aria-haspopup="false">
-                                <button type="button" class="btn btn-info" data-target="#demo1">Gruppi</button>
-                            </a>
-                            <a href="./users" aria-expanded="false" aria-haspopup="false">
-                                <button type="button" class="btn btn-info" data-target="#demo">Il mio profilo</button>
-                            </a>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
-                                    {{ Auth::user()->name }}<span class="caret"></span>
+                                    👥 <span class="caret"></span>
                                 </a>
+                                <ul class="dropdown-menu" style="height: 400px; width: 350px; overflow: auto;">
+                                    <!-- Gruppi da amministratore-->
+                                    <h5 style="margin-left: 5px">Administrated groups</h5>
+                                    <li><a href="#">group 1</a></li>
+                                    <li><a href="#">group 2</a></li>
+                                    <li><a href="#">group 3</a></li>
 
+                                    <li><hr></li>
+                                    <!-- Altri gruppi -->
+                                    <h5 style="margin-left: 5px">Your other groups</h5>
+                                    <li><a href="#">group A</a></li>
+                                    <li><a href="#">group B</a></li>
+                                    <li><a href="#">group C</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
+                                    🌐 <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" style="max-height: 400px; overflow: auto;">
+                                    <li><br></li>
+                                    <!-- Notifica invito ad entrare nel gruppo-->
+                                    <li><a href="#">Mike Wazowski invited you to join Monsters INC researching<br><button>Accept</button>    <button>Decline</button></a></li>
+                                    <li><hr></li>
+                                    <!-- Notifica nuova pubblicazione nel gruppo -->
+                                    <li><a href="#">Mike Wazowski published someting in Monsters INC researching</a></li>
+                                    <li><hr></li>
+                                    <!-- Notifica nuovo commento sul tuo post -->
+                                    <li><a href="#">Mike Wazowski commented your post</a></li>
+                                    <li><hr></li>
+                                    <!-- Notifica approvazione al gruppo -->
+                                    <li><a href="#">Mike Wazowski aproved your subscription to Monsters INC researching</a></li>
+                                    <li><hr></li>
+                                    <!-- Notifica richiesta aggiunta nel gruppo -->
+                                    <li><a href="#">James Sullivan wants to join Monsers INC researching<br><button>Accept</button>    <button>Decline</button></a></li>
+                                    <li><br></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
+                                    {{Auth::user()->name}} <span class="caret"></span>
+                                </a>
                                 <ul class="dropdown-menu">
+                                    <li><a href="#">Profile</a></li>
+                                    <li><a href="#">Create Group</a></li>
                                     <li>
                                         <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
+                                           onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            Disconnettiti
+                                            Disconnect
                                         </a>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
@@ -73,7 +121,7 @@
                                     </li>
                                 </ul>
                             </li>
-                        @endguest
+                            @endguest
                     </ul>
                 </div>
             </div>
@@ -84,5 +132,36 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script>
+
+        function hideDropdown(){
+            document.getElementById("searchDropdown").style.display="none";
+        }
+
+        function helpSearch(){
+            document.getElementById("searchDropdown").style.display="block";
+            var input, filter, dropdown, elems, noResults=true;
+            input = document.getElementById("searchBar");
+            filter = input.value.toUpperCase();
+            if(filter == "")
+                hideDropdown();
+            dropdown = document.getElementById("searchDropdown");
+            elems = dropdown.getElementsByTagName("a");
+            for (var i = 0; i < elems.length; i++) {
+                if(elems[i].innerHTML.toUpperCase().indexOf(filter) >-1){
+                    elems[i].style.display = "";
+                    noResults=false;
+                    document.getElementById("NoResults").style.display="none";
+                }
+                else{
+                    elems[i].style.display = "none";
+                }
+            }        
+            if(noResults==true){
+                document.getElementById("NoResults").style.display="block";
+            }
+        }
+    </script>
+    
 </body>
 </html>

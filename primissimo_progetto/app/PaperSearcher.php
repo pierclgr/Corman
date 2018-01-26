@@ -23,8 +23,8 @@ class paperSearcher extends Model
     */
     public static function search($fullname){
 
-        $url = "http://dblp.org/search/publ/api?q=" . urlencode($fullname) . "&format=json";        
-        $result = file_get_contents($url);
+      $url = "http://dblp.org/search/publ/api?q=" . urlencode($fullname) . "&format=json";        
+      $result = file_get_contents($url);
 
     	$var = json_decode($result, true);
 

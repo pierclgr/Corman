@@ -13,7 +13,6 @@
         <!-- Styles -->
         <style>
             html, body {
-                background-color: #fff;
                 color: #636b6f;
                 font-family: 'Raleway', sans-serif;
                 font-weight: 100;
@@ -68,6 +67,10 @@
                 font-size: 84px;
             }
 
+            .subtitle{
+                font-size: 54px;
+            }
+
             .links > a {
                 color: #636b6f;
                 padding: 0 25px;
@@ -97,7 +100,10 @@
             @endif
             <div class="content">
                 <div class="title m-b-md">
-                    Se non vi sta bene cazzi vostri.
+                    Welcome to CORMAN
+                </div>
+                <div class="subtitle m-b-md">
+                    CORMAN lets you create research groups, publish papers and explore other user's researches
                 </div>
             </div>
         </div>
