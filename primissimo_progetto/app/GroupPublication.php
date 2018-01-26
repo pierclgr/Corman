@@ -20,9 +20,4 @@ class GroupPublication extends Model
         'descrizione',
         'dataoraGP'
     ];
-
-    //Ogni condivisione ha più commenti sotto
-    public function comments() {
-        return $this->hasMany('App\Models\Comment');
-    }
 }

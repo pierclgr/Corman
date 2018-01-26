@@ -7,22 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Publication extends Model
 {
     protected $fillable= [
-    	'id',
+    	'idPublication',
     	'titolo',
     	'dataPubblicazione',
-    	'dataCaricamento',
     	'pdf',
     	'immagine',
-    	'multimedia'
+    	'multimedia',
+        'tipo',
+        'visibilita',
+        'tags',
+        'coautori',
+        'idUser'
     ];
-
-    //Ogni pubblicazione ha più coautori (alias utenti)
-    public function users() {
-        return $this->hasMany('App\Models\User');
-    }
-
-    //Ogni pubblicazione può essere condivisa su più gruppi [...]
-    public function groups() {
-        return $this->hasMany('App\Models\Group');
-    }
 }
