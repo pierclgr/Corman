@@ -35,6 +35,7 @@
                                             <th>Multimedia</th>
                                             <th>Type of publication</th>
                                             <th>Publication Tags</th>
+                                            <th>List of coauthors</th>
                                             <th>Edit your paper</th>
                                         </tr>
                                     </thead>
@@ -49,6 +50,7 @@
                                                 <td>{{ $p->multimedia }}</td>
                                                 <td>{{ $p->tipo }}</td>
                                                 <td>{{ $p->tags }}</td>
+                                                <td>{{ $p->coautori }}</td>
                                                 <td><a href="{{action('PublicationController@edit', [$p->idPublication] )}}" class="btn btn-warning">Edit</a></td>
                                             </tr>
                                         @endforeach

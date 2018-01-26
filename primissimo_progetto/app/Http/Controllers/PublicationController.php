@@ -6,6 +6,7 @@ use App\Publication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\UploadedFile;
 
 class PublicationController extends Controller
 {
@@ -18,7 +19,7 @@ class PublicationController extends Controller
     {
         $id=Auth::id();
         $publications = DB::table('publications')
-            ->select('idPublication', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'tags')
+            ->select('idPublication', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'tags', 'coautori')
             ->where('idUser', '=', $id)->get();
         return view ('publications.index', ['publications' => $publications]);
     }
@@ -50,6 +51,7 @@ class PublicationController extends Controller
             'tipo' => 'required',
             'visibilita' => '',
             'tags' => 'max:255',
+            'coautori' => 'max:255',
             'idUser' => ''
         ]);
         Publication::create([
@@ -61,6 +63,7 @@ class PublicationController extends Controller
             'tipo' => $request['tipo'],
             'visibilita' => $request['visibilita'],
             'tags' => $request['tags'],
+            'coautori' => $request['coautori'],
             'idUser' => Auth::id()
         ]);
         return redirect()->route('home');
@@ -86,7 +89,7 @@ class PublicationController extends Controller
     public function edit($id)
     {
         $publications = DB::table('publications')
-            ->select('idPublication', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'idUser')
+            ->select('idPublication', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'visibilita', 'tags', 'coautori', 'idUser')
             ->where('idPublication', '=', $id)
             ->where('idUser', '=', Auth::id())->get();
         return view('publications.edit', ['publications' => $publications]);
@@ -102,7 +105,7 @@ class PublicationController extends Controller
     public function update(Request $request, $idPublication)
     {
         //$idPublication=$id;
-        $publication=DB::table('publications')->where('idPublication',$idPublication)->update(['titolo' => $request->get('titolo')], ['tipo' => $request->get('tipo')]);
+        $publication=DB::table('publications')->where('idPublication',$idPublication)->update(['titolo' => $request->get('titolo')], ['tipo' => $request->get('tipo')], ['visibilita' => $request->get('visibilita')], ['tags' => $request->get('tags')], ['coautori' => $request->get('coautori')]);
         $this->validate($request, [
             'titolo' => 'required|max:255',
             'dataPubblicazione' => '',
@@ -110,10 +113,15 @@ class PublicationController extends Controller
             'immagine' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'multimedia' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'tipo' => 'required',
+
+            'visibilita' => '',
+            'tags' => 'required',
+            'coautori' => 'required',
             'idUser' => ''
         ]);
 
-        /*$publication->name = $request->get('titolo');
+        /*vecchio commento
+        $publication->name = $request->get('titolo');
         $publication->cognome = date('Y-m-d H:i:s');
         $publication->email = null;
         $publication->nazionalita = $request->get('nazionalita');
@@ -121,6 +129,7 @@ class PublicationController extends Controller
         $publication->tipo = $request->get('tipo');
         $publication->idUser = Auth::id();
         $publication->save();*/
+
         return redirect()->route('home');
     }
 

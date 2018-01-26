@@ -45,9 +45,14 @@
 										</td>
 							      	</tr>	
 							      	<tr>
-							        	<td>Paper tags</td>
+							        	<td>Paper tags (*)</td>
 							        	<td><input class="form-control" id="tags" name="tags" type="text" placeholder="Enter a list of tags separated by a ',' (max 255 chars)"></td>
 							      	</tr>
+							      	<tr>
+							        	<td>List of coauthors(*)</td>
+							        	<td><input class="form-control" id="coautori" name="coautori" type="text" placeholder="Enter a list of coauthors separated by a ',' (max 255 chars)"></td>
+							      	</tr>
+
 							    </tbody>
 							</table>
 							<h6>Fields with (*) must be set.</h6>

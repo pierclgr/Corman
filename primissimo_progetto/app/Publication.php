@@ -16,6 +16,7 @@ class Publication extends Model
         'tipo',
         'visibilita',
         'tags',
+        'coautori',
         'idUser'
     ];
 }

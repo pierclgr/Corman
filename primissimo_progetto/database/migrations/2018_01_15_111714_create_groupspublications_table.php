@@ -14,6 +14,9 @@ class CreateGroupspublicationsTable extends Migration
     public function up()
     {
         Schema::create('groupspublications', function (Blueprint $table) {
+            $table->integer('idUser')->unsigned();
+            $table->integer('idGroup')->unsigned();
+            $table->integer('idPublication')->unsigned();
             $table->integer('idUser')->foreign('idUser')->references('id')->on('users');
             $table->integer('idGroup')->foreign('idGroup')->references('idGroup')->on('groups');
             $table->integer('idPublication')->foreign('idPublication')->references('id')->on('publications');

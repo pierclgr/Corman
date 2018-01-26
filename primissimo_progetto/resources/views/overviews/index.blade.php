@@ -35,11 +35,12 @@
                                             <th>Multimedia</th>
                                             <th>Type of publication</th>
                                             <th>Publication Tags</th>
+                                            <th>List of coauthors</th>
                                             <th>Edit your paper</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($publications as $p)
+                                         @foreach($publications as $p)
                                             <tr>
                                                 <td>{{ $p->idPublication }}</td>
                                                 <td>{{ $p->titolo }}</td>
@@ -49,6 +50,7 @@
                                                 <td>{{ $p->multimedia }}</td>
                                                 <td>{{ $p->tipo }}</td>
                                                 <td>{{ $p->tags }}</td>
+                                                <td>{{ $p->coautori }}</td>
                                                 <td><a href="{{action('PublicationController@edit', [$p->idPublication] )}}" class="btn btn-warning">Edit</a></td>
                                             </tr>
                                         @endforeach
