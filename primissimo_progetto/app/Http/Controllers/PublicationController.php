@@ -113,11 +113,23 @@ class PublicationController extends Controller
             'immagine' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'multimedia' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'tipo' => 'required',
+
             'visibilita' => '',
             'tags' => 'required',
             'coautori' => 'required',
             'idUser' => ''
         ]);
+
+        /*vecchio commento
+        $publication->name = $request->get('titolo');
+        $publication->cognome = date('Y-m-d H:i:s');
+        $publication->email = null;
+        $publication->nazionalita = $request->get('nazionalita');
+        $publication->affiliazione = $request->get('affiliazione');*
+        $publication->tipo = $request->get('tipo');
+        $publication->idUser = Auth::id();
+        $publication->save();*/
+
         return redirect()->route('home');
     }
 
