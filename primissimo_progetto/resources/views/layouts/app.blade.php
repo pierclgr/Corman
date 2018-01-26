@@ -37,7 +37,17 @@
                     @else
                        <form class="navbar-form navbar-left">
                             <div class="form-group has-feedback">
-                                <input type="text" class="form-control" placeholder="Search">
+                                <input type="text" class="form-control" id="searchBar" onkeyup="helpSearch()" onfocusout="hideDropdown()" placeholder="Search">
+                                
+                                <ul class="dropdown-menu" id="searchDropdown" style="display: none; style height: 500 overflow: auto;">
+                                        <a href="#">res1<br></a>
+                                        <a href="#">res2<br></a>
+                                        <a href="#">ris23<br></a>
+                                        <a href="#">wow7<br></a>
+                                        <a href="#">mop7<br></a>
+                                        <a href="#">res3</a>
+                                        <li id="NoResults" style="display: none">No Results :[</li>
+                                </ul>
                                 <span class="glyphicon glyphicon-search form-control-feedback">
                                 </span>
                             </div>
@@ -54,6 +64,20 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
                                     👥 <span class="caret"></span>
                                 </a>
+                                <ul class="dropdown-menu" style="height: 400px; width: 350px; overflow: auto;">
+                                    <!-- Gruppi da amministratore-->
+                                    <h5 style="margin-left: 5px">Administrated groups</h5>
+                                    <li><a href="#">group 1</a></li>
+                                    <li><a href="#">group 2</a></li>
+                                    <li><a href="#">group 3</a></li>
+
+                                    <li><hr></li>
+                                    <!-- Altri gruppi -->
+                                    <h5 style="margin-left: 5px">Your other groups</h5>
+                                    <li><a href="#">group A</a></li>
+                                    <li><a href="#">group B</a></li>
+                                    <li><a href="#">group C</a></li>
+                                </ul>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
@@ -108,5 +132,36 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script>
+
+        function hideDropdown(){
+            document.getElementById("searchDropdown").style.display="none";
+        }
+
+        function helpSearch(){
+            document.getElementById("searchDropdown").style.display="block";
+            var input, filter, dropdown, elems, noResults=true;
+            input = document.getElementById("searchBar");
+            filter = input.value.toUpperCase();
+            if(filter == "")
+                hideDropdown();
+            dropdown = document.getElementById("searchDropdown");
+            elems = dropdown.getElementsByTagName("a");
+            for (var i = 0; i < elems.length; i++) {
+                if(elems[i].innerHTML.toUpperCase().indexOf(filter) >-1){
+                    elems[i].style.display = "";
+                    noResults=false;
+                    document.getElementById("NoResults").style.display="none";
+                }
+                else{
+                    elems[i].style.display = "none";
+                }
+            }        
+            if(noResults==true){
+                document.getElementById("NoResults").style.display="block";
+            }
+        }
+    </script>
+    
 </body>
 </html>
