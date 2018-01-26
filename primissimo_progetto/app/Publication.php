@@ -14,6 +14,9 @@ class Publication extends Model
     	'immagine',
     	'multimedia',
         'tipo',
+        'visibilita',
+        'tags',
+        'coautori',
         'idUser'
     ];
 }

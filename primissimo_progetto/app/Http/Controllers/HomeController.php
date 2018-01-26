@@ -24,7 +24,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $publications = Publication::all();
-        return view('publications.index', ['publications' => $publications]);
+        $publications = DB::table('publications')
+            ->select('idPublication', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'tags', 'coautori')
+            ->where('visibilita', '=', '1')->get();
+        return view ('overviews.index', ['publications' => $publications]);
     }
 }

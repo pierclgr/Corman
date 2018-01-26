@@ -52,7 +52,9 @@
                                                     <th>Image</th>
                                                     <th>Multimedia</th>
                                                     <th>Type of publication</th>
-                                                    <th>User ID</th>
+                                                    <th>Paper visibility</th>
+                                                    <th>Publication tags</th>
+                                                    <th>List of coauthors</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -65,8 +67,19 @@
                                                         <td>{{ $p->immagine }}</td>
                                                         <td>{{ $p->multimedia }}</td>
                                                         <td><input class="form-control" id="tipo" name="tipo" type="text" value="{{ $p->tipo }}" /></td>
+                                                        <td>
+                                                            <div class="button-group">
+                                                                <div class="radio">
+                                                                    <label><input type="radio" name="visibilita" value="1" checked="checked">Public</label>
+                                                                </div>
+                                                                <div class="radio">
+                                                                    <label><input type="radio" name="visibilita" value="0">Private</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td><input class="form-control" id="tags" name="tags" type="text" value="{{ $p->tags }}" /></td>
+                                                        <td><input class="form-control" id="coautori" name="coautori" type="text" value="{{ $p->coautori }}" /></td>
                                                     @endforeach
-                                                        <td>{{ Auth::id() }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
