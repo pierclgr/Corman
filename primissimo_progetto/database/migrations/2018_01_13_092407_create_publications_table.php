@@ -24,7 +24,6 @@ class CreatePublicationsTable extends Migration
             $table->boolean('visibilita')->nullable();
             $table->string('tags')->nullable();
             $table->string('coautori')->nullable();
-            $table->integer('idUser')->unsigned();
             $table->integer('idUser')->foreign('idPublication')->references('id')->on('users');
             $table->timestamps();
         });
