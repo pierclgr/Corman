@@ -26,3 +26,5 @@ Route::patch('publications/{idPublication}', 'PublicationController@update');
 Route::resource('users', 'UserController');
 
 Route::patch('users/{id}', 'UserController@update');
+
+Route::get('/home/user', 'UserController@index');
