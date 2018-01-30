@@ -19,7 +19,7 @@ class PublicationController extends Controller
     {
         $id=Auth::id();
         $publications = DB::table('publications')
-            ->select('idPublication', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'tags', 'coautori')
+            ->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'tags', 'coautori')
             ->where('idUser', '=', $id)->get();
         return view ('publications.index', ['publications' => $publications]);
     }
@@ -78,7 +78,7 @@ class PublicationController extends Controller
         $publication->tipo = $request->get('tipo');
         $publication->idUser = Auth::id();
         $publication->save();*/
-        return back()->with('success', 'Publication has been added');
+        return redirect('/home/user');
     }
 
     /**
@@ -101,8 +101,8 @@ class PublicationController extends Controller
     public function edit($id)
     {
         $publications = DB::table('publications')
-            ->select('idPublication', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'visibilita', 'tags', 'coautori', 'idUser')
-            ->where('idPublication', '=', $id)
+            ->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'visibilita', 'tags', 'coautori', 'idUser')
+            ->where('id', '=', $id)
             ->where('idUser', '=', Auth::id())->get();
         return view('publications.edit', ['publications' => $publications]);
     }
@@ -116,8 +116,7 @@ class PublicationController extends Controller
      */
     public function update(Request $request, $idPublication)
     {
-        //$idPublication=$id;
-        $publication=DB::table('publications')->where('idPublication',$idPublication)->update(['titolo' => $request->get('titolo')], ['tipo' => $request->get('tipo')], ['visibilita' => $request->get('visibilita')], ['tags' => $request->get('tags')], ['coautori' => $request->get('coautori')]);
+        $publication=Publication::find($idPublication);
         $this->validate($request, [
             'titolo' => 'required|max:255',
             'dataPubblicazione' => '',
@@ -132,22 +131,17 @@ class PublicationController extends Controller
             'idUser' => ''
         ]);
 
-        /*vecchio commento
-        $publication->name = $request->get('titolo');
-        $publication->cognome = date('Y-m-d H:i:s');
-        $publication->email = null;
-        $publication->nazionalita = $request->get('nazionalita');
-        $publication->affiliazione = $request->get('affiliazione');*
+        $publication->titolo = $request->get('titolo');
+        $publication->dataPubblicazione = date('Y-m-d H:i:s');
+        $publication->pdf = null;
+        $publication->immagine = null;
+        $publication->multimedia = null;
         $publication->tipo = $request->get('tipo');
+        $publication->tags = $request->get('tags');
+        $publication->coautori = $request->get('coautori');
         $publication->idUser = Auth::id();
-        $publication->save();*/
-        
-        /* return vecchio
-        return back()->with('success', 'Publication has been added');
-        */
-      
-        //return piu recente
-        return redirect()->route('home');
+        $publication->save();
+        return redirect('/home/user');
 }
 
     /**

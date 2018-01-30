@@ -107,7 +107,7 @@
                                     {{Auth::user()->name}} <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Profile</a></li>
+                                    <li><a href="/home/user">Profile</a></li>
                                     <li><a href="#">Create Group</a></li>
                                     <li>
                                         <a href="{{ route('logout') }}"

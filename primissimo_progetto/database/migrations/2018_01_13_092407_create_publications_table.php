@@ -14,7 +14,7 @@ class CreatePublicationsTable extends Migration
     public function up()
     {
         Schema::create('publications', function (Blueprint $table) {
-            $table->increments('idPublication');
+            $table->increments('id');
             $table->string('titolo')->nullable();
             $table->timestamp('dataPubblicazione')->nullable();
             $table->string('pdf')->nullable();
@@ -24,7 +24,7 @@ class CreatePublicationsTable extends Migration
             $table->boolean('visibilita')->nullable();
             $table->string('tags')->nullable();
             $table->string('coautori')->nullable();
-            $table->integer('idUser')->foreign('idPublication')->references('id')->on('users');
+            $table->integer('idUser')->foreign('idUser')->references('id')->on('users');
             $table->timestamps();
         });
     }

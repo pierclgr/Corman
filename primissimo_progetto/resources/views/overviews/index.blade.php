@@ -27,7 +27,6 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th>Publication ID</th>
                                             <th>Title</th>
                                             <th>Publication date</th>
                                             <th>PDF file</th>
@@ -42,7 +41,6 @@
                                     <tbody>
                                          @foreach($publications as $p)
                                             <tr>
-                                                <td>{{ $p->idPublication }}</td>
                                                 <td>{{ $p->titolo }}</td>
                                                 <td>{{ $p->dataPubblicazione }}</td>
                                                 <td>{{ $p->pdf }}</td>
@@ -51,7 +49,7 @@
                                                 <td>{{ $p->tipo }}</td>
                                                 <td>{{ $p->tags }}</td>
                                                 <td>{{ $p->coautori }}</td>
-                                                <td><a href="{{action('PublicationController@edit', [$p->idPublication] )}}" class="btn btn-warning">Edit</a></td>
+                                                <td><a href="{{action('PublicationController@edit', [$p->id] )}}" class="btn btn-warning">Edit</a></td>
                                             </tr>
                                         @endforeach
                                     </tbody>
