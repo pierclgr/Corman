@@ -35,9 +35,9 @@
                     @guest
                         <!-- Niente -->
                     @else
-                       <form class="navbar-form navbar-left" action="/home/search/" method="get">
+                       <form class="navbar-form navbar-left">
                             <div class="form-group has-feedback">
-                                <input type="text" class="form-control" id="searchBar" name="input" onkeyup="helpSearch()" onfocusout="hideDropdown()" placeholder="Search">
+                                <input type="text" class="form-control" id="searchBar" onkeyup="helpSearch()" onfocusout="hideDropdown()" placeholder="Search">
                                 
                                 <ul class="dropdown-menu" id="searchDropdown" style="display: none; style height: 500 overflow: auto;">
                                         <a href="#">res1<br></a>
@@ -140,7 +140,6 @@
 
         function helpSearch(){
             document.getElementById("searchDropdown").style.display="block";
-            
             var input, filter, dropdown, elems, noResults=true;
             input = document.getElementById("searchBar");
             filter = input.value.toUpperCase();
@@ -161,8 +160,7 @@
             if(noResults==true){
                 document.getElementById("NoResults").style.display="block";
             }
-
-            }
+        }
     </script>
     
 </body>
