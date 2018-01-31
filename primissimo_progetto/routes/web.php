@@ -28,5 +28,3 @@ Route::resource('users', 'UserController');
 Route::patch('users/{id}', 'UserController@update');
 
 Route::get('/home/user', 'UserController@index');
-
-Route::get('/home/search', 'SearchController@index');
