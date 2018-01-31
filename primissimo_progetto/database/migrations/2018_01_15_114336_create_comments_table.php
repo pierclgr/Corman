@@ -23,7 +23,7 @@ class CreateCommentsTable extends Migration
             $table->integer('idGroup')->foreign('idGroup')->references('idGroup')->on('groups');
             $table->integer('idPublication')->foreign('idPublication')->references('id')->on('publications');
             $table->integer('idUser')->foreign('idUser')->references('id')->on('users');
-            $table->string('commento');
+            $table->string('descrizione');
             $table->timestamp('dataoraC');
             $table->timestamps();
         });
