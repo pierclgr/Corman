@@ -36,9 +36,9 @@
                     @guest
                         <!-- Niente -->
                     @else
-                       <form class="navbar-form navbar-left">
+                       <form class="navbar-form navbar-left" action="/home/search/" method="get">
                             <div class="form-group has-feedback">
-                                <input type="text" class="form-control" id="searchBar" onkeyup="helpSearch()" onfocusout="hideDropdown()" placeholder="Search">
+                                <input type="text" class="form-control" id="searchBar" name="input" onkeyup="helpSearch()" onfocusout="hideDropdown()" placeholder="Search">
                                 
                                 <ul class="dropdown-menu" id="searchDropdown" style="display: none; style height: 500 overflow: auto;">
                                         <a href="#">res1<br></a>
