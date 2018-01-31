@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Search;
+use App\User;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
@@ -15,10 +15,6 @@ class SearchController extends Controller
     public function index(Request $request)
     {
         //
-        $tmp=$_GET["input"];
-        $users = Search::searchUser($tmp);
-        $groups = Search::searchGroup($tmp);
-        return view('searches.index', ["users"=>$users, "groups"=>$groups]);
     }
 
     /**
