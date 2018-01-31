@@ -15,9 +15,8 @@ class CreateGroupsTable extends Migration
     {
         Schema::create('groups', function (Blueprint $table) {
             $table->increments('idGroup');
-            $table->string('nomeGruppo')->unique()->nullable();
-            $table->string('descrizioneGruppo')->nullable();
-            $table->boolean('tipoVisibilita')->nullable();
+            $table->string('titolo');
+            $table->string('descrizione');
             $table->timestamps();
         });
     }
