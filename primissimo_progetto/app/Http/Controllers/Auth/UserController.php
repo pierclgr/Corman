@@ -18,7 +18,8 @@ class UserController extends Controller
     {
         $id=Auth::id();
         $users = DB::table('users')->select('name', 'cognome', 'email', 'nazionalita', 'affiliazione', 'linea_ricerca', 'telefono')->where('users.id', '=', $id)->get();
-        return view ('users.index', ['users' => $users]);
+        $publications=DB::table('publications')->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'visibilita', 'tags', 'coautori')->where('idUser','=', $id)->get();
+        return view ('users.index', ['users' => $users, 'publications' => $publications]);
     }
 
     /**
@@ -51,7 +52,7 @@ class UserController extends Controller
         
         User::create($user);
 
-        return back()->with('success', 'User has been added');
+        return back()->with('success', 'User has been added');;
     }
 
     /**
@@ -106,7 +107,7 @@ class UserController extends Controller
         $user->linea_ricerca = $request->get('linea_ricerca');
         $user->telefono = $request->get('telefono');
         $user->save();
-        return back()->with('success','User profile details have been updated');
+        return redirect('/home/user');
     }
 
     /**

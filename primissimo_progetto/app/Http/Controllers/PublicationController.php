@@ -66,19 +66,7 @@ class PublicationController extends Controller
             'coautori' => $request['coautori'],
             'idUser' => Auth::id()
         ]);
-        /*$publication=new Publication;
-        $publication->titolo = $request->get('title');
-        $publication->dataPubblicazione = $request->timestamps();
-        if(Input::hasFile('pdf'))
-            $publication->pdf = Input::file('pdf');
-        if(Input::hasFile('immagine'))
-            $publication->immagine = Input::file('immagine');
-        if(Input::hasFile('multimedia'))
-            $publication->multimedia = Input::file('multimedia');
-        $publication->tipo = $request->get('tipo');
-        $publication->idUser = Auth::id();
-        $publication->save();*/
-        return redirect('/home/user');
+        return redirect('users');
     }
 
     /**
