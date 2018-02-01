@@ -143,4 +143,5 @@ class PublicationController extends Controller
     {
         //
     }
+
 }
