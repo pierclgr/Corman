@@ -3,10 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Notifiable;
 
 class Group extends Model
 {
-    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -15,7 +15,8 @@ class Group extends Model
      */
     protected $fillable = [
         'idGroup',
-        'titolo',
-        'descrizione'
+        'nomeGruppo',
+        'descrizioneGruppo',
+        'tipoVisibilita'
     ];
 }

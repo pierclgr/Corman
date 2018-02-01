@@ -18,7 +18,7 @@ class Comment extends Model
         'idGroup',
         'idPublication',
         'idUser',
-        'descrizione',
+        'commento',
         'dataoraC'
     ];
 }
