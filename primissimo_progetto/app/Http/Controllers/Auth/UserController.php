@@ -40,19 +40,31 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = $this->validate(request(), [
+        $user = $request->validate([
           'name' => '',
           'cognome' => '',
+          'dataNascita' => '',
           'email' => '',
           'nazionalita' => '',
           'affiliazione' => '',
+          'dipartimento' => '',
           'linea_ricerca' => '',
           'telefono' => ''
         ]);
         
-        User::create($user);
+        User::create([
+            'name' => $request['name'],
+            'cognome' => $request['cognome'],
+            'dataNascita' => $request['dataNascita'],
+            'email' => $request['email'],
+            'nazionalita' => $request['nazionalita'],
+            'affiliazione' => $request['affiliazione'],
+            'dipartimento' => $request['dipartimento'],
+            'linea_ricerca' => $request['linea_ricerca'],
+            'telefono' => $request['telefono']
+        ]);
 
-        return back()->with('success', 'User has been added');;
+        return back()->with('success', 'User has been added');
     }
 
     /**

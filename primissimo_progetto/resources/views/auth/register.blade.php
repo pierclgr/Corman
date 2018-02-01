@@ -39,6 +39,33 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('dataNascita') ? ' has-error' : '' }}">
+                            <label for="dataNascita" class="col-md-4 control-label">Data nascita</label>
+
+                            <div class="col-md-6">
+                                <input type="date" name="dataNascita" class="form-control" id="dataNascita">
+                                @if ($errors->has('dataNascita'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('dataNascita') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('dipartimento') ? ' has-error' : '' }}">
+                            <label for="dipartimento" class="col-md-4 control-label">Indirizzo lavorativo</label>
+
+                            <div class="col-md-6">
+                                <input id="dipartimento" type="text" class="form-control" name="dipartimento" value="{{ old('dipartimento') }}" required>
+
+                                @if ($errors->has('dipartimento'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('dipartimento') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-4 control-label">E-Mail</label>
 

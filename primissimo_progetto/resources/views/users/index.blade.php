@@ -60,15 +60,15 @@
             </div>
 
             <div>
-                <form action="" method="POST" enctype="multipart/form-data">
+                <form action="{{ action('UserController@filter') }}" method="GET" class="form-horizontal">
                     <input name="_method" type="hidden" value="POST">
                     <h3>Filter papers</h3>
                     <table class="table">
                         <tbody>
                             <tr>
                                 <td>Title</td><td><input class="form-control" type="text" name="title" id="name" placeholder="Paper title"></td>
-                                <td>From</td><td><input id="from_date" name="from_date" class="form-control" type="date"></td>
-                                <td>To</td><td><input id="to_date" name="to_date" class="form-control" type="date"></td>
+                                <td>From</td><td><input id="from_date" name="from_date" class="form-control" type="date" onchange="check()"></td>
+                                <td>To</td><td><input id="to_date" name="to_date" class="form-control" type="date"onchange="check()"></td>
                                 <td><button style="float:right;" class="btn btn-success " name="submit" type="submit">Filter</button></td>
                             </tr>
                         </tbody>
@@ -125,4 +125,17 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    function check(){
+        var to_date, from_date;
+        to_date=document.getElementById('to_date');
+        from_date=document.getElementById('from_date');
+        if(to_date.value!="" && from_date.value!=""){
+            if(to_date.value<=from_date.value){
+                to_date.value=from_date.value+1;
+                alert('Inserire una data valida');
+            }
+        }
+    }
+</script>
 @endsection

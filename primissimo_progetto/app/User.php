@@ -18,9 +18,11 @@ class User extends Authenticatable
         'id',
         'name',
         'cognome',
+        'dataNascita',
         'email',
         'nazionalita',
         'affiliazione',
+        'dipartimento',
         'linea_ricerca',
         'telefono',
         'password'
