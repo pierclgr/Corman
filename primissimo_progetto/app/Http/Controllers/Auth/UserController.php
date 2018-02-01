@@ -17,7 +17,7 @@ class UserController extends Controller
     public function index()
     {
         $id=Auth::id();
-        $users = DB::table('users')->select('name', 'cognome', 'email', 'nazionalita', 'affiliazione', 'linea_ricerca', 'telefono')->where('users.id', '=', $id)->get();
+        $users = DB::table('users')->select('name', 'cognome', 'dataNascita', 'email', 'nazionalita', 'affiliazione', 'dipartimento', 'linea_ricerca', 'telefono')->where('users.id', '=', $id)->get();
         $publications=DB::table('publications')->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'visibilita', 'tags', 'coautori')->where('idUser','=', $id)->get();
         return view ('users.index', ['users' => $users, 'publications' => $publications]);
     }
@@ -40,19 +40,31 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = $this->validate(request(), [
+        $user = $request->validate([
           'name' => '',
           'cognome' => '',
+          'dataNascita' => '',
           'email' => '',
           'nazionalita' => '',
           'affiliazione' => '',
+          'dipartimento' => '',
           'linea_ricerca' => '',
           'telefono' => ''
         ]);
         
-        User::create($user);
+        User::create([
+            'name' => $request['name'],
+            'cognome' => $request['cognome'],
+            'dataNascita' => $request['dataNascita'],
+            'email' => $request['email'],
+            'nazionalita' => $request['nazionalita'],
+            'affiliazione' => $request['affiliazione'],
+            'dipartimento' => $request['dipartimento'],
+            'linea_ricerca' => $request['linea_ricerca'],
+            'telefono' => $request['telefono']
+        ]);
 
-        return back()->with('success', 'User has been added');;
+        return back()->with('success', 'User has been added');
     }
 
     /**
@@ -75,7 +87,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $id=Auth::id();
-        $users = DB::table('users')->select('name', 'cognome', 'email', 'nazionalita', 'affiliazione', 'linea_ricerca', 'telefono')->where('users.id', '=', $id)->get();
+        $users = DB::table('users')->select('name', 'cognome', 'dataNascita', 'email', 'nazionalita', 'affiliazione', 'dipartimento', 'linea_ricerca', 'telefono')->where('users.id', '=', $id)->get();
         return view('users.edit',compact('users','id'));
     }
 
@@ -92,9 +104,11 @@ class UserController extends Controller
         $this->validate(request(), [
             'name' => 'required',
             'cognome' => 'required',
+            'dataNascita' => '',
             'email' => 'email',
             'nazionalita' => 'required',
             'affiliazione' => 'required',
+            'dipartimento' => 'required',
             'linea_ricerca' => 'required',
             'telefono' => 'required'
         ]);

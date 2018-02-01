@@ -39,6 +39,19 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('dataNascita') ? ' has-error' : '' }}">
+                            <label for="dataNascita" class="col-md-4 control-label">Data nascita</label>
+
+                            <div class="col-md-6">
+                                <input type="date" name="dataNascita" class="form-control" id="dataNascita">
+                                @if ($errors->has('dataNascita'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('dataNascita') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-4 control-label">E-Mail</label>
 
@@ -57,7 +70,7 @@
                             <label for="nazionalita" class="col-md-4 control-label">Nazionalità</label>
 
                             <div class="col-md-6">
-                                <input id="nazionalita" type="text" class="form-control" name="nazionalita" required>
+                                <input id="nazionalita" type="text" class="form-control" name="nazionalita" value="{{ old('nazionalita') }}" required>
 
                                 @if ($errors->has('nazionalita'))
                                     <span class="help-block">
@@ -71,7 +84,7 @@
                             <label for="nazionalita" class="col-md-4 control-label">Affiliazione</label>
 
                             <div class="col-md-6">
-                                <input id="affiliazione" type="text" class="form-control" name="affiliazione" required>
+                                <input id="affiliazione" type="text" class="form-control" name="affiliazione" value="{{ old('affiliazione') }}" required>
 
                                 @if ($errors->has('affiliazione'))
                                     <span class="help-block">
@@ -81,11 +94,25 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('dipartimento') ? ' has-error' : '' }}">
+                            <label for="dipartimento" class="col-md-4 control-label">Indirizzo lavorativo</label>
+
+                            <div class="col-md-6">
+                                <input id="dipartimento" type="text" class="form-control" name="dipartimento" value="{{ old('dipartimento') }}" required>
+
+                                @if ($errors->has('dipartimento'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('dipartimento') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('linea_ricerca') ? ' has-error' : '' }}">
                             <label for="linea_ricerca" class="col-md-4 control-label">Linea di ricerca</label>
 
                             <div class="col-md-6">
-                                <input id="linea_ricerca" type="text" class="form-control" name="linea_ricerca" required>
+                                <input id="linea_ricerca" type="text" class="form-control" name="linea_ricerca" value="{{ old('linea_ricerca') }}" required>
 
                                 @if ($errors->has('linea_ricerca'))
                                     <span class="help-block">
@@ -99,7 +126,7 @@
                             <label for="telefono" class="col-md-4 control-label">Recapito telefonico</label>
 
                             <div class="col-md-6">
-                                <input id="telefono" type="text" class="form-control" name="telefono" required>
+                                <input id="telefono" type="text" class="form-control" name="telefono" value="{{ old('telefono') }}" required>
 
                                 @if ($errors->has('telefono'))
                                     <span class="help-block">

@@ -125,6 +125,7 @@ class PublicationController extends Controller
         $publication->immagine = null;
         $publication->multimedia = null;
         $publication->tipo = $request->get('tipo');
+        $publication->visibilita = $request->get('visibilita');
         $publication->tags = $request->get('tags');
         $publication->coautori = $request->get('coautori');
         $publication->idUser = Auth::id();

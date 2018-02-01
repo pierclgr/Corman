@@ -59,10 +59,10 @@
                                                                 <td>Visibility</td><td>
                                                                     <div class="button-group">
                                                                         <div class="radio">
-                                                                            <label><input type="radio" name="visibilita" value="1" checked="checked">Public</label>
+                                                                            <label><input type="radio" class="p" name="visibilita" value="1">Public</label>
                                                                         </div>
                                                                         <div class="radio">
-                                                                            <label><input type="radio" name="visibilita" value="0">Private</label>
+                                                                            <label><input type="radio" class="p" name="visibilita" value="0">Private</label>
                                                                         </div>
                                                                     </div>
                                                                 </td>

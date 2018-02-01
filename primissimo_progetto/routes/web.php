@@ -29,8 +29,6 @@ Route::patch('users/{id}', 'UserController@update');
 
 Route::get('/home/user', 'UserController@index');
 
-
-
 Route::get('/home/search', 'SearchController@index');
 
 Route::resource('groups', 'GroupController');
