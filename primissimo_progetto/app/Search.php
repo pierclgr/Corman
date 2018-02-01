@@ -15,7 +15,7 @@ class Search extends Model
     }
 
     public static function searchGroup($input){
-    	$groups = DB::table('groups')->select('idGroup', 'titolo')->where('titolo','LIKE','%'.$input.'%')->get();
+    	$groups = DB::table('groups')->select('idGroup', 'nomeGruppo')->where('nomeGruppo','LIKE','%'.$input.'%')->where('tipoVisibilita','=','true')->get();
     	return $groups;
     }
 
