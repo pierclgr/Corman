@@ -58,6 +58,23 @@
                     </div>
                 </div>
             </div>
+
+            <div>
+                <form action="" method="POST" enctype="multipart/form-data">
+                    <input name="_method" type="hidden" value="POST">
+                    <h3>Filter papers</h3>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>Title</td><td><input class="form-control" type="text" name="title" id="name" placeholder="Paper title"></td>
+                                <td>From</td><td><input id="from_date" name="from_date" class="form-control" type="date"></td>
+                                <td>To</td><td><input id="to_date" name="to_date" class="form-control" type="date"></td>
+                                <td><button style="float:right;" class="btn btn-success " name="submit" type="submit">Filter</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
             @if(count($publications) >0)
                 @foreach($publications as $p)
                     <div class="panel panel-default">

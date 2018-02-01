@@ -47,7 +47,7 @@
                                         <a href="#">wow7<br></a>
                                         <a href="#">mop7<br></a>
                                         <a href="#">res3</a>
-                                        <li id="NoResults" style="display: none">No Results :[</li>
+                                        <li id="NoResults" style="display: none">Nothing found...</li>
                                 </ul>
                                 <span class="glyphicon glyphicon-search form-control-feedback">
                                 </span>
@@ -65,16 +65,16 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
                                     👥 <span class="caret"></span>
                                 </a>
-                                <ul class="dropdown-menu" style="height: 400px; width: 350px; overflow: auto;">
+                                <ul class="dropdown-menu" style="max-height: 400px; min-width: 300px; overflow: auto;">
                                     <!-- Gruppi da amministratore-->
-                                    <h5 style="margin-left: 5px">Administrated groups</h5>
+                                    <h5 style="margin-left: 10px">Administrated groups</h5>
                                     <li><a href="#">group 1</a></li>
                                     <li><a href="#">group 2</a></li>
                                     <li><a href="#">group 3</a></li>
 
                                     <li><hr></li>
                                     <!-- Altri gruppi -->
-                                    <h5 style="margin-left: 5px">Your other groups</h5>
+                                    <h5 style="margin-left: 10px">Your other groups</h5>
                                     <li><a href="#">group A</a></li>
                                     <li><a href="#">group B</a></li>
                                     <li><a href="#">group C</a></li>
@@ -84,7 +84,7 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
                                     🌐 <span class="caret"></span>
                                 </a>
-                                <ul class="dropdown-menu" style="max-height: 400px; overflow: auto;">
+                                <ul class="dropdown-menu" style="max-height: 400px; min-width: 300px; overflow: auto;">
                                     <li><br></li>
                                     <!-- Notifica invito ad entrare nel gruppo-->
                                     <li><a href="#">Mike Wazowski invited you to join Monsters INC researching<br><button>Accept</button>    <button>Decline</button></a></li>

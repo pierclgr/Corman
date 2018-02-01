@@ -9,13 +9,13 @@ class Search extends Model
 {
     //
     public static function searchUser($input){
-    	$users = DB::table('users')->select('id', 'name', 'cognome')->where('name','LIKE','%'.$input.'%')
+    	$users = DB::table('users')->select('id', 'name', 'cognome', 'affiliazione', 'linea_ricerca')->where('name','LIKE','%'.$input.'%')
     		->orWhere('cognome','LIKE','%'.$input.'%')->get();
     	return $users;
     }
 
     public static function searchGroup($input){
-    	$groups = DB::table('groups')->select('idGroup', 'nomeGruppo')->where('nomeGruppo','LIKE','%'.$input.'%')->where('tipoVisibilita','=','true')->get();
+    	$groups = DB::table('groups')->select('idGroup', 'nomeGruppo', 'descrizioneGruppo')->where('nomeGruppo','LIKE','%'.$input.'%')->where('tipoVisibilita','=','1')->get();
     	return $groups;
     }
 
