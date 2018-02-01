@@ -21,7 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('publications', 'PublicationController');
 
-Route::patch('publications/{id}', 'PublicationController@update');
+Route::patch('publications/{idPublication}', 'PublicationController@update');
 
 Route::resource('users', 'UserController');
 
@@ -29,10 +29,4 @@ Route::patch('users/{id}', 'UserController@update');
 
 Route::get('/home/user', 'UserController@index');
 
-Route::resource('groups', 'GroupController');
-
-Route::get('groups/{idGroup}', 'GroupController@show');
-
-Route::get('groups/{idGroup}/{idPublication}', 'GroupController@aggiungi')->name('groups.aggiungi');
-
-Route::get('groups/{idGroup}/{idUser}', 'GroupController@rintraccia')->name('groups.rintraccia');
+Route::get('/home/search', 'SearchController@index');
