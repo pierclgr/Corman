@@ -28,7 +28,7 @@
                     @endif
                     @if(count($group)>0)
                         @foreach($group as $g)
-                            {{ $g->nomeGruppo }}<br>{{ $g->descrizioneGruppo }}
+                            {{ $g->titolo }}<br>
                         @endforeach
                     @else
                         <strong>NESSUNA PUBBLICAZIONE PRESENTE IN QUESTO GRUPPO!</strong>

@@ -20,7 +20,7 @@
                                 <div><img style="float: left;" src="http://via.placeholder.com/75x75"></div>
                                 <div style="margin-left: 85px;"><h4><b>{{$u->name." ".$u->cognome}}</b></h4></div>
                                 <div style="margin-left: 85px;"><h6>{{$u->affiliazione}}</h6></div>
-                            <div style="margin-left: 85px;"><h6>{{$u->linea_ricerca}}</h6></div>
+                                <div style="margin-left: 85px;"><h6>{{$u->linea_ricerca}}</h6></div>
                             </div>
                             <hr>
                         @endforeach
@@ -48,7 +48,8 @@
                             </div>
                         @endif
                         @foreach($groups as $g)
-                            <h4><b>{{$g->nomeGruppo}}</b></h4>
+                            <a href="/groups/{{$g->idGroup}}">
+                            <h4><b>{{$g->nomeGruppo}}</b></h4></a>
                             <h6>{{$g->descrizioneGruppo}}</h6>
                             <hr>
                         @endforeach
@@ -102,7 +103,8 @@
                             </div>
                         @endif
                         @foreach($groups as $g)
-                            <h4><b>{{$g->nomeGruppo}}</b></h4>
+                            <a href="/groups/{{$g->idGroup}}">
+                            <h4><b>{{$g->nomeGruppo}}</b></h4></a>
                             <h6>{{$g->descrizioneGruppo}}</h6>
                             <hr>
                         @endforeach

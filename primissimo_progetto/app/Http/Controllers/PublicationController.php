@@ -115,7 +115,7 @@ class PublicationController extends Controller
             'tipo' => 'required',
 
             'visibilita' => '',
-            'tags' => 'required',
+            'tags' => '',
             'coautori' => 'required',
             'idUser' => ''
         ]);

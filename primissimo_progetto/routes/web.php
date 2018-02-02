@@ -43,6 +43,6 @@ Route::resource('groups', 'GroupController');
 
 Route::get('groups/{idGroup}', 'GroupController@show');
 
-Route::get('groups/{idGroup}/{idPublication}', 'GroupController@aggiungi')->name('groups.aggiungi');
+Route::get('groups/{idGroup}/aggiungi/{idPublication}', 'GroupController@aggiungi')->name('groups.aggiungi');
 
 Route::get('groups/{idGroup}/{idUser}', 'GroupController@rintraccia')->name('groups.rintraccia');

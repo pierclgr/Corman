@@ -64,7 +64,7 @@ class GroupController extends Controller
         DB::table('usersgroups')->insert([
             ['idGroup' => $idGroup->idGroup,  'idUser' => $idUser]
         ]);
-        return redirect('home');
+        return redirect('groups/'.urldecode($idGroup));
     }
 
     /**
@@ -78,11 +78,11 @@ class GroupController extends Controller
         $group=DB::table('users')
             ->join('usersgroups', 'users.id', '=', 'usersgroups.idUser')//dalla tabella Utenti andiamo a quella UtentiGruppi
             ->join('groups', 'usersgroups.idGroup', '=', 'groups.idGroup')//per poi andare a quella Gruppi
-            /*->join('groupspublications', 'groups.idGroup', '=', 'groupspublications.idGroup')//da qui andiamo alla tabella dei post nei gruppi
+            ->join('groupspublications', 'groups.idGroup', '=', 'groupspublications.idGroup')//da qui andiamo alla tabella dei post nei gruppi
             ->join('publications', 'groupspublications.idPublication', '=', 'publications.id')//per risalire alla/e pubblicazione/i
-            */->select('groups.idGroup', 'users.id', 'groups.nomeGruppo', 'groups.descrizioneGruppo')
+            ->select('groups.idGroup', 'users.id', 'groups.nomeGruppo', 'groups.descrizioneGruppo', 'publications.titolo')
             ->where('groups.idGroup', '=', $id)
-            ->where('users.id', '=', Auth::id())
+            ->where('groups.tipoVisibilita', '=', '1')
             ->get();
         return view('groups.show', ['group' => $group]);
     }
@@ -129,7 +129,8 @@ class GroupController extends Controller
             ->where('visibilita', '=', '1')//... e che sia pubblica
             ->whereNotIn('id',function($query) {//tuttavia questa non deve...
                 $query->select('idUser')->from('groupspublications');//...essere mai stata condivisa altrove
-            })->get();
+            })
+            ->get();
         $idGruppo=['idGroup' => $idGroup];
         return view('groups.rintraccia', ['suePubblicazioni' => $suePubblicazioni, 'idGruppo' => $idGruppo]);
     }
@@ -137,7 +138,7 @@ class GroupController extends Controller
     public function aggiungi($idGroup, $id)
     {
         DB::table('groupspublications')
-            ->insert(['idUser' => Auth::id(), 'idGroup' => $idGroup, 'idPublication' => $id]);
-        return back()->with('success','Your publication has been added into the group!');
+            ->insert(['idUser' => Auth::id(), 'idGroup' => $idGroup, 'idPublication' => $id, 'descrizione' => ""]);
+        return GroupController::show($idGroup);
     }
 }

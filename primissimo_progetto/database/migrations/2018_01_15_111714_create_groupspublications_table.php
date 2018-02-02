@@ -25,6 +25,8 @@ class CreateGroupspublicationsTable extends Migration
             $table->string('descrizione');
             $table->timestamp('dataoraGP');
             $table->timestamps();
+
+            $table->primary(array('idUser', 'idGroup', 'idPublication'));
         });
     }
 
