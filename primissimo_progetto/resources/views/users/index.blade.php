@@ -117,7 +117,9 @@
                         <div class="content">
                             <strong>We're sorry, but you have never added a paper regarding your research field...</strong><br><br>
                             You can add a new one with the form above or import it from DBLP<br><br>
-                            <button type="button" class="btn btn-info">Import my researchs from DBLP</button>
+                            <form action="{{ action('PublicationController@import') }}" method="GET">
+                                <input type="submit" class="btn btn-info" value="Import my researchs from DBLP">
+                            </form>
                         </div>
                     </div>
                 </div>

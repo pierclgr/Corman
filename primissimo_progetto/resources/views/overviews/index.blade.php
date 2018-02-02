@@ -59,7 +59,9 @@
                             <strong>We're sorry, but you have never added a paper regarding your research field that you wrote...</strong><br><br>
                             But, if you want, you can add a new one bor importing it from DBLP by simply pressing one of the buttons below!<br><br>
                             <a href="{{action('PublicationController@create')}}" class="btn btn-info">Create a new paper</a>
-                            <button type="button" class="btn btn-info">Import my researchs from DBLP</button>
+                            <form action="{{ action('PublicationController@import') }}" method="GET">
+                                <input type="submit" class="btn btn-info" value="Import my researchs from DBLP">
+                            </form>
                         @endif
                     </div>
                 </div>

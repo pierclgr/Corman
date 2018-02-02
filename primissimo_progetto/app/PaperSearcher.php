@@ -37,14 +37,12 @@ class paperSearcher extends Model
     		//bisogna controllare che tutti i paper trovati siano dell'autore cercato
     		foreach ($hit['info']['authors']['author'] as $aut) {
     			# code...
-    			if( strtolower($aut) === strtolower($name) ){
+    			if( strtolower($aut) === strtolower($fullname) ){
     				$add=true;
     			}
     		}
     		if($add){
-    			$tmp=array();
-    			$tmp[]=['id' => $hit['@id']];
-    			$tmp[]=['info' => $hit['info']];
+    			$tmp=array("id" => $hit['@id'], "info" => $hit['info']);
     			$output[]=$tmp;
     		}
     	}

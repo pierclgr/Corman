@@ -23,6 +23,8 @@ Route::resource('publications', 'PublicationController');
 
 Route::patch('publications/{id}', 'PublicationController@update');
 
+Route::get('/home/import', 'PublicationController@import');
+
 Route::resource('users', 'UserController');
 
 Route::patch('users/{id}', 'UserController@update');
