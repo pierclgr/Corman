@@ -31,6 +31,10 @@ Route::get('/home/user', 'UserController@index');
 
 Route::get('/home/search', 'SearchController@index');
 
+Route::get('/home/search/people','SearchController@searchPeople');
+
+Route::get('/home/search/groups','SearchController@searchGroups');
+
 Route::get('/home/user/filter','UserController@filter');
 
 Route::resource('groups', 'GroupController');

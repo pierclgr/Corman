@@ -109,7 +109,7 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a href="home/user">Profile</a></li>
-                                    <li><a href="#">Create Group</a></li>
+                                    <li><a href="/groups/create">Create Group</a></li>
                                     <li>
                                         <a href="{{ route('logout') }}"
                                            onclick="event.preventDefault();

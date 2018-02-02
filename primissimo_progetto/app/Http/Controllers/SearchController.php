@@ -15,10 +15,10 @@ class SearchController extends Controller
     public function index(Request $request)
     {
         //
-        $tmp=$_GET["input"];
-        $users = Search::searchUser($tmp);
-        $groups = Search::searchGroup($tmp);
-        return view('searches.index', ["users"=>$users, "groups"=>$groups]);
+        $input=$_GET["input"];
+        $users = Search::searchUser($input);
+        $groups = Search::searchGroup($input);
+        return view('searches.index', ["users"=>$users, "groups"=>$groups, "input" =>$input]);
     }
     /**
      * Show the form for creating a new resource.
@@ -84,5 +84,27 @@ class SearchController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Searches only for people
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function searchPeople(){
+        $input=$_GET["input"];
+        $users = Search::searchUser($input);
+        return view('searches.index', ["users"=>$users, "groups"=>"", "input" =>$input]);
+    }
+
+    /**
+     * Searches only for groups
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function searchGroups(){
+        $input=$_GET["input"];
+        $groups = Search::searchGroup($input);
+        return view('searches.index', ["users"=>"", "groups"=>$groups, "input" =>$input]);
     }
 }
