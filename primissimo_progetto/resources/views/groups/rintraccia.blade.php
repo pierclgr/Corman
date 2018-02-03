@@ -6,7 +6,7 @@
         <div class="col-md-12 col-md-offset-0">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    titolo sezione
+                    <h3>Your pubblications</h3>
                 </div>
                 <div class="panel-body">
                     @if (session('status'))
@@ -23,22 +23,21 @@
                             </ul>
                         </div>
                     @endif
-                    <form>
-                        <table class="table table-condensed">
-                            <thead>
-                                <tr>
-                                    <th>Publication title</th>
-                                    <th>Date of sharing</th>
-                                    <th>Type of publication</th>
-                                    <th>Publication tags</th>
-                                    <th>Coauthors</th>
-                                    <th>Condividi</th>
-                                    <th>prova</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($suePubblicazioni as $sp)
-                                    @foreach($idGruppo as $id)
+                    @if(count($suePubblicazioni)>0)
+                        <form>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Publication title</th>
+                                        <th>Date of sharing</th>
+                                        <th>Type of publication</th>
+                                        <th>Publication tags</th>
+                                        <th>Coauthors</th>
+                                        <th>Condividi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($suePubblicazioni as $sp)
                                         <tr>
                                             <td>
                                                 {{ $sp->titolo }}
@@ -56,15 +55,16 @@
                                                 {{ $sp->coautori }}
                                             </td>
                                             <td>
-                                                <a href="{{route('groups.aggiungi', [$id, $sp->id] )}}"><button type="button" class="btn btn-primary">Add</button></a>
+                                                <a href="{{route('groups.aggiungi', [$idGroup, $sp->id] )}}"><button type="button" class="btn btn-primary">Add</button></a>
                                             </td>
-                                            <td>boh</td>
                                         </tr>
                                     @endforeach
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </form>
+                                </tbody>
+                            </table>
+                        </form>
+                    @else
+                        <strong>You have no publications</strong>
+                    @endif 
                 </div>
             </div>
         </div>

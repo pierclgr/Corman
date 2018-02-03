@@ -26,14 +26,19 @@
                             </ul>
                         </div>
                     @endif
-                    @if(count($group)>0)
-                        @foreach($group as $g)
-                            {{ $g->titolo }}<br>
+                    @if(count($publications)>0)
+                        @foreach($publications as $p)
+                            {{ $p->titolo }}<br>
                         @endforeach
                     @else
                         <strong>NESSUNA PUBBLICAZIONE PRESENTE IN QUESTO GRUPPO!</strong>
                     @endif
-                    <br><a href="{{route('groups.rintraccia', [$group[0]->idGroup, $group[0]->id] )}}"><button type="button" class="btn btn-primary">Add a publication in this group</button></a>
+                    
+                    <br>
+                    <a href="{{route('groups.rintraccia', [$group[0]->idGroup, Auth::user()->id] )}}">
+                    <button type="button" class="btn btn-primary">Add a publication in this group</button>
+                    </a>
+                    
                 </div>
             </div>
         </div>
