@@ -75,21 +75,35 @@ class GroupController extends Controller
      */
     public function show($id)
     {
-        $group=DB::table('users')//prendi il gruppo e gli utenti
-            ->join('usersgroups', 'users.id', '=', 'usersgroups.idUser')//dalla tabella Utenti andiamo a quella UtentiGruppi
-            ->join('groups', 'usersgroups.idGroup', '=', 'groups.idGroup')//per poi andare a quella Gruppi
-            ->select('groups.idGroup', 'users.id', 'groups.nomeGruppo', 'groups.descrizioneGruppo')
-            ->where('groups.idGroup', '=', $id)
-            ->where('groups.tipoVisibilita', '=', '1')
-            ->get();
 
         $publications=DB::table('groups')//prendi le publicazioni nel gruppo
             ->join('groupspublications', 'groups.idGroup', '=', 'groupspublications.idGroup')//da qui andiamo alla tabella dei post nei gruppi
             ->join('publications', 'groupspublications.idPublication', '=', 'publications.id')//per risalire alla/e pubblicazione/i
-            ->select('publications.titolo')
+            ->join('users', 'users.id', '=', 'groupspublications.idUser')
+            ->select('publications.titolo', 'users.name', 'users.cognome', 'groupspublications.descrizione')
             ->where('groups.idGroup', '=', $id)
             ->get();
-        return view('groups.show', ['group' => $group, 'publications' => $publications]);
+
+        $adminID=DB::table('admins')//prendiamo gli admin del gruppo
+            ->select('idUser')
+            ->where('admins.idGroup', '=', $id);
+
+        $admins=DB::table('users')//prendi i dati degli admin e del gruppo
+            ->join('usersgroups', 'users.id', '=', 'usersgroups.idUser')
+            ->join('groups', 'usersgroups.idGroup', '=', 'groups.idGroup')
+            ->select('users.id', 'users.name', 'users.cognome', 'groups.idGroup', 'groups.nomeGruppo', 'groups.descrizioneGruppo')
+            ->where('groups.idGroup', '=', $id)
+            ->whereIn('users.id', $adminID)
+            ->get();
+
+        $users=DB::table('users')//prendi i dati degli utenti nel gruppo
+            ->join('usersgroups', 'users.id', '=', 'usersgroups.idUser')
+            ->select('users.id', 'users.name', 'users.cognome')
+            ->where('usersgroups.idGroup', '=', $id)
+            ->whereNotIn('users.id', $adminID)
+            ->get();
+
+        return view('groups.show', ['groupUsers' => $users, 'publications' => $publications, 'admins' => $admins]);
     }
 
     /**
@@ -140,10 +154,12 @@ class GroupController extends Controller
         return view('groups.rintraccia', ['suePubblicazioni' => $suePubblicazioni, 'idGroup' => $idGroup]);
     }
 
-    public function aggiungi($idGroup, $id)
+    public function aggiungi($idGroup)
     {
+        $id=$_GET["pubID"];
+        $descr=$_GET["descr".$id];
         DB::table('groupspublications')
-            ->insert(['idUser' => Auth::id(), 'idGroup' => $idGroup, 'idPublication' => $id, 'descrizione' => " "]);
-        return GroupController::show($idGroup);
+            ->insert(['idUser' => Auth::id(), 'idGroup' => $idGroup, 'idPublication' => $id, 'descrizione' => $descr]);
+        return redirect('groups/'.$idGroup);
     }
 }

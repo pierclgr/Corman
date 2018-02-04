@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-12 col-md-offset-0">
+        <div class="col-md-12 ">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3>Your pubblications</h3>
@@ -24,16 +24,16 @@
                         </div>
                     @endif
                     @if(count($suePubblicazioni)>0)
-                        <form>
+                        <form action="{{route('groups.aggiungi', [$idGroup] )}}" method="GET">
+                            <input type="hidden" id="input" name="pubID">
                             <table class="table table-condensed">
                                 <thead>
                                     <tr>
                                         <th>Publication title</th>
-                                        <th>Date of sharing</th>
                                         <th>Type of publication</th>
                                         <th>Publication tags</th>
                                         <th>Coauthors</th>
-                                        <th>Condividi</th>
+                                        <th>Description</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -41,9 +41,6 @@
                                         <tr>
                                             <td>
                                                 {{ $sp->titolo }}
-                                            </td>
-                                            <td>
-                                                {{ $sp->dataPubblicazione }}
                                             </td>
                                             <td>
                                                 {{ $sp->tipo }}                                                
@@ -55,7 +52,10 @@
                                                 {{ $sp->coautori }}
                                             </td>
                                             <td>
-                                                <a href="{{route('groups.aggiungi', [$idGroup, $sp->id] )}}"><button type="button" class="btn btn-primary">Add</button></a>
+                                                <input name="{{ 'descr'.$sp->id }}" placeholder=" ">
+                                            </td>
+                                            <td>
+                                                <input class="btn btn-primary" placeholder="Add" onclick="setvalue({{ $sp->id }})" type="submit">
                                             </td>
                                         </tr>
                                     @endforeach
@@ -70,4 +70,10 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    function setvalue(id){
+        document.getElementById("input").value=id;
+    }
+</script>
 @endsection
