@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\PaperSearcher;
 use App\Publication;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\UploadedFile;
@@ -54,18 +56,37 @@ class PublicationController extends Controller
             'coautori' => 'max:255',
             'idUser' => ''
         ]);
-        Publication::create([
-            'titolo' => $request['titolo'],
-            'dataPubblicazione' => date('Y-m-d H:i:s'),
-            'pdf' => '',
-            'immagine' => '',
-            'multimedia' => '',
-            'tipo' => $request['tipo'],
-            'visibilita' => $request['visibilita'],
-            'tags' => $request['tags'],
-            'coautori' => $request['coautori'],
-            'idUser' => Auth::id()
-        ]);
+        if($request->hasFile('pdf')) {
+            $file=$request->file('pdf');
+            $extension=$file->getClientOriginalExtension();
+            $fileName=$file->getClientOriginalName() . '-'. Auth::id() . "." . $extension;
+            $uploadedPath=Storage::disk('public')->put($fileName, file_get_contents($file), 'public');
+            Publication::create([
+                'titolo' => $request['titolo'],
+                'dataPubblicazione' => date('Y-m-d H:i:s'),
+                'pdf' => $uploadedPath,
+                'immagine' => '',
+                'multimedia' => '',
+                'tipo' => $request['tipo'],
+                'visibilita' => $request['visibilita'],
+                'tags' => $request['tags'],
+                'coautori' => $request['coautori'],
+                'idUser' => Auth::id()
+            ]);
+        } else {
+             Publication::create([
+                'titolo' => $request['titolo'],
+                'dataPubblicazione' => date('Y-m-d H:i:s'),
+                'pdf' => '',
+                'immagine' => '',
+                'multimedia' => '',
+                'tipo' => $request['tipo'],
+                'visibilita' => $request['visibilita'],
+                'tags' => $request['tags'],
+                'coautori' => $request['coautori'],
+                'idUser' => Auth::id()
+            ]);
+        }
         return redirect('users');
     }
 
@@ -114,7 +135,7 @@ class PublicationController extends Controller
             'tipo' => 'required',
 
             'visibilita' => '',
-            'tags' => 'required',
+            'tags' => '',
             'coautori' => 'required',
             'idUser' => ''
         ]);
@@ -143,4 +164,44 @@ class PublicationController extends Controller
     {
         //
     }
+
+    /**
+     * Importa dati da dblp e li inserisce nel database
+     * vengono importati fino a 10 coautori per motivi di spazio
+     *
+     */
+    public function import(){
+        $res=PaperSearcher::search(Auth::user()->name." ".Auth::user()->cognome);
+        foreach($res as $paper){
+            $authors=$paper['info']['authors']['author'];
+            $coauthors="";
+            $i=0;
+            foreach ($authors as $author) {
+                $i++;
+                if($i==count($authors))
+                    $coauthors=$coauthors.$author;
+                else if($i==10){
+                    $coauthors=$coauthors.$author.", e altri";
+                    break;
+                }
+                else
+                    $coauthors=$coauthors.$author.", ";
+            }
+            Publication::create([
+                'titolo' => $paper['info']['title'],
+                'dataPubblicazione' => date('Y-m-d H:i:s'),
+                'pdf' => '',
+                'immagine' => '',
+                'multimedia' => '',
+                'tipo' => $paper['info']['type'],
+                'visibilita' => '0',
+                'tags' => '',
+                'coautori' => $coauthors,
+                'idUser' => Auth::id()
+            ]);
+        }
+
+        return redirect('/home');
+    }
+
 }

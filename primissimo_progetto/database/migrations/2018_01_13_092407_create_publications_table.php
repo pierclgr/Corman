@@ -15,14 +15,14 @@ class CreatePublicationsTable extends Migration
     {
         Schema::create('publications', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('titolo')->nullable();
-            $table->timestamp('dataPubblicazione')->nullable();
+            $table->string('titolo');
+            $table->timestamp('dataPubblicazione');
             $table->string('pdf')->nullable();
             $table->string('immagine')->nullable();
             $table->string('multimedia')->nullable();
-            $table->string('tipo')->nullable();
-            $table->boolean('visibilita')->nullable();
-            $table->string('tags')->nullable();
+            $table->string('tipo');
+            $table->boolean('visibilita');
+            $table->string('tags');
             $table->string('coautori')->nullable();
             $table->integer('idUser')->foreign('idUser')->references('id')->on('users');
             $table->timestamps();

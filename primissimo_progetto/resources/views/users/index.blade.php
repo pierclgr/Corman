@@ -8,11 +8,90 @@
             <br>
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div><div style="float: left;"><span class="material-icons" style="font-size:22px; vertical-align:middle;">cake</span></div><div style="margin-left: 25px;"><h7 style="vertical-align: middle;">{{ Auth::user()->dataNascita }}</h7></div></div>
-                    <div><div style="float: left;"><span class="material-icons" style="font-size:22px; vertical-align:middle;">email</span></div><div style="margin-left: 25px;"><h7 style="vertical-align: middle;">{{ Auth::user()->email }}</h7></div></div>
-                    <div><div style="float: left;"><span class="material-icons" style="font-size:22px; vertical-align:middle;">phone</span></div><div style="margin-left: 25px;"><h7 style="vertical-align: middle;"> {{Auth::user()->telefono}}</h7></div></div>
-                    <div><div style="float: left;"><span class="material-icons" style="font-size:22px; vertical-align:middle;">language</span></div><div style="margin-left: 25px;"><h7 style="vertical-align: middle;"> {{Auth::user()->nazionalita}}</h7></div></div>
-                    <div><div style="float: left;"><span class="material-icons" style="font-size:22px; vertical-align:middle;">location_on</span></div><div style="margin-left: 25px;"><h7 style="vertical-align: middle;"> {{ Auth::user()->dipartimento }}</h7></div></div>
+                    @if(Auth::user()->visibilitaDN === 0)
+                        <div>
+                            <div style="float: left;">
+                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">cake</span>
+                            </div>
+                            <div style="margin-left: 25px;">
+                                <h7 style="vertical-align: middle;">Date of birth not available</h7>
+                            </div>
+                        </div>
+                    @else
+                        <div>
+                            <div style="float: left;">
+                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">cake</span>
+                            </div>
+                            <div style="margin-left: 25px;">
+                                <h7 style="vertical-align: middle;">{{ Auth::user()->dataNascita }}</h7>
+                            </div>
+                        </div>
+                    @endif
+                    @if(Auth::user()->visibilitaE === 1)
+                        <div>
+                            <div style="float: left;">
+                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">email</span>
+                            </div>
+                            <div style="margin-left: 25px;">
+                                <h7 style="vertical-align: middle;">{{ Auth::user()->email }}</h7>
+                            </div>
+                        </div>
+                    @else
+                        <div>
+                            <div style="float: left;">
+                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">email</span>
+                            </div>
+                            <div style="margin-left: 25px;">
+                                <h7 style="vertical-align: middle;">Email not available</h7>
+                            </div>
+                        </div>
+                    @endif
+                    @if(Auth::user()->visibilitaT === 1)
+                        <div>
+                            <div style="float: left;">
+                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">phone</span>
+                            </div>
+                            <div style="margin-left: 25px;">
+                                <h7 style="vertical-align: middle;"> {{Auth::user()->telefono}}</h7>
+                            </div>
+                        </div>
+                    @else
+                        <div>
+                            <div style="float: left;">
+                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">phone</span>
+                            </div>
+                            <div style="margin-left: 25px;">
+                                <h7 style="vertical-align: middle;">Phone number not available</h7>
+                            </div>
+                        </div>
+                    @endif
+                    @if(Auth::user()->visibilitaN === 1)
+                        <div>
+                            <div style="float: left;">
+                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">language</span>
+                            </div>
+                            <div style="margin-left: 25px;">
+                                <h7 style="vertical-align: middle;"> {{Auth::user()->nazionalita}}</h7>
+                            </div>
+                        </div>
+                    @else
+                        <div>
+                            <div style="float: left;">
+                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">language</span>
+                            </div>
+                            <div style="margin-left: 25px;">
+                                <h7 style="vertical-align: middle;">Nationality not available</h7>
+                            </div>
+                        </div>
+                    @endif
+                    <div>
+                        <div style="float: left;">
+                            <span class="material-icons" style="font-size:22px; vertical-align:middle;">location_on</span>
+                        </div>
+                        <div style="margin-left: 25px;">
+                            <h7 style="vertical-align: middle;"> {{ Auth::user()->dipartimento }}</h7>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -35,12 +114,25 @@
                                     <td>Paper Type</td><td><input class="form-control" id="tipo" name="tipo" type="text" placeholder="Paper Type (*)" required></td>
                                 </tr>
                                 <tr>
-                                    <td>Visibility</td><td class="button-group">
+                                    <td>Paper tags PDF</td>
+                                    <td><input type="file" name="pdf" id="pdf"></td>
+                                </tr>
+                                <tr>
+                                    <td>Visibility</td>
+                                    <td class="button-group">
                                         <table style="width: 100%;">
-                                        <tr>
-                                            <td><center><label style="font-size: 15px;"><input type="radio" name="visibilita" value="1" checked="checked">Public</label></center></td>
-                                            <td><center><label style="margin-left: 5px; font-size: 15px;"><input type="radio" name="visibilita" value="0">Private</label></center></td>
-                                        </tr>
+                                            <tr>
+                                                <td>
+                                                    <center>
+                                                        <label style="font-size: 15px;"><input type="radio" name="visibilita" value="1" checked="checked">Public</label>
+                                                    </center>
+                                                </td>
+                                                <td>
+                                                    <center>
+                                                        <label style="margin-left: 5px; font-size: 15px;"><input type="radio" name="visibilita" value="0">Private</label>
+                                                    </center>
+                                                </td>
+                                            </tr>
                                         </table>
                                     </td>
                                 </tr>
@@ -60,15 +152,15 @@
             </div>
 
             <div>
-                <form action="" method="POST" enctype="multipart/form-data">
+                <form action="{{ action('UserController@filter') }}" method="GET" class="form-horizontal">
                     <input name="_method" type="hidden" value="POST">
                     <h3>Filter papers</h3>
                     <table class="table">
                         <tbody>
                             <tr>
                                 <td>Title</td><td><input class="form-control" type="text" name="title" id="name" placeholder="Paper title"></td>
-                                <td>From</td><td><input id="from_date" name="from_date" class="form-control" type="date"></td>
-                                <td>To</td><td><input id="to_date" name="to_date" class="form-control" type="date"></td>
+                                <td>From</td><td><input id="from_date" name="from_date" class="form-control" type="date" onchange="check()"></td>
+                                <td>To</td><td><input id="to_date" name="to_date" class="form-control" type="date"onchange="check()"></td>
                                 <td><button style="float:right;" class="btn btn-success " name="submit" type="submit">Filter</button></td>
                             </tr>
                         </tbody>
@@ -117,7 +209,9 @@
                         <div class="content">
                             <strong>We're sorry, but you have never added a paper regarding your research field...</strong><br><br>
                             You can add a new one with the form above or import it from DBLP<br><br>
-                            <button type="button" class="btn btn-info">Import my researchs from DBLP</button>
+                            <form action="{{ action('PublicationController@import') }}" method="GET">
+                                <input type="submit" class="btn btn-info" value="Import my researchs from DBLP">
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -125,4 +219,17 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    function check(){
+        var to_date, from_date;
+        to_date=document.getElementById('to_date');
+        from_date=document.getElementById('from_date');
+        if(to_date.value!="" && from_date.value!=""){
+            if(to_date.value<=from_date.value){
+                to_date.value=from_date.value+1;
+                alert('Inserire una data valida');
+            }
+        }
+    }
+</script>
 @endsection

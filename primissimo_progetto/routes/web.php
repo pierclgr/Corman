@@ -23,6 +23,8 @@ Route::resource('publications', 'PublicationController');
 
 Route::patch('publications/{id}', 'PublicationController@update');
 
+Route::get('/home/import', 'PublicationController@import');
+
 Route::resource('users', 'UserController');
 
 Route::patch('users/{id}', 'UserController@update');
@@ -31,10 +33,16 @@ Route::get('/home/user', 'UserController@index');
 
 Route::get('/home/search', 'SearchController@index');
 
+Route::get('/home/search/people','SearchController@searchPeople');
+
+Route::get('/home/search/groups','SearchController@searchGroups');
+
+Route::get('/home/user/filter','UserController@filter');
+
 Route::resource('groups', 'GroupController');
 
 Route::get('groups/{idGroup}', 'GroupController@show');
 
-Route::get('groups/{idGroup}/{idPublication}', 'GroupController@aggiungi')->name('groups.aggiungi');
+Route::get('groups/{idGroup}/aggiungi/{idPublication}', 'GroupController@aggiungi')->name('groups.aggiungi');
 
 Route::get('groups/{idGroup}/{idUser}', 'GroupController@rintraccia')->name('groups.rintraccia');

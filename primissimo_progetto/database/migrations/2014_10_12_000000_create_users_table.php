@@ -18,12 +18,16 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('cognome');
             $table->date('dataNascita');
+            $table->boolean('visibilitaDN')->default(1);
             $table->string('email')->unique();
+            $table->boolean('visibilitaE')->default(1);
             $table->string('nazionalita');
+            $table->boolean('visibilitaN')->default(1);
             $table->string('affiliazione');
             $table->string('dipartimento');
             $table->string('linea_ricerca');
             $table->string('telefono');
+            $table->boolean('visibilitaT')->default(1);
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

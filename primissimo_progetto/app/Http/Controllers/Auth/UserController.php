@@ -44,24 +44,32 @@ class UserController extends Controller
           'name' => '',
           'cognome' => '',
           'dataNascita' => '',
+          'visibilitaDN' => '',
           'email' => '',
+          'visibilitaE' => '',
           'nazionalita' => '',
+          'visibilitaN' => '',
           'affiliazione' => '',
           'dipartimento' => '',
           'linea_ricerca' => '',
-          'telefono' => ''
+          'telefono' => '',
+          'visibilitaT' => ''
         ]);
         
         User::create([
             'name' => $request['name'],
             'cognome' => $request['cognome'],
             'dataNascita' => $request['dataNascita'],
+            'visibilitaDN' => 1,
             'email' => $request['email'],
+            'visibilitaE' => 1,
             'nazionalita' => $request['nazionalita'],
+            'visibilitaN' => 1,
             'affiliazione' => $request['affiliazione'],
             'dipartimento' => $request['dipartimento'],
             'linea_ricerca' => $request['linea_ricerca'],
-            'telefono' => $request['telefono']
+            'telefono' => $request['telefono'],
+            'visibilitaT' => 1
         ]);
 
         return back()->with('success', 'User has been added');
@@ -86,9 +94,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $id=Auth::id();
-        $users = DB::table('users')->select('name', 'cognome', 'dataNascita', 'email', 'nazionalita', 'affiliazione', 'dipartimento', 'linea_ricerca', 'telefono')->where('users.id', '=', $id)->get();
-        return view('users.edit',compact('users','id'));
+        $users = DB::table('users')->select('name', 'cognome', 'dataNascita', 'visibilitaDN', 'email', 'visibilitaE', 'nazionalita', 'visibilitaN', 'affiliazione', 'dipartimento', 'linea_ricerca', 'telefono', 'visibilitaT')->where('users.id', '=', $id)->get();
+        return view('users.edit', ['users' => $users]);
     }
 
     /**
@@ -100,27 +107,37 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user=User::find($id);
-        $this->validate(request(), [
-            'name' => 'required',
-            'cognome' => 'required',
-            'dataNascita' => '',
-            'email' => 'email',
-            'nazionalita' => 'required',
-            'affiliazione' => 'required',
-            'dipartimento' => 'required',
-            'linea_ricerca' => 'required',
-            'telefono' => 'required'
+        $user = $request->validate([
+          'name' => '',
+          'cognome' => '',
+          'dataNascita' => '',
+          'visibilitaDN' => '',
+          'email' => '',
+          'visibilitaE' => '',
+          'nazionalita' => '',
+          'visibilitaN' => '',
+          'affiliazione' => '',
+          'dipartimento' => '',
+          'linea_ricerca' => '',
+          'telefono' => '',
+          'visibilitaT' => ''
         ]);
 
-        $user->name = $request->get('name');
-        $user->cognome = $request->get('cognome');
-        $user->email = $request->get('email');
-        $user->nazionalita = $request->get('nazionalita');
-        $user->affiliazione = $request->get('affiliazione');
-        $user->linea_ricerca = $request->get('linea_ricerca');
-        $user->telefono = $request->get('telefono');
-        $user->save();
+        DB::table('users')->
+            where('id', $id)->
+            update(['name' => $request->get('name')],
+                    ['cognome' => $request->get('cognome')],
+                    ['dataNascita' => $request->get('dataNascita')],
+                    ['visibilitaDN' => $request->get('visibilitaDN')],
+                    ['email' => $request->get('email')],
+                    ['visibilitaE' => $request->get('visibilitaE')],
+                    ['nazionalita' => $request->get('nazionalita')],
+                    ['visibilitaN' => $request->get('visibilitaN')],
+                    ['affiliazione' => $request->get('affiliazione')],
+                    ['linea_ricerca' => $request->get('linea_ricerca')],
+                    ['telefono' => $request->get('telefono')],
+                    ['visibilitaT' => $request->get('visibilitaT')]
+            );
         return redirect('/home/user');
     }
 

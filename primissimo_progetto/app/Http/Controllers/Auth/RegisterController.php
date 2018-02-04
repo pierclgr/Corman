@@ -51,12 +51,16 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'cognome' => 'required|string',
             'dataNascita' => 'required',
+            'visibilitaDN' => '',
             'email' => 'required|string|email|max:255|unique:users',
+            'visibilitaE' => '',
             'nazionalita' => 'required|string',
+            'visibilitaN' => '',
             'affiliazione' => 'required|string',
             'dipartimento' => 'required|string',
             'linea_ricerca' => 'required|string',
             'telefono' => 'required|string',
+            'visibilitaT' => '',
             'password' => 'required|string|min:6|confirmed',
         ]);
     }
@@ -73,12 +77,16 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'cognome' => $data['cognome'],
             'dataNascita' => $data['dataNascita'],
+            'visibilitaDN' => 1,
             'email' => $data['email'],
+            'visibilitaE' => 1,
             'nazionalita' => $data['nazionalita'],
+            'visibilitaN' => 1,
             'affiliazione' => $data['affiliazione'],
             'dipartimento' => $data['dipartimento'],
             'linea_ricerca' => $data['linea_ricerca'],
             'telefono' => $data['telefono'],
+            'visibilitaT' => 1,
             'password' => bcrypt($data['password']),
         ]);
     }
