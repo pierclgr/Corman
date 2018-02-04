@@ -8,11 +8,90 @@
             <br>
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div><div style="float: left;"><span class="material-icons" style="font-size:22px; vertical-align:middle;">cake</span></div><div style="margin-left: 25px;"><h7 style="vertical-align: middle;">27/12/1996</h7></div></div>
-                    <div><div style="float: left;"><span class="material-icons" style="font-size:22px; vertical-align:middle;">email</span></div><div style="margin-left: 25px;"><h7 style="vertical-align: middle;">{{ Auth::user()->email }}</h7></div></div>
-                    <div><div style="float: left;"><span class="material-icons" style="font-size:22px; vertical-align:middle;">phone</span></div><div style="margin-left: 25px;"><h7 style="vertical-align: middle;"> {{Auth::user()->telefono}}</h7></div></div>
-                    <div><div style="float: left;"><span class="material-icons" style="font-size:22px; vertical-align:middle;">language</span></div><div style="margin-left: 25px;"><h7 style="vertical-align: middle;"> {{Auth::user()->nazionalita}}</h7></div></div>
-                    <div><div style="float: left;"><span class="material-icons" style="font-size:22px; vertical-align:middle;">location_on</span></div><div style="margin-left: 25px;"><h7 style="vertical-align: middle;"> Dipartimento di Informatica, Via Orabona,9 Bari IT</h7></div></div>
+                    @if(Auth::user()->visibilitaDN === 0)
+                        <div>
+                            <div style="float: left;">
+                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">cake</span>
+                            </div>
+                            <div style="margin-left: 25px;">
+                                <h7 style="vertical-align: middle;">Date of birth not available</h7>
+                            </div>
+                        </div>
+                    @else
+                        <div>
+                            <div style="float: left;">
+                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">cake</span>
+                            </div>
+                            <div style="margin-left: 25px;">
+                                <h7 style="vertical-align: middle;">{{ Auth::user()->dataNascita }}</h7>
+                            </div>
+                        </div>
+                    @endif
+                    @if(Auth::user()->visibilitaE === 1)
+                        <div>
+                            <div style="float: left;">
+                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">email</span>
+                            </div>
+                            <div style="margin-left: 25px;">
+                                <h7 style="vertical-align: middle;">{{ Auth::user()->email }}</h7>
+                            </div>
+                        </div>
+                    @else
+                        <div>
+                            <div style="float: left;">
+                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">email</span>
+                            </div>
+                            <div style="margin-left: 25px;">
+                                <h7 style="vertical-align: middle;">Email not available</h7>
+                            </div>
+                        </div>
+                    @endif
+                    @if(Auth::user()->visibilitaT === 1)
+                        <div>
+                            <div style="float: left;">
+                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">phone</span>
+                            </div>
+                            <div style="margin-left: 25px;">
+                                <h7 style="vertical-align: middle;"> {{Auth::user()->telefono}}</h7>
+                            </div>
+                        </div>
+                    @else
+                        <div>
+                            <div style="float: left;">
+                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">phone</span>
+                            </div>
+                            <div style="margin-left: 25px;">
+                                <h7 style="vertical-align: middle;">Phone number not available</h7>
+                            </div>
+                        </div>
+                    @endif
+                    @if(Auth::user()->visibilitaN === 1)
+                        <div>
+                            <div style="float: left;">
+                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">language</span>
+                            </div>
+                            <div style="margin-left: 25px;">
+                                <h7 style="vertical-align: middle;"> {{Auth::user()->nazionalita}}</h7>
+                            </div>
+                        </div>
+                    @else
+                        <div>
+                            <div style="float: left;">
+                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">language</span>
+                            </div>
+                            <div style="margin-left: 25px;">
+                                <h7 style="vertical-align: middle;">Nationality not available</h7>
+                            </div>
+                        </div>
+                    @endif
+                    <div>
+                        <div style="float: left;">
+                            <span class="material-icons" style="font-size:22px; vertical-align:middle;">location_on</span>
+                        </div>
+                        <div style="margin-left: 25px;">
+                            <h7 style="vertical-align: middle;"> {{ Auth::user()->dipartimento }}</h7>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -35,29 +114,120 @@
                                 <div class="table-responsive">
                                     <table class="table">
                                         <tbody>
-                                                @foreach($users as $u)
-                                                    <tr>
-                                                        <td>First Name</td><td><input class="form-control" id="name" name="name" type="text" value="{{ $u->name }}" /></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Last Name</td><td><input class="form-control" id="cognome" name="cognome" type="text" value="{{ $u->cognome }}" /></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>E-mail</td><td><input class="form-control" id="email" name="email" type="text" value="{{ $u->email }}" /></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Nationality</td><td><input class="form-control" id="nazionalita" name="nazionalita" type="text" value="{{ $u->nazionalita }}" /></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Affiliation</td><td><input class="form-control" id="affiliazione" name="affiliazione" type="text" value="{{ $u->affiliazione }}" /></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Research Field</td><td><input class="form-control" id="linea_ricerca" name="linea_ricerca" type="text" value="{{ $u->linea_ricerca }}" /></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Phone</td><td><input class="form-control" id="telefono" name="telefono" type="text" value="{{ $u->telefono }}" /></td>
-                                                    </tr>
-                                                @endforeach
+                                            @foreach($users as $u)
+                                                <tr>
+                                                    <td>First Name</td>
+                                                    <td>
+                                                        <input class="form-control" id="name" name="name" type="text" value="{{ $u->name }}" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Last Name</td>
+                                                    <td>
+                                                        <input class="form-control" id="cognome" name="cognome" type="text" value="{{ $u->cognome }}" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Date of birth</td>
+                                                    <td>
+                                                        <input class="form-control" id="dataNascita" name="dataNascita" type="date" value="{{ $u->dataNascita }}" />
+                                                    </td>
+                                                    <td class="button-group">
+                                                        <table style="width: 100%;">
+                                                            <tr>
+                                                                <td>
+                                                                    <center>
+                                                                        <label style="font-size: 15px;"><input type="radio" name="visibilitaDN" value="1">Public</label>
+                                                                    </center>
+                                                                </td>
+                                                                <td>
+                                                                    <center>
+                                                                        <label style="margin-left: 5px; font-size: 15px;"><input type="radio" name="visibilitaDN" value="0" checked>Private</label>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>E-mail</td>
+                                                    <td>
+                                                        <input class="form-control" id="email" name="email" type="text" value="{{ $u->email }}" />
+                                                    </td>
+                                                    <td class="button-group">
+                                                        <table style="width: 100%;">
+                                                            <tr>
+                                                                <td>
+                                                                    <center>
+                                                                        <label style="font-size: 15px;"><input type="radio" name="visibilitaE" value="1">Public</label>
+                                                                    </center>
+                                                                </td>
+                                                                <td>
+                                                                    <center>
+                                                                        <label style="margin-left: 5px; font-size: 15px;"><input type="radio" name="visibilitaE" value="0" checked>Private</label>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Nationality</td>
+                                                    <td>
+                                                        <input class="form-control" id="nazionalita" name="nazionalita" type="text" value="{{ $u->nazionalita }}" />
+                                                    </td>
+                                                    <td class="button-group">
+                                                        <table style="width: 100%;">
+                                                            <tr>
+                                                                <td>
+                                                                    <center>
+                                                                        <label style="font-size: 15px;"><input type="radio" name="visibilitaN" value="1">Public</label>
+                                                                    </center>
+                                                                </td>
+                                                                <td>
+                                                                    <center>
+                                                                        <label style="margin-left: 5px; font-size: 15px;"><input type="radio" name="visibilitaN" value="0" checked>Private</label>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Affiliation</td>
+                                                    <td>
+                                                        <input class="form-control" id="affiliazione" name="affiliazione" type="text" value="{{ $u->affiliazione }}" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Research Field</td>
+                                                    <td>
+                                                        <input class="form-control" id="linea_ricerca" name="linea_ricerca" type="text" value="{{ $u->linea_ricerca }}" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Phone</td>
+                                                    <td>
+                                                        <input class="form-control" id="telefono" name="telefono" type="text" value="{{ $u->telefono }}" />
+                                                    </td>
+                                                    <td class="button-group">
+                                                        <table style="width: 100%;">
+                                                            <tr>
+                                                                <td>
+                                                                    <center>
+                                                                        <label style="font-size: 15px;"><input type="radio" name="visibilitaT" value="1">Public</label>
+                                                                    </center>
+                                                                </td>
+                                                                <td>
+                                                                    <center>
+                                                                        <label style="margin-left: 5px; font-size: 15px;"><input type="radio" name="visibilitaT" value="0" checked>Private</label>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 <button style="float:right;" class="btn btn-success" name="submit" type="submit">Update</button>

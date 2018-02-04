@@ -19,12 +19,16 @@ class User extends Authenticatable
         'name',
         'cognome',
         'dataNascita',
+        'visibilitaDN',
         'email',
+        'visibilitaE',
         'nazionalita',
+        'visibilitaN',
         'affiliazione',
         'dipartimento',
         'linea_ricerca',
         'telefono',
+        'visibilitaT',
         'password'
     ];
 
