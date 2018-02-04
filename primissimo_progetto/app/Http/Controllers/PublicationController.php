@@ -56,15 +56,17 @@ class PublicationController extends Controller
             'coautori' => 'max:255',
             'idUser' => ''
         ]);
-        if($request->hasFile('pdf')) {
+        if($request['pdf']!=null) {
+        /*if($request->hasFile('pdf')) {
             $file=$request->file('pdf');
             $extension=$file->getClientOriginalExtension();
             $fileName=$file->getClientOriginalName() . '-'. Auth::id() . "." . $extension;
-            $uploadedPath=Storage::disk('public')->put($fileName, file_get_contents($file), 'public');
+            //$uploadedPath=Storage::disk('public')->put($fileName, file_get_contents($file), 'public');
+            $uploadedPath=$file->move(public_path('/pdf'), $fileName);*/
             Publication::create([
                 'titolo' => $request['titolo'],
                 'dataPubblicazione' => date('Y-m-d H:i:s'),
-                'pdf' => $uploadedPath,
+                'pdf' => $request->file('pdf')->store('pdf'),
                 'immagine' => '',
                 'multimedia' => '',
                 'tipo' => $request['tipo'],
