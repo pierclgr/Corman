@@ -8,7 +8,7 @@
                 <div class="panel-heading">
                     <h4 style="float: left">Admins</h4>
                     <a style="float: right">
-                        <button type="button" onclick="display(1)">Add Admin</button>
+                        <button type="button" onclick="display()">Add Admin</button>
                     </a>
                     <br>
                 </div>
@@ -23,8 +23,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 style="float: left;">Partecipants</h4>
-                    <a style="float: right">
-                        <button type="button" onclick="display(2)">Add Partecipant</button>
+                    <a style="float: right" href="{{ route('groups.cerca', [$admins[0]->idGroup]) }}">
+                        <button type="button" >Add Partecipant</button>
                     </a>
                     <br>
                 </div>
@@ -73,7 +73,7 @@
                         @endforeach
                         <h5 style="text-align: center">There are no other publications</h5>
                     @else
-                        <strong>NESSUNA PUBBLICAZIONE PRESENTE IN QUESTO GRUPPO!</strong>
+                        <strong>THERE ARE NO PUBBLICATIONS HERE!</strong>
                     @endif
                     
                 </div>
@@ -99,7 +99,7 @@
                     @if(count($groupUsers)>0)
                         @foreach($groupUsers as $user)
                             <h5 style="float: left">{{ $user->name." ".$user->cognome }}</h5>
-                            <a href="#" style="float: right"><button>Promote</button></a>
+                            <a href="{{route('groups/'.$admis[0]->idGroup.'/promote', [$user->id])}}" style="float: right"><button>Promote</button></a>
                         @endforeach
                     @else
                         <h4>No one can be promoted</h4>
@@ -107,29 +107,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div id="addUser" class="modal" style="display: none; position: fixed; z-index: 1; padding-top: 100px; 
-        left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); 
-        background-color: rgba(0,0,0,0.4);">
-        
-        
-        <div class="modal-content" style="background-color: #F0f8ff; margin: auto; padding: 20px;
-            border: 1px solid #888; width: 50%; height: 80%">
-
-            <div class="panel">
-                <div class="panel-heading"><h3>Add Reaseacher</h3></div>
-                <input type="text" class="form-control" name="input" onkeyup="helpSearch()" placeholder="Search" autocomplete="off">
-                <div class="panel-body">
-                    <ul style=" style height: 500 overflow: auto;">
-                        <li><a href="#">viene riempito da script</a></li> 
-                    </ul>
-                </div>
-                
-                <span class="glyphicon glyphicon-search form-control-feedback"></span>
-            </div>
-        </div>
-        
     </div>
 
 </div>
@@ -140,28 +117,10 @@
 
 <script type="text/javascript">
     
-    function display(choice){
-        if(choice==1){
-            document.getElementById('addAdmin').style.display="block";
-        }
-        if(choice==2){
-            document.getElementById('addUser').style.display="block";
-        }
+    function display(){
+        document.getElementById('addAdmin').style.display="block";
     }
-
-    window.onclick=function(event) {
-        var modal1=document.getElementById('addAdmin');
-        var modal2=document.getElementById('addUser');
-        if(event.target == modal1)
-            modal1.style.display="none";
-        if(event.target == modal2)
-            modal2.style.display="none";
-        if(event.target==document.getElementById("searchDropdown") ||
-            event.target==document.getElementById("searchBar"))
-            document.getElementById("searchDropdown").style.display="none";
-        else
-            hideDropdown();
-    }
+    
 </script>
 
 @endsection

@@ -15,7 +15,7 @@ class CreatePublicationsTable extends Migration
     {
         Schema::create('publications', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('titolo');
+            $table->text('titolo');
             $table->timestamp('dataPubblicazione');
             $table->string('pdf')->nullable();
             $table->string('immagine')->nullable();
@@ -23,7 +23,7 @@ class CreatePublicationsTable extends Migration
             $table->string('tipo');
             $table->boolean('visibilita');
             $table->string('tags');
-            $table->string('coautori')->nullable();
+            $table->text('coautori')->nullable();
             $table->integer('idUser')->foreign('idUser')->references('id')->on('users');
             $table->timestamps();
         });

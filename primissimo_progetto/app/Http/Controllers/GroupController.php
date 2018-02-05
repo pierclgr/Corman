@@ -162,4 +162,76 @@ class GroupController extends Controller
             ->insert(['idUser' => Auth::id(), 'idGroup' => $idGroup, 'idPublication' => $id, 'descrizione' => $descr]);
         return redirect('groups/'.$idGroup);
     }
+
+    /**
+     * searches for partecipants for groups
+     *
+     */
+    function searchPartecipants($idGroup){
+        $part=DB::table('users')//prendi i dati degli utenti nel gruppo
+            ->join('usersgroups', 'users.id', '=', 'usersgroups.idUser')
+            ->select('users.id')
+            ->where('usersgroups.idGroup', '=', $idGroup);
+
+        $users = DB::table('users')->select('id', 'name', 'cognome', 'affiliazione', 'linea_ricerca')
+            ->whereNotIn('users.id', $part)
+            ->get();
+
+        return view('groups/adduser',["users" => $users, "idGroup" => $idGroup]);
+    }
+
+    function addPartecipants($idGroup){
+        $id=$_GET["userID"];
+        DB::table('participationrequests')
+            ->insert(['idUser' => $id, 'idGroup' => $idGroup]);
+        return redirect('groups/'.$idGroup);
+    }
+
+    function promote($idGroup, $idUser){
+        DB::table('admins')
+            ->insert(['idGroup' => $idGroup, 'idUser' => $idUser]);
+        return redirect('groups/'.$idGroup);
+    }
+
+    function getGroups(){
+        $id=Auth::id();
+        
+        $admined=DB::table('groups')
+            ->join('admins', 'admins.idGroup', '=', 'groups.idGroup')
+            ->select('groups.idGroup', 'groups.nomeGruppo')
+            ->where('admins.idUser', '=', $id)
+            ->get();
+
+        $other=DB::table('groups')
+            ->join('usersgroups', 'usersgroups.idGroup', '=', 'groups.idGroup')
+            ->select('groups.idGroup', 'groups.nomeGruppo')
+            ->where('usersgroups.idUser', '=', $id)
+            ->whereNotIn('groups.idGroup', $admined->pluck('idGroup'))
+            ->get();    
+
+        if( (count($admined) + count($other)) >0){
+            echo '<h5 style="margin-left: 10px">Administrated groups</h5>';
+            if(count($admined)>0){
+                foreach ($admined as $g) {
+                    echo '<li><a href="/groups/'.$g->idGroup.'">'.$g->nomeGruppo.'</a></li>';
+                }
+            }
+            else
+                echo '<h6 style="text-align: center">You administrate no groups</h6>';
+            echo '<li><hr></li>';
+            echo '<h5 style="margin-left: 10px">Your other groups</h5>';
+            if(count($other)>0){
+                foreach ($other as $g) {
+                    echo '<li><a href="/groups/'.$g->idGroup.'">'.$g->nomeGruppo.'</a></li>';
+                }
+            }
+            else{
+                echo '<h6 style="text-align: center">You participate in no other groups</h6>';
+            }
+        }
+        else{
+            echo '<h5 style="text-align: center">You participate in no groups, yet</h5>';
+        }
+    }
+
 }

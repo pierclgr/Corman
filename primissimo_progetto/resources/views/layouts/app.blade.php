@@ -56,22 +56,11 @@
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" onclick="getGroups()">
                                     👥 <span class="caret"></span>
                                 </a>
-                                <ul class="dropdown-menu" style="max-height: 400px; min-width: 300px; overflow: auto;">
-                                    <!-- Gruppi da amministratore-->
-                                    <h5 style="margin-left: 10px">Administrated groups</h5>
-                                    <li><a href="#">group 1</a></li>
-                                    <li><a href="#">group 2</a></li>
-                                    <li><a href="#">group 3</a></li>
-
-                                    <li><hr></li>
-                                    <!-- Altri gruppi -->
-                                    <h5 style="margin-left: 10px">Your other groups</h5>
-                                    <li><a href="#">group A</a></li>
-                                    <li><a href="#">group B</a></li>
-                                    <li><a href="#">group C</a></li>
+                                <ul id="groups" class="dropdown-menu" style="max-height: 400px; min-width: 300px; overflow: auto;">
+                                    <!-- riempito da script -->
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -168,6 +157,21 @@
                 });
             }
         }
+
+        function getGroups(){
+            $.ajax({
+                type: "GET",
+                url: "/getgroups",
+                cache: false,
+                success: function(html){
+                    $("#groups").html(html);
+                },
+                error: function(){
+                    alert('ciao');
+                }
+            });
+        }
+
     </script>
     
 </body>

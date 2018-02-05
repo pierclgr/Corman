@@ -177,17 +177,8 @@ class PublicationController extends Controller
         foreach($res as $paper){
             $authors=$paper['info']['authors']['author'];
             $coauthors="";
-            $i=0;
             foreach ($authors as $author) {
-                $i++;
-                if($i==count($authors))
-                    $coauthors=$coauthors.$author;
-                else if($i==10){
-                    $coauthors=$coauthors.$author.", e altri";
-                    break;
-                }
-                else
-                    $coauthors=$coauthors.$author.", ";
+                $coauthors=$coauthors.$author.", ";
             }
             Publication::create([
                 'titolo' => $paper['info']['title'],

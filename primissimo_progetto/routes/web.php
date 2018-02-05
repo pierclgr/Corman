@@ -45,6 +45,14 @@ Route::resource('groups', 'GroupController');
 
 Route::get('groups/{idGroup}', 'GroupController@show');
 
+Route::get('/searchPartecipants/{idGroup}', 'GroupController@searchPartecipants')->name('groups.cerca');
+
+Route::get('/searchPartecipants/{idGroup}/invite', 'GroupController@addPartecipants')->name('groups.inviaRichiesta');
+
 Route::get('groups/{idGroup}/aggiungi', 'GroupController@aggiungi')->name('groups.aggiungi');
 
 Route::get('groups/{idGroup}/{idUser}', 'GroupController@rintraccia')->name('groups.rintraccia');
+
+Route::get('groups/{idGroup}/promote/{idUser}', 'GroupController@promote');
+
+Route::get('/getgroups', 'GroupController@getGroups');
