@@ -38,16 +38,10 @@
                     @else
                        <form class="navbar-form navbar-left" action="/home/search/" method="get">
                             <div class="form-group has-feedback">
-                                <input type="text" class="form-control" id="searchBar" name="input" onkeyup="helpSearch()" onfocusout="hideDropdown()" placeholder="Search">
+                                <input type="text" class="form-control" id="searchBar" name="input" onkeyup="helpSearch()" placeholder="Search" autocomplete="off">
                                 
                                 <ul class="dropdown-menu" id="searchDropdown" style="display: none; style height: 500 overflow: auto;">
-                                        <a href="#">res1<br></a>
-                                        <a href="#">res2<br></a>
-                                        <a href="#">ris23<br></a>
-                                        <a href="#">wow7<br></a>
-                                        <a href="#">mop7<br></a>
-                                        <a href="#">res3</a>
-                                        <li id="NoResults" style="display: none">Nothing found...</li>
+                                    <!-- viene riempito da script -->
                                 </ul>
                                 <span class="glyphicon glyphicon-search form-control-feedback">
                                 </span>
@@ -135,31 +129,43 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <script>
 
+        window.onclick=function(event){
+
+            //usato nei gruppi
+            if(event.target == document.getElementById('addAdmin'))
+                document.getElementById('addAdmin').style.display="none";
+            if(event.target == document.getElementById('addUser'))
+                document.getElementById('addUser').style.display="none";
+
+            if(event.target==document.getElementById("searchDropdown") ||
+                event.target==document.getElementById("searchBar"))
+                document.getElementById("searchDropdown").style.display="block";
+            else
+                hideDropdown();
+        }
+
         function hideDropdown(){
             document.getElementById("searchDropdown").style.display="none";
         }
 
         function helpSearch(){
             document.getElementById("searchDropdown").style.display="block";
-            var input, filter, dropdown, elems, noResults=true;
-            input = document.getElementById("searchBar");
-            filter = input.value.toUpperCase();
-            if(filter == "")
+
+            var input;
+            input = document.getElementById("searchBar").value;
+            if(input == "")
                 hideDropdown();
-            dropdown = document.getElementById("searchDropdown");
-            elems = dropdown.getElementsByTagName("a");
-            for (var i = 0; i < elems.length; i++) {
-                if(elems[i].innerHTML.toUpperCase().indexOf(filter) >-1){
-                    elems[i].style.display = "";
-                    noResults=false;
-                    document.getElementById("NoResults").style.display="none";
-                }
-                else{
-                    elems[i].style.display = "none";
-                }
-            }        
-            if(noResults==true){
-                document.getElementById("NoResults").style.display="block";
+            else{
+                var string='input='+input;
+                $.ajax({
+                    type: "GET",
+                    url: "/helpsearch",
+                    data: string,
+                    cache: false,
+                    success: function(html){
+                        $("#searchDropdown").html(html);
+                    }
+                });
             }
         }
     </script>
