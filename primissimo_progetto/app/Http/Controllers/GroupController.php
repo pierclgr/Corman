@@ -64,7 +64,7 @@ class GroupController extends Controller
         DB::table('usersgroups')->insert([
             ['idGroup' => $idGroup->idGroup,  'idUser' => $idUser]
         ]);
-        return redirect('groups/'.urldecode( strval($idGroup) ));
+        return redirect('groups/'.urldecode( strval($idGroup->idGroup) ));
     }
 
     /**

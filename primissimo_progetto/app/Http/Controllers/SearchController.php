@@ -107,4 +107,21 @@ class SearchController extends Controller
         $groups = Search::searchGroup($input);
         return view('searches.index', ["users"=>"", "groups"=>$groups, "input" =>$input]);
     }
+
+    /**
+     * helps the search
+     *
+     */
+    public function helpSearch(){
+        $input=$_GET['input'];
+        $users=Search::searchUser($input);
+        $groups=Search::searchGroup($input);
+        foreach ($users as $user) {
+            echo '<li><a href="#">'.$user->name.' '.$user->cognome.'</a></li>';
+        }
+        echo '<hr>';
+        foreach ($groups as $group) {
+            echo '<li><a href="/groups/'.$group->idGroup.'">'.$group->nomeGruppo.'</a></li>';
+        }
+    }
 }

@@ -33,6 +33,8 @@ Route::get('/home/user', 'UserController@index');
 
 Route::get('/home/search', 'SearchController@index');
 
+Route::get('/helpsearch', 'SearchController@helpSearch');
+
 Route::get('/home/search/people','SearchController@searchPeople');
 
 Route::get('/home/search/groups','SearchController@searchGroups');
