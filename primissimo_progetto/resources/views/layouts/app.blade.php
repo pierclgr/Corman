@@ -55,45 +55,19 @@
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" onclick="getGroups()">
                                     👥 <span class="caret"></span>
                                 </a>
-                                <ul class="dropdown-menu" style="max-height: 400px; min-width: 300px; overflow: auto;">
-                                    <!-- Gruppi da amministratore-->
-                                    <h5 style="margin-left: 10px">Administrated groups</h5>
-                                    <li><a href="#">group 1</a></li>
-                                    <li><a href="#">group 2</a></li>
-                                    <li><a href="#">group 3</a></li>
-
-                                    <li><hr></li>
-                                    <!-- Altri gruppi -->
-                                    <h5 style="margin-left: 10px">Your other groups</h5>
-                                    <li><a href="#">group A</a></li>
-                                    <li><a href="#">group B</a></li>
-                                    <li><a href="#">group C</a></li>
+                                <ul id="groups" class="dropdown-menu" style="max-height: 400px; min-width: 300px; overflow: auto;">
+                                    <!-- riempito da script -->
                                 </ul>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" onclick="getNews()">
                                     🌐 <span class="caret"></span>
                                 </a>
-                                <ul class="dropdown-menu" style="max-height: 400px; min-width: 300px; overflow: auto;">
-                                    <li><br></li>
-                                    <!-- Notifica invito ad entrare nel gruppo-->
-                                    <li><a href="#">Mike Wazowski invited you to join Monsters INC researching<br><button>Accept</button>    <button>Decline</button></a></li>
-                                    <li><hr></li>
-                                    <!-- Notifica nuova pubblicazione nel gruppo -->
-                                    <li><a href="#">Mike Wazowski published someting in Monsters INC researching</a></li>
-                                    <li><hr></li>
-                                    <!-- Notifica nuovo commento sul tuo post -->
-                                    <li><a href="#">Mike Wazowski commented your post</a></li>
-                                    <li><hr></li>
-                                    <!-- Notifica approvazione al gruppo -->
-                                    <li><a href="#">Mike Wazowski aproved your subscription to Monsters INC researching</a></li>
-                                    <li><hr></li>
-                                    <!-- Notifica richiesta aggiunta nel gruppo -->
-                                    <li><a href="#">James Sullivan wants to join Monsers INC researching<br><button>Accept</button>    <button>Decline</button></a></li>
-                                    <li><br></li>
+                                <ul id="news" class="dropdown-menu" style="max-height: 400px; min-width: 300px; overflow: auto;">
+                                    <!-- riempito da script -->
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -133,8 +107,8 @@
             //usato nei gruppi
             if(event.target == document.getElementById('addAdmin'))
                 document.getElementById('addAdmin').style.display="none";
-            if(event.target == document.getElementById('addUser'))
-                document.getElementById('addUser').style.display="none";
+            if(event.target == document.getElementById('quitGroup'))
+                document.getElementById('quitGroup').style.display="none";
 
             if(event.target==document.getElementById("searchDropdown") ||
                 event.target==document.getElementById("searchBar"))
@@ -166,6 +140,31 @@
                     }
                 });
             }
+        }
+
+        function getGroups(){
+            $.ajax({
+                type: "GET",
+                url: "/getgroups",
+                cache: false,
+                success: function(html){
+                    $("#groups").html(html);
+                }
+            });
+        }
+
+        function getNews(){
+            $.ajax({
+                type: "GET",
+                url: "/getnews",
+                cache: false,
+                success: function(html){
+                    $("#news").html(html);
+                },
+                error: function(){
+                    alert('ciao');
+                }
+            });
         }
     </script>
     

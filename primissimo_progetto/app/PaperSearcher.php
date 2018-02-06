@@ -35,6 +35,11 @@ class paperSearcher extends Model
     		# code...
     		$add=false;
     		//bisogna controllare che tutti i paper trovati siano dell'autore cercato
+        if( !is_array($hit['info']['authors']['author']) ){
+          $temp=$hit['info']['authors']['author'];
+          $hit['info']['authors']['author']=array();
+          $hit['info']['authors']['author'][0]=$temp;
+        }
     		foreach ($hit['info']['authors']['author'] as $aut) {
     			# code...
     			if( strtolower($aut) === strtolower($fullname) ){
