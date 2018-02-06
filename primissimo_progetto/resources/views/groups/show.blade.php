@@ -9,7 +9,8 @@
                     <h4 style="float: left">Admins</h4>
                     @if($code==2)
                     <a style="float: right">
-                        <button type="button" onclick="display()">Add Admin</button>
+                        <button style="float:right; padding-top: 2px; padding-bottom: 2px;" class="btn btn-primary" type="button" onclick="display()">
+                            Add Admin</button>
                     </a>
                     @endif
                     <br>
@@ -27,7 +28,8 @@
                     <h4 style="float: left;">Partecipants</h4>
                     @if($code==2)
                     <a style="float: right" href="{{ route('groups.cerca', [$admins[0]->idGroup]) }}">
-                        <button type="button" >Add Partecipant</button>
+                        <button style="float:right; padding-top: 2px; padding-bottom: 2px;" class="btn btn-primary" type="button">
+                            Add Partecipant</button>
                     </a>
                     @endif
                     <br>

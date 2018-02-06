@@ -22,8 +22,9 @@ class CreatePublicationsTable extends Migration
             $table->string('multimedia')->nullable();
             $table->string('tipo');
             $table->boolean('visibilita');
-            $table->string('tags');
-            $table->text('coautori')->nullable();
+            $table->string('tags')->nullable();
+            $table->string('descrizione')->nullable();
+            $table->string('coautori')->nullable();
             $table->integer('idUser')->foreign('idUser')->references('id')->on('users');
             $table->timestamps();
         });

@@ -41,6 +41,8 @@ Route::get('/home/search/groups','SearchController@searchGroups');
 
 Route::get('/home/user/filter','UserController@filter');
 
+Route::get('users/{idUser}/filter','UserController@userfilter')->name('users.filter');
+
 Route::resource('groups', 'GroupController');
 
 Route::get('groups/{idGroup}', 'GroupController@show');
@@ -52,6 +54,7 @@ Route::get('/searchPartecipants/{idGroup}/invite', 'GroupController@addPartecipa
 Route::get('groups/{idGroup}/aggiungi', 'GroupController@aggiungi')->name('groups.aggiungi');
 
 Route::get('groups/{idGroup}/{idUser}', 'GroupController@rintraccia')->name('groups.rintraccia');
+
 
 Route::get('groups/{idGroup}/promote/{idUser}', 'GroupController@promote')->name('groups.promote');
 
@@ -70,3 +73,6 @@ Route::get('/declineinvite/{idGroup}', 'NewsController@declineInv');
 Route::get('/acceptreq/{idGroup}/{idUser}', 'NewsController@acceptReq')->name('invite.accept');
 
 Route::get('/declinereq/{idGroup}/{idUser}', 'NewsController@declineReq');
+
+Route::get('users/{idUser}', 'UserController@show');
+
