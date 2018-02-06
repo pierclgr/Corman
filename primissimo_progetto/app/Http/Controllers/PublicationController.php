@@ -47,7 +47,7 @@ class PublicationController extends Controller
         $val = $request->validate([
             'titolo' => 'required|max:255',
             'dataPubblicazione' => '',
-            'pdf' => 'mimes:application/pdf, application/x-pdf,application/acrobat, applications/vnd.pdf, text/pdf, text/x-pdf|max:10000',
+            'pdf' => '',
             'immagine' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'multimedia' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'tipo' => 'required',
@@ -57,17 +57,14 @@ class PublicationController extends Controller
             'coautori' => 'max:255',
             'idUser' => ''
         ]);
-        if($request['pdf']!=null) {
-        /*if($request->hasFile('pdf')) {
-            $file=$request->file('pdf');
-            $extension=$file->getClientOriginalExtension();
-            $fileName=$file->getClientOriginalName() . '-'. Auth::id() . "." . $extension;
-            //$uploadedPath=Storage::disk('public')->put($fileName, file_get_contents($file), 'public');
-            $uploadedPath=$file->move(public_path('/pdf'), $fileName);*/
+        if($request->hasFile('pdf')) {
+            $request->file('pdf');
+            $fileName=$request->file('pdf')->getClientOriginalName() . ".pdf";
+            $path=Storage::putFileAs('public', new \Illuminate\Http\File($request->file('pdf')), $fileName);
             Publication::create([
                 'titolo' => $request['titolo'],
                 'dataPubblicazione' => date('Y-m-d H:i:s'),
-                'pdf' => $request->file('pdf')->store('pdf'),
+                'pdf' => $path,
                 'immagine' => '',
                 'multimedia' => '',
                 'tipo' => $request['tipo'],

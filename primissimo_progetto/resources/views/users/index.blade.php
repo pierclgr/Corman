@@ -152,8 +152,13 @@
                                 <br>
                                 <p>{{$p->descrizione}}</p>
                                 <br>
-                                <div><a><span class="material-icons" style="font-size:20px; float: left; vertical-align:middle;">picture_as_pdf</span><h4 style="vertical-align:middle; margin-left: 25px;">nome_file.pdf</h4></a></div>
+                                @if($p->pdf != "")
+                                    <div><a><span class="material-icons" style="font-size:20px; float: left; vertical-align:middle;">picture_as_pdf</span><h4 style="vertical-align:middle; margin-left: 25px;"><a href="../storage/app/public/{{ $p->pdf }}">Paper</a></h4></a></div>
                                 <div><a><span class="material-icons" style="font-size:20px; float: left; vertical-align:middle;">attach_file</span><h4 style="vertical-align:middle; margin-left: 25px;">nome_file.est</h4></a></div>
+                                @else
+                                    <div><span class="material-icons" style="font-size:20px; float: left; vertical-align:middle;">picture_as_pdf</span><h4 style="vertical-align:middle; margin-left: 25px;">This paper hasn't a PDF</h4></div>
+                                <div><a><span class="material-icons" style="font-size:20px; float: left; vertical-align:middle;">attach_file</span><h4 style="vertical-align:middle; margin-left: 25px;">nome_file.est</h4></a></div>
+                                @endif
                                 <!-- in href inserire la action per scaricare i file e in h4 inserire nome del file $p->pdf o $p->multimedia -->
                             </div>
                         </div>
