@@ -41,7 +41,7 @@
                                                 <tbody>
                                                         @foreach($publications as $p)
                                                             <tr>
-                                                                <td>Title</td><td><input class="form-control" id="titolo" name="titolo" type="text" value="{{ $p->titolo }}" /></td>
+                                                                <td>Title (*)</td><td><input required class="form-control" id="titolo" name="titolo" type="text" value="{{ $p->titolo }}" /></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>PDF File</td><td>{{ $p->pdf }}</td>
@@ -53,22 +53,36 @@
                                                                 <td>Multimedia</td><td>{{ $p->multimedia }}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td>Type</td><td><input class="form-control" id="tipo" name="tipo" type="text" value="{{ $p->tipo }}" /></td>
+                                                                <td>Type (*)</td><td><input required class="form-control" id="tipo" name="tipo" type="text" value="{{ $p->tipo }}" /></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Visibility</td><td>
-                                                                    <div class="button-group">
-                                                                        <div class="radio">
-                                                                            <label><input type="radio" class="p" name="visibilita" value="1">Public</label>
+                                                                    @if($p->visibilita==0)
+                                                                        <div class="button-group">
+                                                                            <div class="radio">
+                                                                                <label><input type="radio" class="p" name="visibilita" value="1">Public</label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label><input type="radio" class="p" name="visibilita" value="0" checked="checked">Private</label>
+                                                                            </div>
                                                                         </div>
-                                                                        <div class="radio">
-                                                                            <label><input type="radio" class="p" name="visibilita" value="0">Private</label>
+                                                                    @else
+                                                                        <div class="button-group">
+                                                                            <div class="radio">
+                                                                                <label><input type="radio" class="p" name="visibilita" value="1" checked="checked">Public</label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label><input type="radio" class="p" name="visibilita" value="0">Private</label>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
+                                                                    @endif
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Tags</td><td><input class="form-control" id="tags" name="tags" type="text" value="{{ $p->tags }}" /></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Description</td><td><textarea style="resize:none;" maxlength="191" class="form-control" id="descrizione" name="descrizione" type="text" value="{{ $p->descrizione }}"></textarea></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Coauthors</td><td><input class="form-control" id="coautori" name="coautori" type="text" value="{{ $p->coautori }}" /></td>

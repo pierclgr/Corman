@@ -53,6 +53,7 @@ class PublicationController extends Controller
             'tipo' => 'required',
             'visibilita' => '',
             'tags' => 'max:255',
+            'descrizione' => 'max:255',
             'coautori' => 'max:255',
             'idUser' => ''
         ]);
@@ -72,6 +73,7 @@ class PublicationController extends Controller
                 'tipo' => $request['tipo'],
                 'visibilita' => $request['visibilita'],
                 'tags' => $request['tags'],
+                'descrizione' => $request['descrizione'],
                 'coautori' => $request['coautori'],
                 'idUser' => Auth::id()
             ]);
@@ -85,6 +87,7 @@ class PublicationController extends Controller
                 'tipo' => $request['tipo'],
                 'visibilita' => $request['visibilita'],
                 'tags' => $request['tags'],
+                'descrizione' => $request['descrizione'],
                 'coautori' => $request['coautori'],
                 'idUser' => Auth::id()
             ]);
@@ -112,7 +115,7 @@ class PublicationController extends Controller
     public function edit($id)
     {
         $publications = DB::table('publications')
-            ->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'visibilita', 'tags', 'coautori', 'idUser')
+            ->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'visibilita', 'tags', 'descrizione', 'coautori', 'idUser')
             ->where('id', '=', $id)
             ->where('idUser', '=', Auth::id())->get();
         return view('publications.edit', ['publications' => $publications]);
@@ -138,7 +141,7 @@ class PublicationController extends Controller
 
             'visibilita' => '',
             'tags' => '',
-            'coautori' => 'required',
+            'coautori' => '',
             'idUser' => ''
         ]);
 
@@ -150,6 +153,7 @@ class PublicationController extends Controller
         $publication->tipo = $request->get('tipo');
         $publication->visibilita = $request->get('visibilita');
         $publication->tags = $request->get('tags');
+        $publication->descrizione = $request->get('descrizione');
         $publication->coautori = $request->get('coautori');
         $publication->idUser = Auth::id();
         $publication->save();
@@ -198,6 +202,7 @@ class PublicationController extends Controller
                 'tipo' => $paper['info']['type'],
                 'visibilita' => '0',
                 'tags' => '',
+                'descrizione' => '',
                 'coautori' => $coauthors,
                 'idUser' => Auth::id()
             ]);

@@ -19,7 +19,6 @@
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
-                    <!-- Collapsed Hamburger -->
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse" aria-expanded="false">
                         <span class="sr-only">Toggle Navigation</span>
                         <span class="icon-bar"></span>
@@ -40,7 +39,7 @@
                             <div class="form-group has-feedback">
                                 <input type="text" class="form-control" id="searchBar" name="input" onkeyup="helpSearch()" placeholder="Search" autocomplete="off">
                                 
-                                <ul class="dropdown-menu" id="searchDropdown" style="display: none; style height: 500 overflow: auto;">
+                                <ul class="dropdown-menu" id="searchDropdown" style="display: none; max-height: 500px; overflow: auto;">
                                     <!-- viene riempito da script -->
                                 </ul>
                                 <span class="glyphicon glyphicon-search form-control-feedback">

@@ -8,7 +8,7 @@
                 <div class="panel-heading">
                     <h4 style="float: left">Admins</h4>
                     <a style="float: right">
-                        <button type="button" onclick="display(1)">Add Admin</button>
+                        <button style="float:right; padding-top: 2px; padding-bottom: 2px;" class="btn btn-primary" type="button" onclick="display(1)">Add Admin</button>
                     </a>
                     <br>
                 </div>
@@ -22,10 +22,8 @@
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4 style="float: left;">Partecipants</h4>
-                    <a style="float: right">
-                        <button type="button" onclick="display(2)">Add Partecipant</button>
-                    </a>
+                    <h4 style="float:left;">Partecipants</h4>
+                        <button style="float:right; padding-top: 2px; padding-bottom: 2px;" class="btn btn-primary" type="button" onclick="display(2)">Add Partecipant</button>
                     <br>
                 </div>
                 <div class="panel-body">
