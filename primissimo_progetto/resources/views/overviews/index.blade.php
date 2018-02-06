@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Attività recenti</div>
+                <div class="panel-heading">Recent Activities</div>
                 <div class="panel-body">
                     @if (session('status'))
                         <div class="alert alert-success">
@@ -22,45 +22,31 @@
                         </div>
                     @endif
                     <div class="tab-content">
-                        @if(count($publications) >0)
-                            <div class="table-responsive">          
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Title</th>
-                                            <th>Publication date</th>
-                                            <th>PDF file</th>
-                                            <th>Image</th>
-                                            <th>Multimedia</th>
-                                            <th>Type of publication</th>
-                                            <th>Publication Tags</th>
-                                            <th>List of coauthors</th>
-                                            <th>Edit your paper</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                         @foreach($publications as $p)
-                                            <tr>
-                                                <td>{{ $p->titolo }}</td>
-                                                <td>{{ $p->dataPubblicazione }}</td>
-                                                <td>{{ $p->pdf }}</td>
-                                                <td>{{ $p->immagine }}</td>
-                                                <td>{{ $p->multimedia }}</td>
-                                                <td>{{ $p->tipo }}</td>
-                                                <td>{{ $p->tags }}</td>
-                                                <td>{{ $p->coautori }}</td>
-                                                <td><a href="{{action('PublicationController@edit', [$p->id] )}}" class="btn btn-warning">Edit</a></td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
+                        @if(count($news) >0)
+                            @foreach($news as $n)         
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4>
+                                            <a href="#">{{$n->name}} {{$n->cognome}}</a>
+                                             shared {{$n->titolo}} on 
+                                            <a href="/groups/{{$n->idGroup}}">{{$n->nomeGruppo}}</a>
+                                        </h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <h5>{{$n->descrizione}}</h5>
+                                    </div>
+                                </div>
+                            @endforeach
                         @else
-                            <strong>We're sorry, but you have never added a paper regarding your research field that you wrote...</strong><br><br>
-                            But, if you want, you can add a new one bor importing it from DBLP by simply pressing one of the buttons below!<br><br>
-                            <a href="{{action('PublicationController@create')}}" class="btn btn-info">Create a new paper</a>
-                            <form action="{{ action('PublicationController@import') }}" method="GET">
-                                <input type="submit" class="btn btn-info" value="Import my researchs from DBLP">
+                            <strong>There are no recent activities</strong><br><br>
+                            Start with creating a new group, or search one already active
+                            <br><br>
+                            <a href="/groups/create" class="btn btn-info">
+                                Create a new group
+                            </a>
+                            <form action="{{ action('SearchController@searchGroups') }}" method="GET">
+                                    <input type="hidden" name="input" value="">
+                                    <input type="submit" class="btn btn-info" value="Search for public groups">
                             </form>
                         @endif
                     </div>

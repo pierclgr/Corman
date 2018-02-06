@@ -103,7 +103,32 @@ class GroupController extends Controller
             ->whereNotIn('users.id', $adminID)
             ->get();
 
-        return view('groups.show', ['groupUsers' => $users, 'publications' => $publications, 'admins' => $admins]);
+        $code=0;
+        //controlla se e nel gruppo
+        $isPart=DB::table('usersgroups')
+            ->select('idUser')
+            ->where('usersgroups.idGroup', '=', $id)
+            ->where('idUser', Auth::id())
+            ->get();
+        if(count($isPart)>0){
+            //controlla se e un admin
+            $isAdmin=DB::table('admins')
+                ->select('idUser')
+                ->where('idGroup', '=', $id)
+                ->where('idUser', '=', Auth::id())
+                ->get();
+            if(count($isAdmin)>0){
+                $code=2;
+            }
+            else{
+                $code=1;
+            }
+        }
+        else{
+            $code=0;
+        }
+
+        return view('groups.show', ['groupUsers' => $users, 'publications' => $publications, 'admins' => $admins, 'code' => $code]);
     }
 
     /**
@@ -140,6 +165,27 @@ class GroupController extends Controller
         //
     }
 
+    /**
+     * Removes the user from the group
+     *
+     */
+    public function quit($idGroup){
+        DB::table('admins')
+            ->where('idGroup', '=', $idGroup)
+            ->where('idUser', '=', Auth::id())
+            ->delete();
+
+        DB::table('usersgroups')
+            ->where('idGroup', '=', $idGroup)
+            ->where('idUser', '=', Auth::id())
+            ->delete();
+
+        if(!(count(DB::table('admins')->where('idGroup', '=', $idGroup)->get()) > 0))
+            DB::table('groups')->where('idGroup', '=', $idGroup)->delete();
+
+        return redirect('home');
+    }
+
     public function rintraccia($idGroup, $id)
     {
         //cerca le pubblicazioni gia condivise
@@ -162,4 +208,85 @@ class GroupController extends Controller
             ->insert(['idUser' => Auth::id(), 'idGroup' => $idGroup, 'idPublication' => $id, 'descrizione' => $descr]);
         return redirect('groups/'.$idGroup);
     }
+
+    /**
+     * searches for partecipants for groups
+     *
+     */
+    function searchPartecipants($idGroup){
+        //cerca gli utenti gia nel gruppo per scremare il risultato
+        $part=DB::table('users')
+            ->join('usersgroups', 'users.id', '=', 'usersgroups.idUser')
+            ->select('users.id')
+            ->where('usersgroups.idGroup', '=', $idGroup);
+
+        $users = DB::table('users')->select('id', 'name', 'cognome', 'affiliazione', 'linea_ricerca')
+            ->whereNotIn('users.id', $part)
+            ->get();
+
+        return view('groups/adduser',["users" => $users, "idGroup" => $idGroup]);
+    }
+
+    function addPartecipants($idGroup){
+        $id=$_GET["userID"];
+        DB::table('participationrequests')
+            ->insert(['idUser' => $id, 'idGroup' => $idGroup, 'fromAdmin' => true]);
+        return redirect('groups/'.$idGroup);
+    }
+
+    function sendReq($idGroup){
+        $id=Auth::id();
+        DB::table('participationrequests')
+            ->insert(['idUser' => $id, 'idGroup' => $idGroup, 'fromAdmin' => false]);
+        return redirect('groups/'.$idGroup);
+    }
+
+    function promote($idGroup, $idUser){
+        DB::table('admins')
+            ->insert(['idGroup' => $idGroup, 'idUser' => $idUser]);
+        return redirect('groups/'.$idGroup);
+    }
+
+    function getGroups(){
+        $id=Auth::id();
+        
+        $admined=DB::table('groups')
+            ->join('admins', 'admins.idGroup', '=', 'groups.idGroup')
+            ->select('groups.idGroup', 'groups.nomeGruppo')
+            ->where('admins.idUser', '=', $id)
+            ->get();
+
+        $other=DB::table('groups')
+            ->join('usersgroups', 'usersgroups.idGroup', '=', 'groups.idGroup')
+            ->select('groups.idGroup', 'groups.nomeGruppo')
+            ->where('usersgroups.idUser', '=', $id)
+            ->whereNotIn('groups.idGroup', $admined->pluck('idGroup'))
+            ->get();    
+
+        if( (count($admined) + count($other)) >0){
+            echo '<h5 style="margin-left: 10px">Administrated groups</h5>';
+            if(count($admined)>0){
+                foreach ($admined as $g) {
+                    echo '<li><a href="/groups/'.$g->idGroup.'">'.$g->nomeGruppo.'</a></li>';
+                }
+            }
+            else
+                echo '<h6 style="text-align: center">You administrate no groups</h6>';
+            echo '<li><hr></li>';
+            echo '<h5 style="margin-left: 10px">Your other groups</h5>';
+            if(count($other)>0){
+                foreach ($other as $g) {
+                    echo '<li><a href="/groups/'.$g->idGroup.'">'.$g->nomeGruppo.'</a></li>';
+                }
+            }
+            else{
+                echo '<h6 style="text-align: center">You participate in no other groups</h6>';
+            }
+        }
+        else{
+            echo '<h5 style="text-align: center">You participate in no groups, yet</h5>';
+            echo '<li><a href="/groups/create" style="text-align: center">Create Group</a></li>';
+        }
+    }
+
 }

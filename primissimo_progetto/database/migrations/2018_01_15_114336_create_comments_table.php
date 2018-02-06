@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateParticipationrequestsTable extends Migration
+class CreateCommentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,18 @@ class CreateParticipationrequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('participationrequests', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
+            $table->increments('idComment');
             /*
             $table->integer('idGroup')->unsigned();
-            $table->integer('idUser')->unsigned();
+            $table->integer('idPublication')->unsigned();
+            $table->integer('idUser')->unsigned(); 
             */
             $table->integer('idGroup')->foreign('idGroup')->references('idGroup')->on('groups');
+            $table->integer('idPublication')->foreign('idPublication')->references('id')->on('publications');
             $table->integer('idUser')->foreign('idUser')->references('id')->on('users');
-            $table->boolean('fromAdmin');
+            $table->string('commento');
+            $table->timestamp('dataoraC');
             $table->timestamps();
         });
     }
@@ -32,6 +36,6 @@ class CreateParticipationrequestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('participationrequests');
+        Schema::dropIfExists('comments');
     }
 }

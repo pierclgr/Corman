@@ -1,12 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
     <div class="row">
         <div class="col-md-12 ">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3>Your pubblications</h3>
+                    <h3>Search researchers</h3>
                 </div>
                 <div class="panel-body">
                     @if (session('status'))
@@ -23,39 +24,35 @@
                             </ul>
                         </div>
                     @endif
-                    @if(count($suePubblicazioni)>0)
-                        <form action="{{route('groups.aggiungi', [$idGroup] )}}" method="GET">
-                            <input type="hidden" id="input" name="pubID">
+                    @if(count($users)>0)
+                        <form action="{{route('groups.inviaRichiesta', [$idGroup] )}}" method="GET">
+                            <input type="hidden" id="input" name="userID">
                             <table class="table table-condensed">
                                 <thead>
                                     <tr>
-                                        <th>Publication title</th>
-                                        <th>Type of publication</th>
-                                        <th>Publication tags</th>
-                                        <th>Coauthors</th>
-                                        <th>Description</th>
+                                        <th>Name</th>
+                                        <th>Surname</th>
+                                        <th>Affiliation</th>
+                                        <th>Research Branch</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($suePubblicazioni as $sp)
+                                    @foreach($users as $u)
                                         <tr>
                                             <td>
-                                                {{ $sp->titolo }}
+                                                {{ $u->name }}
                                             </td>
                                             <td>
-                                                {{ $sp->tipo }}                                                
+                                                {{ $u->cognome }}                                                
                                             </td>
                                             <td>
-                                                {{ $sp->tags }}
+                                                {{ $u->affiliazione }}
                                             </td>
                                             <td>
-                                                {{ $sp->coautori }}
+                                                {{ $u->linea_ricerca }}
                                             </td>
                                             <td>
-                                                <textarea style="resize: none;" maxlength="191" name="{{ 'descr'.$sp->id }}" placeholder=" "></textarea>
-                                            </td>
-                                            <td>
-                                                <input class="btn btn-primary" value="Share" onclick="setvalue({{ $sp->id }})" type="submit">
+                                                <input class="btn btn-primary" value="Send Request" onclick="setvalue({{ $u->id }})" type="submit">
                                             </td>
                                         </tr>
                                     @endforeach
@@ -63,7 +60,7 @@
                             </table>
                         </form>
                     @else
-                        <strong>You have no publications</strong>
+                        <strong><h3>There are no researcher to be added</h3></strong>
                     @endif 
                 </div>
             </div>
@@ -74,6 +71,8 @@
 <script type="text/javascript">
     function setvalue(id){
         document.getElementById("input").value=id;
+        alert('Request sent');
     }
 </script>
+
 @endsection
