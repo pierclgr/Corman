@@ -20,6 +20,7 @@ class CreateParticipationrequestsTable extends Migration
             */
             $table->integer('idGroup')->foreign('idGroup')->references('idGroup')->on('groups');
             $table->integer('idUser')->foreign('idUser')->references('id')->on('users');
+            $table->boolean('fromAdmin');
             $table->timestamps();
         });
     }

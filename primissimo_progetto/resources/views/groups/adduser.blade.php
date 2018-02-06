@@ -60,7 +60,7 @@
                             </table>
                         </form>
                     @else
-                        <strong>There are no researcher to be added</strong>
+                        <strong><h3>There are no researcher to be added</h3></strong>
                     @endif 
                 </div>
             </div>
@@ -71,6 +71,7 @@
 <script type="text/javascript">
     function setvalue(id){
         document.getElementById("input").value=id;
+        alert('Request sent');
     }
 </script>
 

@@ -53,6 +53,20 @@ Route::get('groups/{idGroup}/aggiungi', 'GroupController@aggiungi')->name('group
 
 Route::get('groups/{idGroup}/{idUser}', 'GroupController@rintraccia')->name('groups.rintraccia');
 
-Route::get('groups/{idGroup}/promote/{idUser}', 'GroupController@promote');
+Route::get('groups/{idGroup}/promote/{idUser}', 'GroupController@promote')->name('groups.promote');
+
+Route::get('/groupsQuit/{idGroup}', 'GroupController@quit')->name('groups.quit');
+
+Route::get('/groupsRequest/{idGroup}', 'GroupController@sendReq')->name('groups.sendReq');
 
 Route::get('/getgroups', 'GroupController@getGroups');
+
+Route::get('/getnews', 'NewsController@getNews');
+
+Route::get('/acceptinvite/{idGroup}', 'NewsController@acceptInv');
+
+Route::get('/declineinvite/{idGroup}', 'NewsController@declineInv');
+
+Route::get('/acceptreq/{idGroup}/{idUser}', 'NewsController@acceptReq')->name('invite.accept');
+
+Route::get('/declinereq/{idGroup}/{idUser}', 'NewsController@declineReq');

@@ -103,7 +103,32 @@ class GroupController extends Controller
             ->whereNotIn('users.id', $adminID)
             ->get();
 
-        return view('groups.show', ['groupUsers' => $users, 'publications' => $publications, 'admins' => $admins]);
+        $code=0;
+        //controlla se e nel gruppo
+        $isPart=DB::table('usersgroups')
+            ->select('idUser')
+            ->where('usersgroups.idGroup', '=', $id)
+            ->where('idUser', Auth::id())
+            ->get();
+        if(count($isPart)>0){
+            //controlla se e un admin
+            $isAdmin=DB::table('admins')
+                ->select('idUser')
+                ->where('idGroup', '=', $id)
+                ->where('idUser', '=', Auth::id())
+                ->get();
+            if(count($isAdmin)>0){
+                $code=2;
+            }
+            else{
+                $code=1;
+            }
+        }
+        else{
+            $code=0;
+        }
+
+        return view('groups.show', ['groupUsers' => $users, 'publications' => $publications, 'admins' => $admins, 'code' => $code]);
     }
 
     /**
@@ -140,6 +165,27 @@ class GroupController extends Controller
         //
     }
 
+    /**
+     * Removes the user from the group
+     *
+     */
+    public function quit($idGroup){
+        DB::table('admins')
+            ->where('idGroup', '=', $idGroup)
+            ->where('idUser', '=', Auth::id())
+            ->delete();
+
+        DB::table('usersgroups')
+            ->where('idGroup', '=', $idGroup)
+            ->where('idUser', '=', Auth::id())
+            ->delete();
+
+        if(!(count(DB::table('admins')->where('idGroup', '=', $idGroup)->get()) > 0))
+            DB::table('groups')->where('idGroup', '=', $idGroup)->delete();
+
+        return redirect('home');
+    }
+
     public function rintraccia($idGroup, $id)
     {
         //cerca le pubblicazioni gia condivise
@@ -168,7 +214,8 @@ class GroupController extends Controller
      *
      */
     function searchPartecipants($idGroup){
-        $part=DB::table('users')//prendi i dati degli utenti nel gruppo
+        //cerca gli utenti gia nel gruppo per scremare il risultato
+        $part=DB::table('users')
             ->join('usersgroups', 'users.id', '=', 'usersgroups.idUser')
             ->select('users.id')
             ->where('usersgroups.idGroup', '=', $idGroup);
@@ -183,7 +230,14 @@ class GroupController extends Controller
     function addPartecipants($idGroup){
         $id=$_GET["userID"];
         DB::table('participationrequests')
-            ->insert(['idUser' => $id, 'idGroup' => $idGroup]);
+            ->insert(['idUser' => $id, 'idGroup' => $idGroup, 'fromAdmin' => true]);
+        return redirect('groups/'.$idGroup);
+    }
+
+    function sendReq($idGroup){
+        $id=Auth::id();
+        DB::table('participationrequests')
+            ->insert(['idUser' => $id, 'idGroup' => $idGroup, 'fromAdmin' => false]);
         return redirect('groups/'.$idGroup);
     }
 
@@ -231,6 +285,7 @@ class GroupController extends Controller
         }
         else{
             echo '<h5 style="text-align: center">You participate in no groups, yet</h5>';
+            echo '<li><a href="/groups/create" style="text-align: center">Create Group</a></li>';
         }
     }
 
