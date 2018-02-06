@@ -24,13 +24,10 @@
                             </div>
                             <hr>
                         @endforeach
-                        <h6 style="text-align: center">No more results</h6>
-                    </div>
-                    <div class="panel-footer" style="background-color: white">
                         <form action="{{ action('SearchController@searchPeople') }}" method="GET">
                             <div class="buttonHolder" style="text-align: center;">
                                 <input type="hidden" name="input" value="{{$input}}">
-                                <input type="submit" value="View All">
+                                <input class="btn btn-link" type="submit" value="View All">
                             </div>
                         </form>
                     </div>
@@ -53,13 +50,10 @@
                             <h6>{{$g->descrizioneGruppo}}</h6>
                             <hr>
                         @endforeach
-                        <h6 style="text-align: center">No more results</h6>
-                    </div>
-                    <div class="panel-footer" style="background-color: white">
                         <form action="{{ action('SearchController@searchGroups') }}" method="GET">
                             <div class="buttonHolder" style="text-align: center;">
                                 <input type="hidden" name="input" value="{{$input}}">
-                                <input type="submit" value="View All">
+                                <input class="btn btn-link" type="submit" value="View All">
                             </div>
                         </form>
                     </div>

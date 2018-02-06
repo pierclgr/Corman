@@ -52,7 +52,7 @@
                                                 {{ $sp->coautori }}
                                             </td>
                                             <td>
-                                                <input name="{{ 'descr'.$sp->id }}" placeholder=" ">
+                                                <textarea style="resize: none;" maxlength="191" name="{{ 'descr'.$sp->id }}" placeholder=" "></textarea>
                                             </td>
                                             <td>
                                                 <input class="btn btn-primary" placeholder="Add" onclick="setvalue({{ $sp->id }})" type="submit">

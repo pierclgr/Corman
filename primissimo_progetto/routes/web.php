@@ -41,6 +41,8 @@ Route::get('/home/search/groups','SearchController@searchGroups');
 
 Route::get('/home/user/filter','UserController@filter');
 
+Route::get('users/{idUser}/filter','UserController@userfilter')->name('users.filter');
+
 Route::resource('groups', 'GroupController');
 
 Route::get('groups/{idGroup}', 'GroupController@show');
@@ -48,3 +50,5 @@ Route::get('groups/{idGroup}', 'GroupController@show');
 Route::get('groups/{idGroup}/aggiungi', 'GroupController@aggiungi')->name('groups.aggiungi');
 
 Route::get('groups/{idGroup}/{idUser}', 'GroupController@rintraccia')->name('groups.rintraccia');
+
+Route::get('users/{idUser}', 'UserController@show');
