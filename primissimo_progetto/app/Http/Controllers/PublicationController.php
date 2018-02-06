@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Storage;
 use App\PaperSearcher;
 use App\Publication;
 use Illuminate\Http\Request;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Http\File;
 
 class PublicationController extends Controller
 {
@@ -60,7 +62,7 @@ class PublicationController extends Controller
         if($request->hasFile('pdf')) {
             $request->file('pdf');
             $fileName=$request->file('pdf')->getClientOriginalName() . ".pdf";
-            $path=Storage::putFileAs('public', new \Illuminate\Http\File($request->file('pdf')), $fileName);
+            $path=Storage::putFileAs('public', new File($request->file('pdf')), $fileName);
             Publication::create([
                 'titolo' => $request['titolo'],
                 'dataPubblicazione' => date('Y-m-d H:i:s'),
