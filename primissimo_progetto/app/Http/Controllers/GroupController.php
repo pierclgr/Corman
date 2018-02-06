@@ -170,18 +170,23 @@ class GroupController extends Controller
      *
      */
     public function quit($idGroup){
+        //removes if admin
         DB::table('admins')
             ->where('idGroup', '=', $idGroup)
             ->where('idUser', '=', Auth::id())
             ->delete();
 
+        //removes
         DB::table('usersgroups')
             ->where('idGroup', '=', $idGroup)
             ->where('idUser', '=', Auth::id())
             ->delete();
 
-        if(!(count(DB::table('admins')->where('idGroup', '=', $idGroup)->get()) > 0))
+        //deletes group and requests if empty
+        if(!(count(DB::table('admins')->where('idGroup', '=', $idGroup)->get()) > 0)){
+            DB::table('participationrequests')->where('idGroup', '=', $idGroup)->delete();
             DB::table('groups')->where('idGroup', '=', $idGroup)->delete();
+        }
 
         return redirect('home');
     }

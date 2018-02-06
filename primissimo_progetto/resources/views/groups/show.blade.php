@@ -88,9 +88,13 @@
                     
                 </div>
                 <div class="panel-footer" style="background-color: white">
-                    <a href="{{route('groups.rintraccia', [$admins[0]->idGroup, Auth::user()->id] )}}">
-                    <button type="button" class="btn btn-primary">Add a publication in this group</button>
-                    </a>
+                    @if($code!=0)
+                        <a href="{{route('groups.rintraccia', [$admins[0]->idGroup, Auth::user()->id] )}}">
+                            <button type="button" class="btn btn-primary">Add a publication in this group</button>
+                        </a>
+                    @else
+                        <h5>Enter the group to share a pubblication</h5>
+                    @endif
                 </div>
             </div>
         </div>
@@ -132,7 +136,7 @@
                         <h3 style="text-align: center">You are the only one in the group. The group will be erased continue?</h3>
                         <a href="{{route('groups.quit',[$admins[0]->idGroup])}}" style="float: left"><button>Yes</button></a>
                         <a href="#" style="float: right"><button onclick="hideQuit()">No</button></a>
-                    @elseif(count($admins)==1)
+                    @elseif(count($admins)==1 && $code==2)
                         <h3 style="text-align: center">You are the only admin, chose a new one before leaving</h3>
                         <a href="#"><button onclick="switchProm()">Chose</button></a>
                     @else
