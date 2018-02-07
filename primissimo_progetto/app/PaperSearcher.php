@@ -28,29 +28,32 @@ class paperSearcher extends Model
 
     	$var = json_decode($result, true);
 
-    	$res = $var['result']['hits']['hit'];
-    	
-    	$output=array();
-    	foreach ($var['result']['hits']['hit'] as $hit) { 
-    		# code...
-    		$add=false;
-    		//bisogna controllare che tutti i paper trovati siano dell'autore cercato
-        if( !is_array($hit['info']['authors']['author']) ){
-          $temp=$hit['info']['authors']['author'];
-          $hit['info']['authors']['author']=array();
-          $hit['info']['authors']['author'][0]=$temp;
-        }
-    		foreach ($hit['info']['authors']['author'] as $aut) {
-    			# code...
-    			if( strtolower($aut) === strtolower($fullname) ){
-    				$add=true;
-    			}
-    		}
-    		if($add){
-    			$tmp=array("id" => $hit['@id'], "info" => $hit['info']);
-    			$output[]=$tmp;
-    		}
-    	}
+      $output=array();
+      //controlla se ci sono risultati
+      if( array_key_exists('hit', $var['result']['hits']) ){
+      	$res = $var['result']['hits']['hit'];
+      	
+      	foreach ($var['result']['hits']['hit'] as $hit) { 
+      		# code...
+      		$add=false;
+      		//bisogna controllare che tutti i paper trovati siano dell'autore cercato
+          if( !is_array($hit['info']['authors']['author']) ){
+            $temp=$hit['info']['authors']['author'];
+            $hit['info']['authors']['author']=array();
+            $hit['info']['authors']['author'][0]=$temp;
+          }
+      		foreach ($hit['info']['authors']['author'] as $aut) {
+      			# code...
+      			if( strtolower($aut) === strtolower($fullname) ){
+      				$add=true;
+      			}
+      		}
+      		if($add){
+      			$tmp=array("id" => $hit['@id'], "info" => $hit['info']);
+      			$output[]=$tmp;
+      		}
+      	}
+      }
 
     	return $output;
     }

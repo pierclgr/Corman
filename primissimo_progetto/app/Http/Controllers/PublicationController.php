@@ -174,7 +174,7 @@ class PublicationController extends Controller
      * vengono importati fino a 10 coautori per motivi di spazio
      *
      */
-    public function import(){
+    public static function import(){
         $res=PaperSearcher::search(Auth::user()->name." ".Auth::user()->cognome);
         foreach($res as $paper){
             $authors=$paper['info']['authors']['author'];

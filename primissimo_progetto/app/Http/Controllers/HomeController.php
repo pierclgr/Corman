@@ -26,6 +26,14 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $check=DB::table('publications')
+            ->select('id')
+            ->where('idUser', '=', Auth::id())
+            ->get();
+        if(count($check)==0){
+            PublicationController::import();
+        }
+
         $news=DB::table('groupspublications')//pubblicazioni nei gruppi
             ->join('groups', 'groups.idGroup', '=', 'groupspublications.idGroup')//trova i gruppi
             ->join('publications', 'publications.id', '=', 'groupspublications.idPublication')//trova le pubblicazioni
