@@ -29,6 +29,7 @@ class User extends Authenticatable
         'linea_ricerca',
         'telefono',
         'visibilitaT',
+        'immagineProfilo',
         'password'
     ];
 

@@ -21,7 +21,7 @@ class GroupController extends Controller
     public function index()
     {
         $groups=DB::table('groups')
-            ->select('idGroup, titolo, descrizione')->get();
+            ->select('idGroup', 'titolo', 'descrizione', 'immagineGruppo')->get();
             return view('groups.index', ['groups' => $groups]);
     }
 
@@ -47,13 +47,26 @@ class GroupController extends Controller
             'nomeGruppo' => 'required|max:100',
             'descrizioneGruppo' => 'max:191',
             'tipoVisibilita' => 'required'
+            'immagineGruppo' => ''
         ]);
         //qui salvo nella tabella 'gruppi' il gruppo
-        Group::create([
-            'nomeGruppo' => $request['nomeGruppo'],
-            'descrizioneGruppo' => $request['descrizioneGruppo'],
-            'tipoVisibilita' => $request['tipoVisibilita']
-        ]);
+        if($request->hasFile('immagineGruppo')) {
+            $request->file('immagineGruppo');
+            $fileName=$request['nomeGruppo'];
+            $path=Storage::putFileAs('public', new \Illuminate\Http\File($request->file('immagineGruppo')), $fileName);
+            Group::create([
+                'nomeGruppo' => $request['nomeGruppo'],
+                'descrizioneGruppo' => $request['descrizioneGruppo'],
+                'tipoVisibilita' => $request['tipoVisibilita'],
+                'immagineGruppo' => $path
+            ]);
+        } else {
+            Group::create([
+                'nomeGruppo' => $request['nomeGruppo'],
+                'descrizioneGruppo' => $request['descrizioneGruppo'],
+                'tipoVisibilita' => $request['tipoVisibilita']
+            ]);
+        }
         //ma poi ne recupero l'id per settare le chiavi esterne nelle due tabelle N:N 'admins' e 'usersgroups'
         $idGroup=DB::table('groups')->select('idGroup')
             ->where('nomeGruppo', '=', $request['nomeGruppo'])->first();
@@ -75,7 +88,6 @@ class GroupController extends Controller
      */
     public function show($id)
     {
-
         $publications=DB::table('groups')//prendi le publicazioni nel gruppo
             ->join('groupspublications', 'groups.idGroup', '=', 'groupspublications.idGroup')//da qui andiamo alla tabella dei post nei gruppi
             ->join('publications', 'groupspublications.idPublication', '=', 'publications.id')//per risalire alla/e pubblicazione/i
@@ -92,7 +104,7 @@ class GroupController extends Controller
         $admins=DB::table('users')//prendi i dati degli admin e del gruppo
             ->join('usersgroups', 'users.id', '=', 'usersgroups.idUser')
             ->join('groups', 'usersgroups.idGroup', '=', 'groups.idGroup')
-            ->select('users.id', 'users.name', 'users.cognome', 'groups.idGroup', 'groups.nomeGruppo', 'groups.descrizioneGruppo')
+            ->select('users.id', 'users.name', 'users.cognome', 'groups.idGroup', 'groups.nomeGruppo', 'groups.descrizioneGruppo', 'groups.immagineGruppo')
             ->where('groups.idGroup', '=', $id)
             ->whereIn('users.id', $adminID)
             ->orderby('name', 'asc')

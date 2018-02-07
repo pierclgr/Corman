@@ -27,7 +27,7 @@ Route::get('/home/import', 'PublicationController@import');
 
 Route::resource('users', 'UserController');
 
-Route::patch('users/{id}', 'UserController@update');
+Route::post('users/{id}', 'UserController@update');
 
 Route::get('/home/user', 'UserController@index');
 

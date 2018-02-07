@@ -17,6 +17,7 @@ class CreateGroupsTable extends Migration
             $table->increments('idGroup');
             $table->string('nomeGruppo')->unique();
             $table->string('descrizioneGruppo')->nullable();
+            $table->string('immagineGruppo')->nullable();
             $table->boolean('tipoVisibilita');
             $table->timestamps();
         });

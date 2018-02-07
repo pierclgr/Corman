@@ -31,9 +31,9 @@
 							        	<td>Paper type (*)</td>
 							        	<td><input class="form-control" id="tipo" name="tipo" type="text" placeholder="Enter the type of the paper (venue, scientific, ecc)" required /></td>
 							      	</tr>
-                      				<tr>
-							        	<td>Paper tags PDF</td>
-							        	<td><input type="file" name="pdf" id="pdf"></td>
+                      <tr>
+							        	<td>Paper PDF</td>
+							        	<td><input type="file" class="form-control-file space" name="pdf"></td>
 							      	</tr>
 							      	<tr>
 							      		<td>Paper visibility (*)</td>

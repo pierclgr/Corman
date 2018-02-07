@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration
             $table->string('linea_ricerca');
             $table->string('telefono');
             $table->boolean('visibilitaT')->default(1);
+            $table->string('immagineProfilo')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

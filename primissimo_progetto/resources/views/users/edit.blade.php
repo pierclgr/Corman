@@ -4,7 +4,11 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-3">
-            <img class="img-responsive center-block" src="http://via.placeholder.com/250x250">
+            @if(Auth::user()->immagineProfilo === null)
+                <img class="img-responsive center-block" src="http://via.placeholder.com/250x250">
+            @else
+                <img class="img-responsive center-block" src="{{ URL::to('../storage/app/public/' . Auth::user()->immagineProfilo) }}">
+            @endif
             <br>
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -61,9 +65,18 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <form method="post" action="{{action('UserController@update', Auth::id() )}}">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    <form method="post" action="{{action('UserController@update', Auth::id() )}}" enctype="multipart/form-data">
                         {{csrf_field()}}
-                        <input name="_method" type="hidden" value="PUT">
+                        <input name="_method" type="hidden" value="POST">
                         <h3>Your profile details</h3>
                         <div class="tab-content">
                             <div id="home" class="tab-pane fade in active">
@@ -195,6 +208,12 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
+                                                    <td>Department</td>
+                                                    <td>
+                                                        <input class="form-control" id="dipartimento" name="dipartimento" type="text" value="{{ $u->dipartimento }}" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
                                                     <td>Research Field</td>
                                                     <td>
                                                         <input class="form-control" id="linea_ricerca" name="linea_ricerca" type="text" value="{{ $u->linea_ricerca }}" />
@@ -233,6 +252,12 @@
                                                                 @endif
                                                             </tr>
                                                         </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Profile image</td>
+                                                    <td>
+                                                        <input type="file" class="form-control-file space" name="immagineProfilo">
                                                     </td>
                                                 </tr>
                                             @endforeach

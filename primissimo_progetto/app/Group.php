@@ -17,6 +17,7 @@ class Group extends Model
         'idGroup',
         'nomeGruppo',
         'descrizioneGruppo',
+        'immagineGruppo',
         'tipoVisibilita'
     ];
 }
