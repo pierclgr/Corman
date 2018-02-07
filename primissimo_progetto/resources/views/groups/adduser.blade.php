@@ -5,26 +5,40 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12 ">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3>Search researchers</h3>
+            <a style="float: right;" href="/groups/{{$idGroup}}" class="btn btn-primary">Go Back</a>
+            <h3 style="">Search researchers</h3>
+            @if (session('status'))
+                <div class="alert alert-success">
+                    {{ session('status') }}
                 </div>
-                <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-                    @if(count($users)>0)
+            @endif
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            @if(count($users)>0)
+                <div>
+                    <form action="{{ route('groups.userfilter', [$idGroup]) }}" method="GET" class="form-horizontal">
+                        <input name="_method" type="hidden" value="POST">
+                        <h3>Filter users</h3>
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <td>First Name</td><td><input class="form-control" type="text" name="firstName" id="firstName" placeholder="First Name"></td>
+                                <td>Last Name</td><td><input class="form-control" type="text" name="lastName" id="lastName" placeholder="Last Name"></td>
+                                <td><button style="float:right;" class="btn btn-success " name="submit" type="submit">Filter</button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
                         <form action="{{route('groups.inviaRichiesta', [$idGroup] )}}" method="GET">
                             <input type="hidden" id="input" name="userID">
                             <table class="table table-condensed">
@@ -55,11 +69,33 @@
                                 </tbody>
                             </table>
                         </form>
-                    @else
-                        <strong><h3>There are no researcher to be added</h3></strong>
-                    @endif 
+                    </div>
                 </div>
-            </div>
+            @else
+                @if($filter==1)
+                    <div>
+                        <form action="{{ route('groups.userfilter', [$idGroup]) }}" method="GET" class="form-horizontal">
+                            <input name="_method" type="hidden" value="POST">
+                            <h3>Filter users</h3>
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <td>First Name</td><td><input class="form-control" type="text" name="firstName" id="firstName" placeholder="First Name"></td>
+                                    <td>Last Name</td><td><input class="form-control" type="text" name="lastName" id="lastName" placeholder="Last Name"></td>
+                                    <td><button style="float:right;" class="btn btn-success " name="submit" type="submit">Filter</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                    <hr>
+                    <center><h4><i>No results</i></h4></center>
+                @else
+                    <hr>
+                    <center><h4><i>No addable researchers</i></h4></center>
+                @endif
+
+            @endif
         </div>
     </div>
 </div>

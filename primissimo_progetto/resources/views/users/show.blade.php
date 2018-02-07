@@ -74,8 +74,8 @@
                                 <tr>
                                     <td>Title</td><td><input class="form-control" type="text" name="title" id="name" placeholder="Paper title"></td>
                                     <td>Tags</td><td><input class="form-control" type="text" name="tags" id="tags" placeholder="Tag1, Tag2, ..."></td>
-                                    <td>From</td><td><input id="from_date" name="from_date" class="form-control" type="date" onfocusout="check()"></td>
-                                    <td>To</td><td><input id="to_date" name="to_date" class="form-control" type="date"onfocusout="check()"></td>
+                                    <td>From</td><td><input id="from_date" name="from_date" class="form-control" type="number" min="1900" max="{{date('Y')}}" onfocusout="check()" placeholder="Year"></td>
+                                    <td>To</td><td><input id="to_date" name="to_date" class="form-control" type="number" min="1900" max="{{date('Y')}}" onfocusout="check()" placeholder="Year"></td>
                                     <td><button style="float:right;" class="btn btn-success " name="submit" type="submit">Filter</button></td>
                                 </tr>
                                 </tbody>
@@ -125,8 +125,8 @@
                                     <tr>
                                         <td>Title</td><td><input class="form-control" type="text" name="title" id="name" placeholder="Paper title"></td>
                                         <td>Tags</td><td><input class="form-control" type="text" name="tags" id="tags" placeholder="Tag1, Tag2, ..."></td>
-                                        <td>From</td><td><input id="from_date" name="from_date" class="form-control" type="date" onfocusout="check()"></td>
-                                        <td>To</td><td><input id="to_date" name="to_date" class="form-control" type="date"onfocusout="check()"></td>
+                                        <td>From</td><td><input id="from_date" name="from_date" class="form-control" type="number" min="1900" max="{{date('Y')}}" onfocusout="check()" placeholder="Year"></td>
+                                        <td>To</td><td><input id="to_date" name="to_date" class="form-control" type="number" min="1900" max="{{date('Y')}}" onfocusout="check()" placeholder="Year"></td>
                                         <td><button style="float:right;" class="btn btn-success " name="submit" type="submit">Filter</button></td>
                                     </tr>
                                     </tbody>

@@ -80,8 +80,9 @@ class GroupController extends Controller
             ->join('groupspublications', 'groups.idGroup', '=', 'groupspublications.idGroup')//da qui andiamo alla tabella dei post nei gruppi
             ->join('publications', 'groupspublications.idPublication', '=', 'publications.id')//per risalire alla/e pubblicazione/i
             ->join('users', 'users.id', '=', 'groupspublications.idUser')
-            ->select('users.id', 'publications.titolo', 'users.name', 'users.cognome', 'groupspublications.descrizione')
+            ->select('users.id', 'publications.tipo', 'publications.descrizione AS descr', 'publications.pdf', 'publications.tags', 'publications.coautori', 'publications.dataPubblicazione' , 'publications.titolo', 'users.name', 'users.cognome', 'groupspublications.descrizione', 'groupspublications.dataoraGP')
             ->where('groups.idGroup', '=', $id)
+            ->orderby('groupspublications.dataoraGP', 'desc')
             ->get();
 
         $adminID=DB::table('admins')//prendiamo gli admin del gruppo
@@ -94,6 +95,7 @@ class GroupController extends Controller
             ->select('users.id', 'users.name', 'users.cognome', 'groups.idGroup', 'groups.nomeGruppo', 'groups.descrizioneGruppo')
             ->where('groups.idGroup', '=', $id)
             ->whereIn('users.id', $adminID)
+            ->orderby('name', 'asc')
             ->get();
 
         $users=DB::table('users')//prendi i dati degli utenti nel gruppo
@@ -101,6 +103,7 @@ class GroupController extends Controller
             ->select('users.id', 'users.name', 'users.cognome')
             ->where('usersgroups.idGroup', '=', $id)
             ->whereNotIn('users.id', $adminID)
+            ->orderby('name', 'asc')
             ->get();
 
         $code=0;
@@ -137,7 +140,7 @@ class GroupController extends Controller
                 $code=0;
         }
 
-        return view('groups.show', ['groupUsers' => $users, 'publications' => $publications, 'admins' => $admins, 'code' => $code]);
+        return view('groups.show', ['groupUsers' => $users, 'publications' => $publications, 'admins' => $admins, 'code' => $code, 'filter' => 0]);
     }
 
     /**
@@ -208,10 +211,10 @@ class GroupController extends Controller
         $suePubblicazioni=DB::table('publications')//dalla tabella publications
             ->select('id', 'titolo', 'dataPubblicazione', 'tipo', 'tags', 'coautori')//mi prendi le cose essenziali di una pubblicazione da condividere
             ->where('idUser', '=', $id)//a patto che sia mia...
-            //->where('visibilita', '=', '1')//... e che sia pubblica
+            ->where('visibilita', '=', '1')//... e che sia pubblica
             ->whereNotIn('id', $subQuery)//rimuove le pubblicazioni gia condivise
             ->get();
-        return view('groups.rintraccia', ['suePubblicazioni' => $suePubblicazioni, 'idGroup' => $idGroup]);
+        return view('groups.rintraccia', ['suePubblicazioni' => $suePubblicazioni, 'idGroup' => $idGroup, 'filter' => 0]);
     }
 
     public function aggiungi($idGroup)
@@ -220,7 +223,7 @@ class GroupController extends Controller
         $descr=$_GET["descr".$id];
         DB::table('groupspublications')
             ->insert(['idUser' => Auth::id(), 'idGroup' => $idGroup, 'idPublication' => $id, 'descrizione' => $descr]);
-        return redirect('groups/'.$idGroup);
+        return redirect('groups/rintraccia/'.$idGroup."/".Auth::id());
     }
 
     /**
@@ -234,18 +237,23 @@ class GroupController extends Controller
             ->select('users.id')
             ->where('usersgroups.idGroup', '=', $idGroup);
 
+        $hasReq=DB::table('participationrequests')
+            ->select('idUser')
+            ->where('idGroup', '=', $idGroup);
+
         $users = DB::table('users')->select('id', 'name', 'cognome', 'affiliazione', 'linea_ricerca')
             ->whereNotIn('users.id', $part)
+            ->whereNotIn('users.id', $hasReq)
             ->get();
 
-        return view('groups/adduser',["users" => $users, "idGroup" => $idGroup]);
+        return view('groups/adduser',["users" => $users, "idGroup" => $idGroup, 'filter' => 0]);
     }
 
     function addPartecipants($idGroup){
         $id=$_GET["userID"];
         DB::table('participationrequests')
             ->insert(['idUser' => $id, 'idGroup' => $idGroup, 'fromAdmin' => true]);
-        return redirect('groups/'.$idGroup);
+        return redirect('searchPartecipants/'.$idGroup);
     }
 
     function sendReq($idGroup){
@@ -281,26 +289,191 @@ class GroupController extends Controller
             echo '<h5 style="margin-left: 10px">Administrated groups</h5>';
             if(count($admined)>0){
                 foreach ($admined as $g) {
-                    echo '<li><a href="/groups/'.$g->idGroup.'">'.$g->nomeGruppo.'</a></li>';
+                    echo '<li><a style="padding-left: 30px;"  href="/groups/'.$g->idGroup.'">'.$g->nomeGruppo.'</a></li>';
                 }
             }
             else
-                echo '<h6 style="text-align: center">You administrate no groups</h6>';
+                echo '<h6 style="margin-top: 20px; text-align: center"><i>You administrate no groups</i></h6>';
             echo '<li><hr></li>';
             echo '<h5 style="margin-left: 10px">Your other groups</h5>';
             if(count($other)>0){
                 foreach ($other as $g) {
-                    echo '<li><a href="/groups/'.$g->idGroup.'">'.$g->nomeGruppo.'</a></li>';
+                    echo '<li><a style="padding-left: 30px;" href="/groups/'.$g->idGroup.'">'.$g->nomeGruppo.'</a></li>';
                 }
             }
             else{
-                echo '<h6 style="text-align: center">You participate in no other groups</h6>';
+                echo '<h6 style="text-align: center"><i>You participate in no other groups</i></h6>';
             }
         }
         else{
-            echo '<h5 style="text-align: center">You participate in no groups, yet</h5>';
-            echo '<li><a href="/groups/create" style="text-align: center">Create Group</a></li>';
+            echo '<h5 style="margin-top: 20px; text-align: center">You participate in no groups, yet</h5>';
+            echo '<li><a href="/groups/create" style="text-align: center; margin-top: 20px;">Create Group</a></li>';
         }
+        echo '<hr>
+                <li>
+                <a href="/home/search/groups?input=" style="text-align: center; margin-bottom: 20px;">Search for public groups</a>
+                </li>';
     }
 
+    function filter($id){
+        $title=$_GET['title'];
+        $tags=$_GET['tags'];
+        $from_date=$_GET['from_date'];
+        $to_date=$_GET['to_date'];
+
+        if($tags!=""){
+            if($from_date!=""&&$to_date!="") {//inserite solo le date
+                $publications = DB::table('groups')//prendi le publicazioni nel gruppo
+                ->join('groupspublications', 'groups.idGroup', '=', 'groupspublications.idGroup')//da qui andiamo alla tabella dei post nei gruppi
+                ->join('publications', 'groupspublications.idPublication', '=', 'publications.id')//per risalire alla/e pubblicazione/i
+                ->join('users', 'users.id', '=', 'groupspublications.idUser')
+                    ->select('users.id', 'publications.tipo', 'publications.descrizione AS descr', 'publications.pdf', 'publications.tags', 'publications.coautori', 'publications.dataPubblicazione', 'publications.titolo', 'users.name', 'users.cognome', 'groupspublications.descrizione', 'groupspublications.dataoraGP')
+                    ->where('groups.idGroup', '=', $id)
+                    ->whereBetween('groupspublications.dataoraGP',[$from_date,$to_date])
+                    ->where('titolo','LIKE','%'.$title.'%')->where('tags','LIKE','%'.$tags.'%')
+                    ->orderby('groupspublications.dataoraGP', 'desc')
+                    ->get();
+            }
+            else{
+                $publications = DB::table('groups')//prendi le publicazioni nel gruppo
+                ->join('groupspublications', 'groups.idGroup', '=', 'groupspublications.idGroup')//da qui andiamo alla tabella dei post nei gruppi
+                ->join('publications', 'groupspublications.idPublication', '=', 'publications.id')//per risalire alla/e pubblicazione/i
+                ->join('users', 'users.id', '=', 'groupspublications.idUser')
+                    ->select('users.id', 'publications.tipo', 'publications.descrizione AS descr', 'publications.pdf', 'publications.tags', 'publications.coautori', 'publications.dataPubblicazione', 'publications.titolo', 'users.name', 'users.cognome', 'groupspublications.descrizione', 'groupspublications.dataoraGP')
+                    ->where('groups.idGroup', '=', $id)
+                    ->where('titolo','LIKE','%'.$title.'%')->where('tags','LIKE','%'.$tags.'%')
+                    ->orderby('groupspublications.dataoraGP', 'desc')
+                    ->get();
+            }
+        }else{
+            if($from_date!=""&&$to_date!="") {//inserite solo le date
+                $publications = DB::table('groups')//prendi le publicazioni nel gruppo
+                ->join('groupspublications', 'groups.idGroup', '=', 'groupspublications.idGroup')//da qui andiamo alla tabella dei post nei gruppi
+                ->join('publications', 'groupspublications.idPublication', '=', 'publications.id')//per risalire alla/e pubblicazione/i
+                ->join('users', 'users.id', '=', 'groupspublications.idUser')
+                    ->select('users.id', 'publications.tipo', 'publications.descrizione AS descr', 'publications.pdf', 'publications.tags', 'publications.coautori', 'publications.dataPubblicazione', 'publications.titolo', 'users.name', 'users.cognome', 'groupspublications.descrizione', 'groupspublications.dataoraGP')
+                    ->where('groups.idGroup', '=', $id)
+                    ->whereBetween('groupspublications.dataoraGP',[$from_date,$to_date])
+                    ->where('titolo','LIKE','%'.$title.'%')
+                    ->orderby('groupspublications.dataoraGP', 'desc')
+                    ->get();
+            }
+            else{
+                $publications = DB::table('groups')//prendi le publicazioni nel gruppo
+                ->join('groupspublications', 'groups.idGroup', '=', 'groupspublications.idGroup')//da qui andiamo alla tabella dei post nei gruppi
+                ->join('publications', 'groupspublications.idPublication', '=', 'publications.id')//per risalire alla/e pubblicazione/i
+                ->join('users', 'users.id', '=', 'groupspublications.idUser')
+                    ->select('users.id', 'publications.tipo', 'publications.descrizione AS descr', 'publications.pdf', 'publications.tags', 'publications.coautori', 'publications.dataPubblicazione', 'publications.titolo', 'users.name', 'users.cognome', 'groupspublications.descrizione', 'groupspublications.dataoraGP')
+                    ->where('groups.idGroup', '=', $id)
+                    ->where('titolo','LIKE','%'.$title.'%')
+                    ->orderby('groupspublications.dataoraGP', 'desc')
+                    ->get();
+            }
+        }
+
+        $adminID=DB::table('admins')//prendiamo gli admin del gruppo
+        ->select('idUser')
+            ->where('admins.idGroup', '=', $id);
+
+        $admins=DB::table('users')//prendi i dati degli admin e del gruppo
+        ->join('usersgroups', 'users.id', '=', 'usersgroups.idUser')
+            ->join('groups', 'usersgroups.idGroup', '=', 'groups.idGroup')
+            ->select('users.id', 'users.name', 'users.cognome', 'groups.idGroup', 'groups.nomeGruppo', 'groups.descrizioneGruppo')
+            ->where('groups.idGroup', '=', $id)
+            ->whereIn('users.id', $adminID)
+            ->get();
+
+        $users=DB::table('users')//prendi i dati degli utenti nel gruppo
+        ->join('usersgroups', 'users.id', '=', 'usersgroups.idUser')
+            ->select('users.id', 'users.name', 'users.cognome')
+            ->where('usersgroups.idGroup', '=', $id)
+            ->whereNotIn('users.id', $adminID)
+            ->get();
+
+        $code=0;
+        //controlla se e nel gruppo
+        $isPart=DB::table('usersgroups')
+            ->select('idUser')
+            ->where('usersgroups.idGroup', '=', $id)
+            ->where('idUser', Auth::id())
+            ->get();
+        if(count($isPart)>0){
+            //controlla se e un admin
+            $isAdmin=DB::table('admins')
+                ->select('idUser')
+                ->where('idGroup', '=', $id)
+                ->where('idUser', '=', Auth::id())
+                ->get();
+            if(count($isAdmin)>0){
+                $code=2;
+            }
+            else{
+                $code=1;
+            }
+        }
+        else{
+            //controlla richesta in pendenza
+            $hasReq=DB::table('participationrequests')
+                ->select('idUser')
+                ->where('idUser', '=', Auth::id())
+                ->where('idGroup', '=', $id)
+                ->get();
+            if(count($hasReq)>0)
+                $code=3;
+            else
+                $code=0;
+        }
+
+        return view('groups.show', ['groupUsers' => $users, 'publications' => $publications, 'admins' => $admins, 'code' => $code, 'filter' => 1]);
+    }
+
+    function userfilter($idGroup){
+        $firstName=$_GET['firstName'];
+        $lastName=$_GET['lastName'];
+        $part=DB::table('users')
+            ->join('usersgroups', 'users.id', '=', 'usersgroups.idUser')
+            ->select('users.id')
+            ->where('usersgroups.idGroup', '=', $idGroup);
+
+        $hasReq=DB::table('participationrequests')
+            ->select('idUser')
+            ->where('idGroup', '=', $idGroup);
+
+        $users = DB::table('users')->select('id', 'name', 'cognome', 'affiliazione', 'linea_ricerca')
+            ->whereNotIn('users.id', $part)
+            ->whereNotIn('users.id', $hasReq)
+            ->where('users.name', 'LIKE', '%'.$firstName.'%')
+            ->where('users.cognome', 'LIKE', '%'.$lastName.'%')
+            ->get();
+
+        return view('groups/adduser',["users" => $users, "idGroup" => $idGroup, 'filter' => 1]);
+    }
+
+    function publicationfilter($idGroup, $id){
+        $title=$_GET['title'];
+        $tags=$_GET['tags'];
+
+        $subQuery = DB::table('groupspublications')->select('idPublication AS id')->where('idGroup', '=', $idGroup);
+
+        if($tags!=""){
+            $suePubblicazioni=DB::table('publications')//dalla tabella publications
+            ->select('id', 'titolo', 'dataPubblicazione', 'tipo', 'tags', 'coautori')//mi prendi le cose essenziali di una pubblicazione da condividere
+            ->where('idUser', '=', $id)//a patto che sia mia...
+            ->where('visibilita', '=', '1')//... e che sia pubblica
+            ->whereNotIn('id', $subQuery)//rimuove le pubblicazioni gia condivise
+            ->where('titolo','LIKE','%'.$title.'%')->where('tags','LIKE','%'.$tags.'%')
+            ->orderby('dataPubblicazione', 'desc')
+            ->get();
+        }else{
+            $suePubblicazioni=DB::table('publications')//dalla tabella publications
+            ->select('id', 'titolo', 'dataPubblicazione', 'tipo', 'tags', 'coautori')//mi prendi le cose essenziali di una pubblicazione da condividere
+            ->where('idUser', '=', $id)//a patto che sia mia...
+            ->where('visibilita', '=', '1')//... e che sia pubblica
+            ->whereNotIn('id', $subQuery)//rimuove le pubblicazioni gia condivise
+            ->where('titolo','LIKE','%'.$title.'%')
+                ->orderby('dataPubblicazione', 'desc')
+                ->get();
+        }
+        return view('groups.rintraccia', ['suePubblicazioni' => $suePubblicazioni, 'idGroup' => $idGroup, 'filter' => 1]);
+    }
 }

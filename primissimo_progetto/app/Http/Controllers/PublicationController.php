@@ -64,7 +64,7 @@ class PublicationController extends Controller
             $path=Storage::putFileAs('public', new \Illuminate\Http\File($request->file('pdf')), $fileName);
             Publication::create([
                 'titolo' => $request['titolo'],
-                'dataPubblicazione' => date('Y-m-d H:i:s'),
+                'dataPubblicazione' => $request['year'],
                 'pdf' => $path,
                 'immagine' => '',
                 'multimedia' => '',
@@ -78,7 +78,7 @@ class PublicationController extends Controller
         } else {
              Publication::create([
                 'titolo' => $request['titolo'],
-                'dataPubblicazione' => date('Y-m-d H:i:s'),
+                'dataPubblicazione' => $request['year'],
                 'pdf' => '',
                 'immagine' => '',
                 'multimedia' => '',
@@ -136,7 +136,6 @@ class PublicationController extends Controller
             'immagine' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'multimedia' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'tipo' => 'required',
-
             'visibilita' => '',
             'tags' => '',
             'coautori' => '',
@@ -144,7 +143,7 @@ class PublicationController extends Controller
         ]);
 
         $publication->titolo = $request->get('titolo');
-        $publication->dataPubblicazione = date('Y-m-d H:i:s');
+        $publication->dataPubblicazione = $request->get('year');
         $publication->pdf = null;
         $publication->immagine = null;
         $publication->multimedia = null;
@@ -174,7 +173,7 @@ class PublicationController extends Controller
      * vengono importati fino a 10 coautori per motivi di spazio
      *
      */
-    public function import(){
+    public static function import(){
         $res=PaperSearcher::search(Auth::user()->name." ".Auth::user()->cognome);
         foreach($res as $paper){
             $authors=$paper['info']['authors']['author'];
@@ -184,7 +183,7 @@ class PublicationController extends Controller
             }
             Publication::create([
                 'titolo' => $paper['info']['title'],
-                'dataPubblicazione' => date('Y-m-d H:i:s'),
+                'dataPubblicazione' => $paper['info']['year'],
                 'pdf' => '',
                 'immagine' => '',
                 'multimedia' => '',
