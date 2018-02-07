@@ -7,7 +7,7 @@
         @if($users!="" && $groups!="")
             <div class="col-md-6">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><h3>Persone</h3>
+                    <div class="panel-heading"><h3>Researchers</h3>
                     </div>
                     <div class="panel-body" style="max-height: 400px;">
                         @if (session('status'))
@@ -18,7 +18,11 @@
                         @for($i = 0; $i<count($users) && $i<3; $i++)
                             <div>
                                 <div><img style="float: left;" src="http://via.placeholder.com/75x75"></div>
-                                <div style="margin-left: 85px;"><h4><b>{{$users[$i]->name." ".$users[$i]->cognome}}</b></h4></div>
+                                <div style="margin-left: 85px;">
+                                    <a href="/users/{{$users[$i]->id}}">
+                                        <h4><b>{{$users[$i]->name." ".$users[$i]->cognome}}</b></h4>
+                                    </a>
+                                </div>
                                 <div style="margin-left: 85px;"><h6>{{$users[$i]->affiliazione}}</h6></div>
                                 <div style="margin-left: 85px;"><h6>{{$users[$i]->linea_ricerca}}</h6></div>
                             </div>
@@ -36,7 +40,7 @@
 
             <div class="col-md-6">
                 <div class="panel panel-default">
-                    <div class="panel-heading" ><h3>Gruppi</h3>
+                    <div class="panel-heading" ><h3>Groups</h3>
                     </div>
                     <div class="panel-body" style="max-height: 400px;">
                         @if (session('status'))
@@ -46,7 +50,8 @@
                         @endif
                         @for($i = 0; $i<count($groups) && $i<3; $i++)
                             <a href="/groups/{{$groups[$i]->idGroup}}">
-                            <h4><b>{{$groups[$i]->nomeGruppo}}</b></h4></a>
+                                <h4><b>{{$groups[$i]->nomeGruppo}}</b></h4>
+                            </a>
                             <h6>{{$groups[$i]->descrizioneGruppo}}</h6>
                             <hr>
                         @endfor
@@ -63,7 +68,7 @@
         @elseif($users!="")
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><h3>Persone</h3>
+                    <div class="panel-heading"><h3>Researchers</h3>
                     </div>
                     <div class="panel-body">
                         @if (session('status'))
@@ -74,7 +79,11 @@
                         @foreach($users as $u)
                             <div>
                                 <div><img style="float: left;" src="http://via.placeholder.com/75x75"></div>
-                                <div style="margin-left: 85px;"><h4><b>{{$u->name." ".$u->cognome}}</b></h4></div>
+                                <div style="margin-left: 85px;">
+                                    <a href="/users/{{$u->id}}">
+                                        <h4><b>{{$u->name." ".$u->cognome}}</b></h4>
+                                    </a>
+                                </div>
                                 <div style="margin-left: 85px;"><h6>{{$u->affiliazione}}</h6></div>
                                 <div style="margin-left: 85px;"><h6>{{$u->linea_ricerca}}</h6></div>
                             </div>
@@ -88,7 +97,7 @@
         @elseif($groups!="")
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default" style="align-self: center">
-                    <div class="panel-heading" ><h3>Gruppi</h3>
+                    <div class="panel-heading" ><h3>Groups</h3>
                     </div>
                     <div class="panel-body">
                         @if (session('status'))

@@ -27,7 +27,7 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4>
-                                            <a href="#">{{$n->name}} {{$n->cognome}}</a>
+                                            <a href="/users/{{$n->id}}">{{$n->name}} {{$n->cognome}}</a>
                                              shared {{$n->titolo}} on 
                                             <a href="/groups/{{$n->idGroup}}">{{$n->nomeGruppo}}</a>
                                         </h4>

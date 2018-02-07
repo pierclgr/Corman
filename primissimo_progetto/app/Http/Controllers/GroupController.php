@@ -80,7 +80,7 @@ class GroupController extends Controller
             ->join('groupspublications', 'groups.idGroup', '=', 'groupspublications.idGroup')//da qui andiamo alla tabella dei post nei gruppi
             ->join('publications', 'groupspublications.idPublication', '=', 'publications.id')//per risalire alla/e pubblicazione/i
             ->join('users', 'users.id', '=', 'groupspublications.idUser')
-            ->select('publications.titolo', 'users.name', 'users.cognome', 'groupspublications.descrizione')
+            ->select('users.id', 'publications.titolo', 'users.name', 'users.cognome', 'groupspublications.descrizione')
             ->where('groups.idGroup', '=', $id)
             ->get();
 
@@ -125,7 +125,16 @@ class GroupController extends Controller
             }
         }
         else{
-            $code=0;
+            //controlla richesta in pendenza
+            $hasReq=DB::table('participationrequests')
+                ->select('idUser')
+                ->where('idUser', '=', Auth::id())
+                ->where('idGroup', '=', $id)
+                ->get();
+            if(count($hasReq)>0)
+                $code=3;
+            else
+                $code=0;
         }
 
         return view('groups.show', ['groupUsers' => $users, 'publications' => $publications, 'admins' => $admins, 'code' => $code]);

@@ -30,8 +30,7 @@
                             <table class="table table-condensed">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Surname</th>
+                                        <th>Full Name</th>
                                         <th>Affiliation</th>
                                         <th>Research Branch</th>
                                     </tr>
@@ -40,10 +39,7 @@
                                     @foreach($users as $u)
                                         <tr>
                                             <td>
-                                                {{ $u->name }}
-                                            </td>
-                                            <td>
-                                                {{ $u->cognome }}                                                
+                                                <a href="/users/{{$u->id}}">{{$u->name}} {{$u->cognome}}</a>
                                             </td>
                                             <td>
                                                 {{ $u->affiliazione }}

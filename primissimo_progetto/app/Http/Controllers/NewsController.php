@@ -95,7 +95,7 @@ class NewsController extends Controller
         DB::table('usersgroups')
             ->insert(['idGroup' => $idGroup, 'idUser' => Auth::id()]);
 
-        return redirect('groups/'.$idGroup);
+        return redirect('/groups/'.$idGroup);
     }
 
     public function declineInv($idGroup){
@@ -119,7 +119,7 @@ class NewsController extends Controller
         DB::table('usersgroups')
             ->insert(['idGroup' => $idGroup, 'idUser' => $idUser]);
 
-        return redirect('groups/'.$idGroup);
+        return redirect('/groups/'.$idGroup);
     }
 
     public function declineReq($idGroup, $idUser){
@@ -147,7 +147,7 @@ class NewsController extends Controller
 
         if(count($reqAdmin)>0){
             foreach ($reqAdmin as $req) {
-                echo '<li><a href="#">'.$req->name.' '.$req->cognome.' wants to join '.$req->nomeGruppo.'</a></li>
+                echo '<li><a href="/users/'.$req->id.'">'.$req->name.' '.$req->cognome.' wants to join '.$req->nomeGruppo.'</a></li>
                     <br>
                     <a href="acceptreq/'.$req->idGroup.'/'.$req->id.'"><button>Accept</button></a>
                     <a href="declinereq/'.$req->idGroup.'/'.$req->id.'"><button>Decline</button></a>

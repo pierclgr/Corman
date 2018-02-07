@@ -18,7 +18,7 @@
                 <div class="panel-body">
                     @if(count($admins)>0)
                         @foreach($admins as $admin)
-                            <h5>{{ $admin->name." ".$admin->cognome }}</h5>
+                            <h5><a href="/users/{{$admin->id}}">{{ $admin->name." ".$admin->cognome }}</a></h5>
                         @endforeach
                       @endif
                 </div>
@@ -37,7 +37,7 @@
                 <div class="panel-body">
                     @if(count($groupUsers)>0)
                         @foreach($groupUsers as $user)
-                            <h5>{{ $user->name." ".$user->cognome }}</h5>
+                            <h5><a href="/users/{{$user->id}}">{{ $user->name." ".$user->cognome }}</a></h5>
                         @endforeach
                     @else
                         <h5 style="text-align: center">No other partecipants</h5>
@@ -54,6 +54,8 @@
                     <div name="al_latoDX" style="text-align: right;">
                         @if($code==0)
                             <a href="{{route('groups.sendReq',[$admins[0]->idGroup])}}"><button type="button" class="btn btn-primary" onclick="notify()">Enter group</button></a>
+                        @elseif($code==3)
+                            <button type="button" class="btn btn-primary">Request hanging</button>
                         @else
                             <a href="#"><button type="button" class="btn btn-primary" onclick="quitGroup()">Quit group</button></a>
                         @endif    
@@ -76,7 +78,7 @@
                     @endif
                     @if(count($publications)>0)
                         @foreach($publications as $p)
-                            <h5><a href="#">{{ $p->name." ".$p->cognome }}</a> ------> {{ $p->titolo }}</h5>
+                            <h5><a href="/users/{{$p->id}}">{{ $p->name." ".$p->cognome }}</a> ------> {{ $p->titolo }}</h5>
                             <h6>{{ $p->descrizione }}</h6>
                             <br>
                             <hr>
@@ -88,7 +90,7 @@
                     
                 </div>
                 <div class="panel-footer" style="background-color: white">
-                    @if($code!=0)
+                    @if($code==1 || $code==2)
                         <a href="{{route('groups.rintraccia', [$admins[0]->idGroup, Auth::user()->id] )}}">
                             <button type="button" class="btn btn-primary">Add a publication in this group</button>
                         </a>

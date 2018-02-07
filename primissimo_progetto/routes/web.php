@@ -55,7 +55,6 @@ Route::get('groups/{idGroup}/aggiungi', 'GroupController@aggiungi')->name('group
 
 Route::get('groups/{idGroup}/{idUser}', 'GroupController@rintraccia')->name('groups.rintraccia');
 
-
 Route::get('groups/{idGroup}/promote/{idUser}', 'GroupController@promote')->name('groups.promote');
 
 Route::get('/groupsQuit/{idGroup}', 'GroupController@quit')->name('groups.quit');

@@ -117,7 +117,7 @@ class SearchController extends Controller
         $users=Search::searchUser($input);
         $groups=Search::searchGroup($input);
         foreach ($users as $user) {
-            echo '<li><a href="#">'.$user->name.' '.$user->cognome.'</a></li>';
+            echo '<li><a href="/users/'.$users->id.'">'.$user->name.' '.$user->cognome.'</a></li>';
         }
         echo '<hr>';
         foreach ($groups as $group) {

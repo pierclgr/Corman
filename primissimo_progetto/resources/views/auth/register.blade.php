@@ -12,7 +12,7 @@
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Nome</label>
+                            <label for="name" class="col-md-4 control-label">Name</label>
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
@@ -26,7 +26,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('cognome') ? ' has-error' : '' }}">
-                            <label for="cognome" class="col-md-4 control-label">Cognome</label>
+                            <label for="cognome" class="col-md-4 control-label">Surname</label>
 
                             <div class="col-md-6">
                                 <input id="cognome" type="text" class="form-control" name="cognome" value="{{ old('cognome') }}" required>
@@ -40,7 +40,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('dataNascita') ? ' has-error' : '' }}">
-                            <label for="dataNascita" class="col-md-4 control-label">Data nascita</label>
+                            <label for="dataNascita" class="col-md-4 control-label">Birthday</label>
 
                             <div class="col-md-6">
                                 <input type="date" name="dataNascita" class="form-control" id="dataNascita">
@@ -67,7 +67,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('nazionalita') ? ' has-error' : '' }}">
-                            <label for="nazionalita" class="col-md-4 control-label">Nazionalità</label>
+                            <label for="nazionalita" class="col-md-4 control-label">Nationality</label>
 
                             <div class="col-md-6">
                                 <input id="nazionalita" type="text" class="form-control" name="nazionalita" value="{{ old('nazionalita') }}" required>
@@ -81,7 +81,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('affiliazione') ? ' has-error' : '' }}">
-                            <label for="nazionalita" class="col-md-4 control-label">Affiliazione</label>
+                            <label for="nazionalita" class="col-md-4 control-label">Affiliation</label>
 
                             <div class="col-md-6">
                                 <input id="affiliazione" type="text" class="form-control" name="affiliazione" value="{{ old('affiliazione') }}" required>
@@ -95,7 +95,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('dipartimento') ? ' has-error' : '' }}">
-                            <label for="dipartimento" class="col-md-4 control-label">Indirizzo lavorativo</label>
+                            <label for="dipartimento" class="col-md-4 control-label">Work Address</label>
 
                             <div class="col-md-6">
                                 <input id="dipartimento" type="text" class="form-control" name="dipartimento" value="{{ old('dipartimento') }}" required>
@@ -109,7 +109,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('linea_ricerca') ? ' has-error' : '' }}">
-                            <label for="linea_ricerca" class="col-md-4 control-label">Linea di ricerca</label>
+                            <label for="linea_ricerca" class="col-md-4 control-label">Field of Search</label>
 
                             <div class="col-md-6">
                                 <input id="linea_ricerca" type="text" class="form-control" name="linea_ricerca" value="{{ old('linea_ricerca') }}" required>
@@ -123,7 +123,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('telefono') ? ' has-error' : '' }}">
-                            <label for="telefono" class="col-md-4 control-label">Recapito telefonico</label>
+                            <label for="telefono" class="col-md-4 control-label">Phone number</label>
 
                             <div class="col-md-6">
                                 <input id="telefono" type="text" class="form-control" name="telefono" value="{{ old('telefono') }}" required>
