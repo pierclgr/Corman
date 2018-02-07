@@ -53,7 +53,7 @@ Route::get('/searchPartecipants/{idGroup}/invite', 'GroupController@addPartecipa
 
 Route::get('groups/{idGroup}/aggiungi', 'GroupController@aggiungi')->name('groups.aggiungi');
 
-Route::get('groups/{idGroup}/{idUser}', 'GroupController@rintraccia')->name('groups.rintraccia');
+Route::get('groups/rintraccia/{idGroup}/{idUser}', 'GroupController@rintraccia')->name('groups.rintraccia');
 
 Route::get('groups/{idGroup}/promote/{idUser}', 'GroupController@promote')->name('groups.promote');
 
@@ -65,6 +65,8 @@ Route::get('/getgroups', 'GroupController@getGroups');
 
 Route::get('/getnews', 'NewsController@getNews');
 
+Route::get('/hasnews', 'NewsController@hasNews');
+
 Route::get('/acceptinvite/{idGroup}', 'NewsController@acceptInv');
 
 Route::get('/declineinvite/{idGroup}', 'NewsController@declineInv');
@@ -75,3 +77,8 @@ Route::get('/declinereq/{idGroup}/{idUser}', 'NewsController@declineReq');
 
 Route::get('users/{idUser}', 'UserController@show');
 
+Route::get('groups/filter/{idGroup}', 'GroupController@filter')->name('groups.filter');
+
+Route::get('searchPartecipants/{idGroup}/filter','GroupController@userfilter')->name('groups.userfilter');
+
+Route::get('groups/rintraccia/{idGroup}/{idUser}/filter', 'GroupController@publicationfilter')->name('groups.publicationfilter');

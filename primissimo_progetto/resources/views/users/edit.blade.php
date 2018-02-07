@@ -12,16 +12,6 @@
             <br>
             <div class="panel panel-default">
                 <div class="panel-body">
-                    @if(Auth::user()->visibilitaDN === 0)
-                        <div>
-                            <div style="float: left;">
-                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">cake</span>
-                            </div>
-                            <div style="margin-left: 25px;">
-                                <h7 style="vertical-align: middle;">Date of birth not available</h7>
-                            </div>
-                        </div>
-                    @else
                         <div>
                             <div style="float: left;">
                                 <span class="material-icons" style="font-size:22px; vertical-align:middle;">cake</span>
@@ -30,8 +20,6 @@
                                 <h7 style="vertical-align: middle;">{{ Auth::user()->dataNascita }}</h7>
                             </div>
                         </div>
-                    @endif
-                    @if(Auth::user()->visibilitaE === 1)
                         <div>
                             <div style="float: left;">
                                 <span class="material-icons" style="font-size:22px; vertical-align:middle;">email</span>
@@ -40,17 +28,6 @@
                                 <h7 style="vertical-align: middle;">{{ Auth::user()->email }}</h7>
                             </div>
                         </div>
-                    @else
-                        <div>
-                            <div style="float: left;">
-                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">email</span>
-                            </div>
-                            <div style="margin-left: 25px;">
-                                <h7 style="vertical-align: middle;">Email not available</h7>
-                            </div>
-                        </div>
-                    @endif
-                    @if(Auth::user()->visibilitaT === 1)
                         <div>
                             <div style="float: left;">
                                 <span class="material-icons" style="font-size:22px; vertical-align:middle;">phone</span>
@@ -59,17 +36,6 @@
                                 <h7 style="vertical-align: middle;"> {{Auth::user()->telefono}}</h7>
                             </div>
                         </div>
-                    @else
-                        <div>
-                            <div style="float: left;">
-                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">phone</span>
-                            </div>
-                            <div style="margin-left: 25px;">
-                                <h7 style="vertical-align: middle;">Phone number not available</h7>
-                            </div>
-                        </div>
-                    @endif
-                    @if(Auth::user()->visibilitaN === 1)
                         <div>
                             <div style="float: left;">
                                 <span class="material-icons" style="font-size:22px; vertical-align:middle;">language</span>
@@ -78,16 +44,6 @@
                                 <h7 style="vertical-align: middle;"> {{Auth::user()->nazionalita}}</h7>
                             </div>
                         </div>
-                    @else
-                        <div>
-                            <div style="float: left;">
-                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">language</span>
-                            </div>
-                            <div style="margin-left: 25px;">
-                                <h7 style="vertical-align: middle;">Nationality not available</h7>
-                            </div>
-                        </div>
-                    @endif
                     <div>
                         <div style="float: left;">
                             <span class="material-icons" style="font-size:22px; vertical-align:middle;">location_on</span>
@@ -148,16 +104,29 @@
                                                     <td class="button-group">
                                                         <table style="width: 100%;">
                                                             <tr>
-                                                                <td>
-                                                                    <center>
-                                                                        <label style="font-size: 15px;"><input type="radio" name="visibilitaDN" value="1">Public</label>
-                                                                    </center>
-                                                                </td>
-                                                                <td>
-                                                                    <center>
-                                                                        <label style="margin-left: 5px; font-size: 15px;"><input type="radio" name="visibilitaDN" value="0" checked>Private</label>
-                                                                    </center>
-                                                                </td>
+                                                                @if($u->visibilitaDN==1)
+                                                                    <td>
+                                                                        <center>
+                                                                            <label style="font-size: 15px;"><input id="visibilitaDN" type="radio" name="visibilitaDN" value="1" checked>Public</label>
+                                                                        </center>
+                                                                    </td>
+                                                                    <td>
+                                                                        <center>
+                                                                            <label style="margin-left: 5px; font-size: 15px;"><input id="visibilitaDN" type="radio" name="visibilitaDN" value="0">Private</label>
+                                                                        </center>
+                                                                    </td>
+                                                                @else
+                                                                    <td>
+                                                                        <center>
+                                                                            <label style="font-size: 15px;"><input id="visibilitaDN" type="radio" name="visibilitaDN" value="1">Public</label>
+                                                                        </center>
+                                                                    </td>
+                                                                    <td>
+                                                                        <center>
+                                                                            <label style="margin-left: 5px; font-size: 15px;"><input id="visibilitaDN" type="radio" name="visibilitaDN" value="0" checked>Private</label>
+                                                                        </center>
+                                                                    </td>
+                                                                @endif
                                                             </tr>
                                                         </table>
                                                     </td>
@@ -170,16 +139,29 @@
                                                     <td class="button-group">
                                                         <table style="width: 100%;">
                                                             <tr>
-                                                                <td>
-                                                                    <center>
-                                                                        <label style="font-size: 15px;"><input type="radio" name="visibilitaE" value="1">Public</label>
-                                                                    </center>
-                                                                </td>
-                                                                <td>
-                                                                    <center>
-                                                                        <label style="margin-left: 5px; font-size: 15px;"><input type="radio" name="visibilitaE" value="0" checked>Private</label>
-                                                                    </center>
-                                                                </td>
+                                                                @if($u->visibilitaE==1)
+                                                                    <td>
+                                                                        <center>
+                                                                            <label style="font-size: 15px;"><input id="visibilitaE" type="radio" name="visibilitaE" value="1" checked>Public</label>
+                                                                        </center>
+                                                                    </td>
+                                                                    <td>
+                                                                        <center>
+                                                                            <label style="margin-left: 5px; font-size: 15px;"><input id="visibilitaE" type="radio" name="visibilitaE" value="0">Private</label>
+                                                                        </center>
+                                                                    </td>
+                                                                @else
+                                                                    <td>
+                                                                        <center>
+                                                                            <label style="font-size: 15px;"><input id="visibilitaE" type="radio" name="visibilitaE" value="1">Public</label>
+                                                                        </center>
+                                                                    </td>
+                                                                    <td>
+                                                                        <center>
+                                                                            <label style="margin-left: 5px; font-size: 15px;"><input id="visibilitaE" type="radio" name="visibilitaE" value="0" checked>Private</label>
+                                                                        </center>
+                                                                    </td>
+                                                                @endif
                                                             </tr>
                                                         </table>
                                                     </td>
@@ -192,16 +174,29 @@
                                                     <td class="button-group">
                                                         <table style="width: 100%;">
                                                             <tr>
-                                                                <td>
-                                                                    <center>
-                                                                        <label style="font-size: 15px;"><input type="radio" name="visibilitaN" value="1">Public</label>
-                                                                    </center>
-                                                                </td>
-                                                                <td>
-                                                                    <center>
-                                                                        <label style="margin-left: 5px; font-size: 15px;"><input type="radio" name="visibilitaN" value="0" checked>Private</label>
-                                                                    </center>
-                                                                </td>
+                                                                @if($u->visibilitaN==1)
+                                                                    <td>
+                                                                        <center>
+                                                                            <label style="font-size: 15px;"><input id="visibilitaN" type="radio" name="visibilitaN" value="1" checked>Public</label>
+                                                                        </center>
+                                                                    </td>
+                                                                    <td>
+                                                                        <center>
+                                                                            <label style="margin-left: 5px; font-size: 15px;"><input id="visibilitaN" type="radio" name="visibilitaN" value="0">Private</label>
+                                                                        </center>
+                                                                    </td>
+                                                                @else
+                                                                    <td>
+                                                                        <center>
+                                                                            <label style="font-size: 15px;"><input id="visibilitaN" type="radio" name="visibilitaN" value="1">Public</label>
+                                                                        </center>
+                                                                    </td>
+                                                                    <td>
+                                                                        <center>
+                                                                            <label style="margin-left: 5px; font-size: 15px;"><input id="visibilitaN" type="radio" name="visibilitaN" value="0" checked>Private</label>
+                                                                        </center>
+                                                                    </td>
+                                                                @endif
                                                             </tr>
                                                         </table>
                                                     </td>
@@ -232,16 +227,29 @@
                                                     <td class="button-group">
                                                         <table style="width: 100%;">
                                                             <tr>
-                                                                <td>
-                                                                    <center>
-                                                                        <label style="font-size: 15px;"><input type="radio" name="visibilitaT" value="1">Public</label>
-                                                                    </center>
-                                                                </td>
-                                                                <td>
-                                                                    <center>
-                                                                        <label style="margin-left: 5px; font-size: 15px;"><input type="radio" name="visibilitaT" value="0" checked>Private</label>
-                                                                    </center>
-                                                                </td>
+                                                                @if($u->visibilitaT==1)
+                                                                    <td>
+                                                                        <center>
+                                                                            <label style="font-size: 15px;"><input id="visibilitaT" type="radio" name="visibilitaT" value="1" checked>Public</label>
+                                                                        </center>
+                                                                    </td>
+                                                                    <td>
+                                                                        <center>
+                                                                            <label style="margin-left: 5px; font-size: 15px;"><input id="visibilitaT" type="radio" name="visibilitaT" value="0">Private</label>
+                                                                        </center>
+                                                                    </td>
+                                                                @else
+                                                                    <td>
+                                                                        <center>
+                                                                            <label style="font-size: 15px;"><input id="visibilitaT" type="radio" name="visibilitaT" value="1">Public</label>
+                                                                        </center>
+                                                                    </td>
+                                                                    <td>
+                                                                        <center>
+                                                                            <label style="margin-left: 5px; font-size: 15px;"><input id="visibilitaT" type="radio" name="visibilitaT" value="0" checked>Private</label>
+                                                                        </center>
+                                                                    </td>
+                                                                @endif
                                                             </tr>
                                                         </table>
                                                     </td>

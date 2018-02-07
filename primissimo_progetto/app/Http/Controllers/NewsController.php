@@ -132,6 +132,10 @@ class NewsController extends Controller
         return redirect('/home');
     }
 
+    public function hasNews(){
+        return true;
+    }
+
     public function getNews(){
         $id=Auth::id();
 
@@ -147,16 +151,17 @@ class NewsController extends Controller
 
         if(count($reqAdmin)>0){
             foreach ($reqAdmin as $req) {
-                echo '<li><a href="/users/'.$req->id.'">'.$req->name.' '.$req->cognome.' wants to join '.$req->nomeGruppo.'</a></li>
-                    <br>
-                    <a href="acceptreq/'.$req->idGroup.'/'.$req->id.'"><button>Accept</button></a>
-                    <a href="declinereq/'.$req->idGroup.'/'.$req->id.'"><button>Decline</button></a>
+                echo '<li><a style="text-align: center" href="/users/'.$req->id.'">'.$req->name.' '.$req->cognome.' wants to join '.$req->nomeGruppo.'</a></li>
+                    <center style="margin-top: 10px;">
+                        <a href="acceptreq/'.$req->idGroup.'/'.$req->id.'"><button class="btn btn-primary">Accept</button></a>
+                        <a href="declinereq/'.$req->idGroup.'/'.$req->id.'"><button class="btn btn-primary">Decline</button></a>
+                    </center>
                     <li><hr></li>';
             }
         }
         else{
-            echo '<li><h5 style="text-align: center">You have no requests</h5></li>
-                <br><li><hr></li>';
+            echo '<li><h5 style="text-align: center"><i>You have no requests</i></h5></li>
+                <li><hr></li>';
         }
 
         //inviti ricevuti
@@ -169,16 +174,17 @@ class NewsController extends Controller
             
         if(count($invite)>0){
             foreach ($invite as $in) {
-            echo '<li><a href="/groups/'.$in->idGroup.'">You have been invited to join '.$in->nomeGruppo.'</a></li>
-                <br>
-                <a href="acceptinvite/'.$in->idGroup.'"><button>Accept</button></a>
-                <a href="declineinvite/'.$in->idGroup.'"><button>Decline</button></a>
+            echo '<li><a style="text-align: center" href="/groups/'.$in->idGroup.'">You have been invited to join '.$in->nomeGruppo.'</a></li>
+                <center style="margin-top: 10px;">
+                    <a href="acceptinvite/'.$in->idGroup.'"><button class="btn btn-primary">Accept</button></a>
+                    <a href="declineinvite/'.$in->idGroup.'"><button class="btn btn-primary">Decline</button></a>
+                </center>
                 <li><hr></li>';
             }
         }
         else{
-            echo '<li><h5 style="text-align: center">You have no invites</h5></li>
-                <br><li><hr></li>';
+            echo '<li><h5 style="text-align: center"><i>You have no invites</i></h5></li>
+                <li><hr></li>';
         }
 
         //richieste fatte pendenti
@@ -190,16 +196,20 @@ class NewsController extends Controller
             ->get();
 
         if(count($hang)>0){
+            $i=0;
             foreach ($hang as $h) {
-            echo '<li style="text-align: center">
-                <a href="/groups/'.$h->idGroup.'">Your request to join '.$h->nomeGruppo.' is still hanging</li></a>
-                <br>
-                <li><hr></li>';
+                echo '<li style="text-align: center">
+                <a href="/groups/' . $h->idGroup . '">Your request to join ' . $h->nomeGruppo . ' is still hanging</li></a>
+                <br>';
+                $i++;
+                if($i!=count($hang)){
+                    echo '<li><hr></li>';
+                }
             }
         }
         else{
-            echo '<li><h5 style="text-align: center">You have no hanging requests</h5></li>
-                <br><li><hr></li>';
+            echo '<li><h5 style="text-align: center"><i>You have no hanging requests</i></h5></li>
+                ';
         }
         //inviti inviati pendenti
 

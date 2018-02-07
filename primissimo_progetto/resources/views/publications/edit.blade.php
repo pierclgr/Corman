@@ -44,6 +44,12 @@
                                                                 <td>Title (*)</td><td><input required class="form-control" id="titolo" name="titolo" type="text" value="{{ $p->titolo }}" /></td>
                                                             </tr>
                                                             <tr>
+                                                                <td>Type (*)</td><td><input required class="form-control" id="tipo" name="tipo" type="text" value="{{ $p->tipo }}" /></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Paper Year (*)</td><td><input class="form-control" id="year" name="year" type="number" value="{{$p->dataPubblicazione}}" placeholder="Paper Year" min="1900" max="{{date('Y')}}" required></td>
+                                                            </tr>
+                                                            <tr>
                                                                 <td>PDF File</td><td>{{ $p->pdf }}</td>
                                                             </tr>
                                                             <tr>
@@ -51,9 +57,6 @@
                                                             </tr>
                                                             <tr>
                                                                 <td>Multimedia</td><td>{{ $p->multimedia }}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Type (*)</td><td><input required class="form-control" id="tipo" name="tipo" type="text" value="{{ $p->tipo }}" /></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Visibility</td><td>
