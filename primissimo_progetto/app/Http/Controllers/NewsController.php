@@ -132,6 +132,10 @@ class NewsController extends Controller
         return redirect('/home');
     }
 
+    public function hasNews(){
+        return true;
+    }
+
     public function getNews(){
         $id=Auth::id();
 

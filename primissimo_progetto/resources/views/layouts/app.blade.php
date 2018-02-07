@@ -64,7 +64,7 @@
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" onclick="getNews()">
-                                    🌐 <span class="caret"></span>
+                                    🌐 <span id="notifications" class="caret"></span>
                                 </a>
                                 <ul id="news" class="dropdown-menu" style="max-height: 400px; min-width: 300px; overflow: auto;">
                                     <!-- riempito da script -->
@@ -141,7 +141,6 @@
                 });
             }
         }
-
         function getGroups(){
             $.ajax({
                 type: "GET",
@@ -160,6 +159,34 @@
                 cache: false,
                 success: function(html){
                     $("#news").html(html);
+                }
+            });
+        }
+
+        window.onload=function(){
+            if($.ajax({
+                type: "GET",
+                url: "/hasnews",
+                cache: false
+            })){
+                //document.getElementById("nofitications").style.display="none";
+            }
+
+            $.ajax({
+                type: "GET",
+                url: "/getnews",
+                cache: false,
+                success: function(html){
+                    $("#news").html(html);
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                url: "/getgroups",
+                cache: false,
+                success: function(html){
+                    $("#groups").html(html);
                 }
             });
         }

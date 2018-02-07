@@ -70,6 +70,9 @@
                                     <td>Paper Type (*)</td><td><input class="form-control" id="tipo" name="tipo" type="text" placeholder="Paper Type" required></td>
                                 </tr>
                                 <tr>
+                                    <td>Paper Year (*)</td><td><input class="form-control" id="year" name="year" type="number" placeholder="Paper Year" min="1900" max="{{date('Y')}}" required></td>
+                                </tr>
+                                <tr>
                                     <td>Paper tags PDF</td>
                                     <td><input type="file" name="pdf" id="pdf"></td>
                                 </tr>
@@ -119,8 +122,8 @@
                             <tr>
                                 <td>Title</td><td><input class="form-control" type="text" name="title" id="name" placeholder="Paper title"></td>
                                 <td>Tags</td><td><input class="form-control" type="text" name="tags" id="tags" placeholder="Tag1, Tag2, ..."></td>
-                                <td>From</td><td><input id="from_date" name="from_date" class="form-control" type="date" onfocusout="check()"></td>
-                                <td>To</td><td><input id="to_date" name="to_date" class="form-control" type="date"onfocusout="check()"></td>
+                                <td>From</td><td><input id="from_date" name="from_date" class="form-control" type="number" min="1900" max="{{date('Y')}}" onfocusout="check()" placeholder="Year"></td>
+                                <td>To</td><td><input id="to_date" name="to_date" class="form-control" type="number" min="1900" max="{{date('Y')}}" onfocusout="check()" placeholder="Year"></td>
                                 <td><button style="float:right;" class="btn btn-success " name="submit" type="submit">Filter</button></td>
                             </tr>
                             </tbody>
@@ -171,8 +174,8 @@
                                 <tr>
                                     <td>Title</td><td><input class="form-control" type="text" name="title" id="name" placeholder="Paper title"></td>
                                     <td>Tags</td><td><input class="form-control" type="text" name="tags" id="tags" placeholder="Tag1, Tag2, ..."></td>
-                                    <td>From</td><td><input id="from_date" name="from_date" class="form-control" type="date" onfocusout="check()"></td>
-                                    <td>To</td><td><input id="to_date" name="to_date" class="form-control" type="date"onfocusout="check()"></td>
+                                    <td>From</td><td><input id="from_date" name="from_date" class="form-control" type="number" min="1900" max="{{date('Y')}}" onfocusout="check()" placeholder="Year"></td>
+                                    <td>To</td><td><input id="to_date" name="to_date" class="form-control" type="number" min="1900" max="{{date('Y')}}" onfocusout="check()" placeholder="Year"></td>
                                     <td><button style="float:right;" class="btn btn-success " name="submit" type="submit">Filter</button></td>
                                 </tr>
                                 </tbody>

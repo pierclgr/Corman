@@ -200,12 +200,14 @@ class UserController extends Controller
                 $publications = DB::table('publications')
                     ->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'tags', 'descrizione', 'coautori')->where('idUser', '=', $id)->whereBetween('dataPubblicazione',[$from_date,$to_date])
                     ->where('titolo','LIKE','%'.$title.'%')->where('tags','LIKE','%'.$tags.'%')
+                    ->where('visibilita','=','1')
                     ->orderby('dataPubblicazione', 'desc')->get();
             }
             else{
                 $publications = DB::table('publications')
                     ->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'tags', 'descrizione', 'coautori')->where('idUser', '=', $id)
                     ->where('titolo','LIKE','%'.$title.'%')->where('tags','LIKE','%'.$tags.'%')
+                    ->where('visibilita','=','1')
                     ->orderby('dataPubblicazione', 'desc')->get();
             }
         }else{
@@ -213,12 +215,14 @@ class UserController extends Controller
                 $publications = DB::table('publications')
                     ->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'tags', 'descrizione', 'coautori')->where('idUser', '=', $id)->whereBetween('dataPubblicazione',[$from_date,$to_date])
                     ->where('titolo','LIKE','%'.$title.'%')
+                    ->where('visibilita','=','1')
                     ->orderby('dataPubblicazione', 'desc')->get();
             }
             else{
                 $publications = DB::table('publications')
                     ->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'tags', 'descrizione', 'coautori')->where('idUser', '=', $id)
                     ->where('titolo','LIKE','%'.$title.'%')
+                    ->where('visibilita','=','1')
                     ->orderby('dataPubblicazione', 'desc')->get();
             }
         }
