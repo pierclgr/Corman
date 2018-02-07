@@ -4,7 +4,11 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-3">
+                @if(Auth::user()->immagineProfilo === null)
                 <img class="img-responsive center-block" src="http://via.placeholder.com/250x250">
+            @else
+                <img class="img-responsive center-block" src="{{ URL::to('../storage/app/public/' . Auth::user()->immagineProfilo) }}">
+            @endif
                 <br>
                 <div class="panel panel-default">
                     <div class="panel-body">

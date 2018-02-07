@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Storage;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\UploadedFile;
 
 class UserController extends Controller
 {
@@ -17,9 +20,9 @@ class UserController extends Controller
     public function index()
     {
         $id=Auth::id();
-        $users = DB::table('users')->select('name', 'cognome', 'dataNascita', 'email', 'nazionalita', 'affiliazione', 'dipartimento', 'linea_ricerca', 'telefono')->where('users.id', '=', $id)->get();
-        $publications=DB::table('publications')->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'visibilita', 'tags', 'coautori')->where('idUser','=', $id)->get();
-        return view ('users.index', ['users' => $users, 'publications' => $publications]);
+        $users = DB::table('users')->select('name', 'cognome', 'dataNascita', 'email', 'nazionalita', 'affiliazione', 'dipartimento', 'linea_ricerca', 'telefono', 'immagineProfilo')->where('users.id', '=', $id)->get();
+        $publications=DB::table('publications')->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'visibilita', 'tags', 'descrizione', 'coautori')->where('idUser','=', $id)->get();
+        return view ('users.index', ['users' => $users, 'publications' => $publications, 'filter'=>0]);
     }
 
     /**
@@ -44,32 +47,24 @@ class UserController extends Controller
           'name' => '',
           'cognome' => '',
           'dataNascita' => '',
-          'visibilitaDN' => '',
           'email' => '',
-          'visibilitaE' => '',
           'nazionalita' => '',
-          'visibilitaN' => '',
           'affiliazione' => '',
           'dipartimento' => '',
           'linea_ricerca' => '',
-          'telefono' => '',
-          'visibilitaT' => ''
+          'telefono' => ''
         ]);
         
-        User::create([
+        Publication::create([
             'name' => $request['name'],
             'cognome' => $request['cognome'],
             'dataNascita' => $request['dataNascita'],
-            'visibilitaDN' => 1,
             'email' => $request['email'],
-            'visibilitaE' => 1,
             'nazionalita' => $request['nazionalita'],
-            'visibilitaN' => 1,
             'affiliazione' => $request['affiliazione'],
             'dipartimento' => $request['dipartimento'],
             'linea_ricerca' => $request['linea_ricerca'],
-            'telefono' => $request['telefono'],
-            'visibilitaT' => 1
+            'telefono' => $request['telefono']
         ]);
 
         return back()->with('success', 'User has been added');
@@ -83,7 +78,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $users = DB::table('users')->select('id','name', 'cognome', 'dataNascita', 'email', 'nazionalita', 'affiliazione', 'dipartimento', 'linea_ricerca', 'telefono', 'visibilitaDN', 'visibilitaE', 'visibilitaN', 'visibilitaT', 'immagineProfilo')->where('users.id', '=', $id)->get();
+        $publications=DB::table('publications')->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'visibilita', 'tags', 'descrizione', 'coautori')->where('idUser','=', $id)->where('visibilita','=','1')->get();
+        return view ('users.show', ['users' => $users, 'publications' => $publications, 'filter'=>0]);
     }
 
     /**
@@ -94,8 +91,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $users = DB::table('users')->select('name', 'cognome', 'dataNascita', 'visibilitaDN', 'email', 'visibilitaE', 'nazionalita', 'visibilitaN', 'affiliazione', 'dipartimento', 'linea_ricerca', 'telefono', 'visibilitaT')->where('users.id', '=', $id)->get();
-        return view('users.edit', ['users' => $users]);
+        $id=Auth::id();
+        $users = DB::table('users')->select('name', 'cognome', 'dataNascita', 'email', 'nazionalita', 'affiliazione', 'dipartimento', 'linea_ricerca', 'telefono', 'immagineProfilo')->where('users.id', '=', $id)->get();
+        return view('users.edit',compact('users','id'));
     }
 
     /**
@@ -107,37 +105,55 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = $request->validate([
-          'name' => '',
-          'cognome' => '',
-          'dataNascita' => '',
-          'visibilitaDN' => '',
-          'email' => '',
-          'visibilitaE' => '',
-          'nazionalita' => '',
-          'visibilitaN' => '',
-          'affiliazione' => '',
-          'dipartimento' => '',
-          'linea_ricerca' => '',
-          'telefono' => '',
-          'visibilitaT' => ''
+        $user=User::find($id);
+        $this->validate($request, [
+            'name' => 'required',
+            'cognome' => 'required',
+            'dataNascita' => '',
+            'visibilitaDN' => '',
+            'email' => 'email',
+            'visibilitaE' => '',
+            'nazionalita' => 'required',
+            'visibilitaN' => '',
+            'affiliazione' => 'required',
+            'dipartimento' => 'required',
+            'linea_ricerca' => 'required',
+            'telefono' => 'required',
+            'visibilitaT' => '',
+            'immagineProfilo' => ''
         ]);
-
-        DB::table('users')->
-            where('id', $id)->
-            update(['name' => $request->get('name')],
-                    ['cognome' => $request->get('cognome')],
-                    ['dataNascita' => $request->get('dataNascita')],
-                    ['visibilitaDN' => $request->get('visibilitaDN')],
-                    ['email' => $request->get('email')],
-                    ['visibilitaE' => $request->get('visibilitaE')],
-                    ['nazionalita' => $request->get('nazionalita')],
-                    ['visibilitaN' => $request->get('visibilitaN')],
-                    ['affiliazione' => $request->get('affiliazione')],
-                    ['linea_ricerca' => $request->get('linea_ricerca')],
-                    ['telefono' => $request->get('telefono')],
-                    ['visibilitaT' => $request->get('visibilitaT')]
-            );
+        if($request->hasFile('immagineProfilo')) {
+            $request->file('immagineProfilo');
+            $fileName=$request->file('immagineProfilo')->getClientOriginalName();
+            $path=Storage::putFileAs('public', new \Illuminate\Http\File($request->file('immagineProfilo')), $fileName);
+            $user->name = $request['name'];
+            $user->cognome = $request['cognome'];
+            $user->dataNascita = $request['dataNascita'];
+            $user->visibilitaDN = $request['visibilitaDN'];
+            $user->email = $request['email'];
+            $user->visibilitaE = $request['visibilitaE'];
+            $user->nazionalita = $request['nazionalita'];
+            $user->visibilitaN = $request['visibilitaN'];
+            $user->affiliazione = $request['affiliazione'];
+            $user->linea_ricerca = $request['linea_ricerca'];
+            $user->telefono = $request['telefono'];
+            $user->visibilitaT = $request['visibilitaT'];
+            $user->immagineProfilo = $path;
+        } else {
+            $user->name = $request['name'];
+            $user->cognome = $request['cognome'];
+            $user->dataNascita = $request['dataNascita'];
+            $user->visibilitaDN = $request['visibilitaDN'];
+            $user->email = $request['email'];
+            $user->visibilitaE = $request['visibilitaE'];
+            $user->nazionalita = $request['nazionalita'];
+            $user->visibilitaN = $request['visibilitaN'];
+            $user->affiliazione = $request['affiliazione'];
+            $user->linea_ricerca = $request['linea_ricerca'];
+            $user->telefono = $request['telefono'];
+            $user->visibilitaT = $request['visibilitaT'];
+        }
+        $user->save();
         return redirect('/home/user');
     }
 
@@ -150,5 +166,69 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function filter(){
+        $id=Auth::id();
+        $title=$_GET['title'];
+        $tags=$_GET['tags'];
+        $from_date=$_GET['from_date'];
+        $to_date=$_GET['to_date'];
+        if($tags!=""){
+            if($from_date!=""&&$to_date!="") {//inserite solo le date
+                $publications = DB::table('publications')
+                    ->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'tags', 'descrizione', 'coautori')->where('idUser', '=', $id)->whereBetween('dataPubblicazione',[$from_date,$to_date])
+                    ->where('titolo','LIKE','%'.$title.'%')->where('tags','LIKE','%'.$tags.'%')->get();
+            }
+            else{
+                $publications = DB::table('publications')
+                    ->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'tags', 'descrizione', 'coautori')->where('idUser', '=', $id)
+                    ->where('titolo','LIKE','%'.$title.'%')->where('tags','LIKE','%'.$tags.'%')->get();
+            }
+        }else{
+            if($from_date!=""&&$to_date!="") {//inserite solo le date
+                $publications = DB::table('publications')
+                    ->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'tags', 'descrizione', 'coautori')->where('idUser', '=', $id)->whereBetween('dataPubblicazione',[$from_date,$to_date])
+                    ->where('titolo','LIKE','%'.$title.'%')->get();
+            }
+            else{
+                $publications = DB::table('publications')
+                    ->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'tags', 'descrizione', 'coautori')->where('idUser', '=', $id)
+                    ->where('titolo','LIKE','%'.$title.'%')->get();
+            }
+        }
+        return view ('users.index', ['publications' => $publications, 'filter'=>1]);
+    }
+
+    public function userfilter($id){
+        $title=$_GET['title'];
+        $tags=$_GET['tags'];
+        $from_date=$_GET['from_date'];
+        $to_date=$_GET['to_date'];
+        if($tags!=""){
+            if($from_date!=""&&$to_date!="") {//inserite solo le date
+                $publications = DB::table('publications')
+                    ->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'tags', 'descrizione', 'coautori')->where('idUser', '=', $id)->whereBetween('dataPubblicazione',[$from_date,$to_date])
+                    ->where('titolo','LIKE','%'.$title.'%')->where('tags','LIKE','%'.$tags.'%')->get();
+            }
+            else{
+                $publications = DB::table('publications')
+                    ->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'tags', 'descrizione', 'coautori')->where('idUser', '=', $id)
+                    ->where('titolo','LIKE','%'.$title.'%')->where('tags','LIKE','%'.$tags.'%')->get();
+            }
+        }else{
+            if($from_date!=""&&$to_date!="") {//inserite solo le date
+                $publications = DB::table('publications')
+                    ->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'tags', 'descrizione', 'coautori')->where('idUser', '=', $id)->whereBetween('dataPubblicazione',[$from_date,$to_date])
+                    ->where('titolo','LIKE','%'.$title.'%')->get();
+            }
+            else{
+                $publications = DB::table('publications')
+                    ->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'tags', 'descrizione', 'coautori')->where('idUser', '=', $id)
+                    ->where('titolo','LIKE','%'.$title.'%')->get();
+            }
+        }
+        $users = DB::table('users')->select('id','name', 'cognome', 'dataNascita', 'email', 'nazionalita', 'affiliazione', 'dipartimento', 'linea_ricerca', 'telefono', 'visibilitaDN', 'visibilitaE', 'visibilitaN', 'visibilitaT')->where('users.id', '=', $id)->get();
+        return view ('users.show', ['users'=> $users, 'publications' => $publications, 'filter'=>1]);
     }
 }

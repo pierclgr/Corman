@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Storage;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\UploadedFile;
 
 class UserController extends Controller
 {
@@ -17,7 +20,7 @@ class UserController extends Controller
     public function index()
     {
         $id=Auth::id();
-        $users = DB::table('users')->select('name', 'cognome', 'dataNascita', 'email', 'nazionalita', 'affiliazione', 'dipartimento', 'linea_ricerca', 'telefono')->where('users.id', '=', $id)->get();
+        $users = DB::table('users')->select('name', 'cognome', 'dataNascita', 'email', 'nazionalita', 'affiliazione', 'dipartimento', 'linea_ricerca', 'telefono', 'immagineProfilo')->where('users.id', '=', $id)->get();
         $publications=DB::table('publications')->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'visibilita', 'tags', 'descrizione', 'coautori')->where('idUser','=', $id)->get();
         return view ('users.index', ['users' => $users, 'publications' => $publications, 'filter'=>0]);
     }
@@ -75,7 +78,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $users = DB::table('users')->select('id','name', 'cognome', 'dataNascita', 'email', 'nazionalita', 'affiliazione', 'dipartimento', 'linea_ricerca', 'telefono', 'visibilitaDN', 'visibilitaE', 'visibilitaN', 'visibilitaT')->where('users.id', '=', $id)->get();
+        $users = DB::table('users')->select('id','name', 'cognome', 'dataNascita', 'email', 'nazionalita', 'affiliazione', 'dipartimento', 'linea_ricerca', 'telefono', 'visibilitaDN', 'visibilitaE', 'visibilitaN', 'visibilitaT', 'immagineProfilo')->where('users.id', '=', $id)->get();
         $publications=DB::table('publications')->select('id', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'visibilita', 'tags', 'descrizione', 'coautori')->where('idUser','=', $id)->where('visibilita','=','1')->get();
         return view ('users.show', ['users' => $users, 'publications' => $publications, 'filter'=>0]);
     }
@@ -89,7 +92,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $id=Auth::id();
-        $users = DB::table('users')->select('name', 'cognome', 'dataNascita', 'email', 'nazionalita', 'affiliazione', 'dipartimento', 'linea_ricerca', 'telefono')->where('users.id', '=', $id)->get();
+        $users = DB::table('users')->select('name', 'cognome', 'dataNascita', 'email', 'nazionalita', 'affiliazione', 'dipartimento', 'linea_ricerca', 'telefono', 'immagineProfilo')->where('users.id', '=', $id)->get();
         return view('users.edit',compact('users','id'));
     }
 
@@ -103,25 +106,53 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user=User::find($id);
-        $this->validate(request(), [
+        $this->validate($request, [
             'name' => 'required',
             'cognome' => 'required',
             'dataNascita' => '',
+            'visibilitaDN' => '',
             'email' => 'email',
+            'visibilitaE' => '',
             'nazionalita' => 'required',
+            'visibilitaN' => '',
             'affiliazione' => 'required',
             'dipartimento' => 'required',
             'linea_ricerca' => 'required',
-            'telefono' => 'required'
+            'telefono' => 'required',
+            'visibilitaT' => '',
+            'immagineProfilo' => ''
         ]);
-
-        $user->name = $request->get('name');
-        $user->cognome = $request->get('cognome');
-        $user->email = $request->get('email');
-        $user->nazionalita = $request->get('nazionalita');
-        $user->affiliazione = $request->get('affiliazione');
-        $user->linea_ricerca = $request->get('linea_ricerca');
-        $user->telefono = $request->get('telefono');
+        if($request->hasFile('immagineProfilo')) {
+            $request->file('immagineProfilo');
+            $fileName=$request->file('immagineProfilo')->getClientOriginalName();
+            $path=Storage::putFileAs('public', new \Illuminate\Http\File($request->file('immagineProfilo')), $fileName);
+            $user->name = $request['name'];
+            $user->cognome = $request['cognome'];
+            $user->dataNascita = $request['dataNascita'];
+            $user->visibilitaDN = $request['visibilitaDN'];
+            $user->email = $request['email'];
+            $user->visibilitaE = $request['visibilitaE'];
+            $user->nazionalita = $request['nazionalita'];
+            $user->visibilitaN = $request['visibilitaN'];
+            $user->affiliazione = $request['affiliazione'];
+            $user->linea_ricerca = $request['linea_ricerca'];
+            $user->telefono = $request['telefono'];
+            $user->visibilitaT = $request['visibilitaT'];
+            $user->immagineProfilo = $path;
+        } else {
+            $user->name = $request['name'];
+            $user->cognome = $request['cognome'];
+            $user->dataNascita = $request['dataNascita'];
+            $user->visibilitaDN = $request['visibilitaDN'];
+            $user->email = $request['email'];
+            $user->visibilitaE = $request['visibilitaE'];
+            $user->nazionalita = $request['nazionalita'];
+            $user->visibilitaN = $request['visibilitaN'];
+            $user->affiliazione = $request['affiliazione'];
+            $user->linea_ricerca = $request['linea_ricerca'];
+            $user->telefono = $request['telefono'];
+            $user->visibilitaT = $request['visibilitaT'];
+        }
         $user->save();
         return redirect('/home/user');
     }

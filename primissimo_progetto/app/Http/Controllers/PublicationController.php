@@ -136,7 +136,6 @@ class PublicationController extends Controller
             'immagine' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'multimedia' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'tipo' => 'required',
-
             'visibilita' => '',
             'tags' => '',
             'coautori' => '',

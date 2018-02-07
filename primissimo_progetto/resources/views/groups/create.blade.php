@@ -22,7 +22,7 @@
                         </div>
                     @endif
                     <div class="content">
-                        <form action="{{ action('GroupController@store') }}" method="POST">
+                        <form action="{{ action('GroupController@store') }}" enctype="multipart/form-data" method="POST">
                             {{csrf_field()}}
                             <input name="_method" type="hidden" value="POST">
                             <div class="table-responsive">          
@@ -52,13 +52,19 @@
                                             <td>Select the visibility of the group (*)</td>
                                             <td>
                                                 <div class="button-group">
-                                                <div class="radio">
-                                                    <label><input type="radio" name="tipoVisibilita" value="1" checked="checked">Public</label>
+                                                    <div class="radio">
+                                                        <label><input type="radio" name="tipoVisibilita" value="1" checked="checked">Public</label>
+                                                    </div>
+                                                    <div class="radio">
+                                                        <label><input type="radio" name="tipoVisibilita" value="0">Private</label>
+                                                    </div>
                                                 </div>
-                                                <div class="radio">
-                                                    <label><input type="radio" name="tipoVisibilita" value="0">Private</label>
-                                                </div>
-                                            </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Select a group image</td>
+                                            <td>
+                                                <input type="file" name="immagineGruppo">
                                             </td>
                                         </tr>
                                     </tbody>
