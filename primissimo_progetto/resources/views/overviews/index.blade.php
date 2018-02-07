@@ -41,10 +41,11 @@
                             <strong>There are no recent activities</strong><br><br>
                             Start with creating a new group, or search one already active
                             <br><br>
+                            <form action="{{ action('SearchController@searchGroups') }}" method="GET">
+                            <a href="/home/user" class="btn btn-info">Visit your profile</a>
                             <a href="/groups/create" class="btn btn-info">
                                 Create a new group
                             </a>
-                            <form action="{{ action('SearchController@searchGroups') }}" method="GET">
                                     <input type="hidden" name="input" value="">
                                     <input type="submit" class="btn btn-info" value="Search for public groups">
                             </form>

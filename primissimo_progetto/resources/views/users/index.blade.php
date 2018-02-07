@@ -8,46 +8,38 @@
             <br>
             <div class="panel panel-default">
                 <div class="panel-body">
-                    @if(Auth::user()->visibilitaDN === 1)
-                        <div>
-                            <div style="float: left;">
-                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">cake</span>
-                            </div>
-                            <div style="margin-left: 25px;">
-                                <h7 style="vertical-align: middle;">{{ Auth::user()->dataNascita }}</h7>
-                            </div>
+                    <div>
+                        <div style="float: left;">
+                            <span class="material-icons" style="font-size:22px; vertical-align:middle;">cake</span>
                         </div>
-                    @endif
-                    @if(Auth::user()->visibilitaE === 1)
-                        <div>
-                            <div style="float: left;">
-                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">email</span>
-                            </div>
-                            <div style="margin-left: 25px;">
-                                <h7 style="vertical-align: middle;">{{ Auth::user()->email }}</h7>
-                            </div>
+                        <div style="margin-left: 25px;">
+                            <h7 style="vertical-align: middle;">{{ Auth::user()->dataNascita }}</h7>
                         </div>
-                    @endif
-                    @if(Auth::user()->visibilitaT === 1)
-                        <div>
-                            <div style="float: left;">
-                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">phone</span>
-                            </div>
-                            <div style="margin-left: 25px;">
-                                <h7 style="vertical-align: middle;"> {{Auth::user()->telefono}}</h7>
-                            </div>
+                    </div>
+                    <div>
+                        <div style="float: left;">
+                            <span class="material-icons" style="font-size:22px; vertical-align:middle;">email</span>
                         </div>
-                    @endif
-                    @if(Auth::user()->visibilitaN === 1)
-                        <div>
-                            <div style="float: left;">
-                                <span class="material-icons" style="font-size:22px; vertical-align:middle;">language</span>
-                            </div>
-                            <div style="margin-left: 25px;">
-                                <h7 style="vertical-align: middle;"> {{Auth::user()->nazionalita}}</h7>
-                            </div>
+                        <div style="margin-left: 25px;">
+                            <h7 style="vertical-align: middle;">{{ Auth::user()->email }}</h7>
                         </div>
-                    @endif
+                    </div>
+                    <div>
+                        <div style="float: left;">
+                            <span class="material-icons" style="font-size:22px; vertical-align:middle;">phone</span>
+                        </div>
+                        <div style="margin-left: 25px;">
+                            <h7 style="vertical-align: middle;"> {{Auth::user()->telefono}}</h7>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="float: left;">
+                            <span class="material-icons" style="font-size:22px; vertical-align:middle;">language</span>
+                        </div>
+                        <div style="margin-left: 25px;">
+                            <h7 style="vertical-align: middle;"> {{Auth::user()->nazionalita}}</h7>
+                        </div>
+                    </div>
                     <div>
                         <div style="float: left;">
                             <span class="material-icons" style="font-size:22px; vertical-align:middle;">location_on</span>

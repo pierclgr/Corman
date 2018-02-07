@@ -234,8 +234,13 @@ class GroupController extends Controller
             ->select('users.id')
             ->where('usersgroups.idGroup', '=', $idGroup);
 
+        $hasReq=DB::table('participationrequests')
+            ->select('idUser')
+            ->where('idGroup', '=', $idGroup);
+
         $users = DB::table('users')->select('id', 'name', 'cognome', 'affiliazione', 'linea_ricerca')
             ->whereNotIn('users.id', $part)
+            ->whereNotIn('users.id', $hasReq)
             ->get();
 
         return view('groups/adduser',["users" => $users, "idGroup" => $idGroup]);
@@ -281,26 +286,30 @@ class GroupController extends Controller
             echo '<h5 style="margin-left: 10px">Administrated groups</h5>';
             if(count($admined)>0){
                 foreach ($admined as $g) {
-                    echo '<li><a href="/groups/'.$g->idGroup.'">'.$g->nomeGruppo.'</a></li>';
+                    echo '<li><a style="padding-left: 30px;"  href="/groups/'.$g->idGroup.'">'.$g->nomeGruppo.'</a></li>';
                 }
             }
             else
-                echo '<h6 style="text-align: center">You administrate no groups</h6>';
+                echo '<h6 style="margin-top: 20px; text-align: center"><i>You administrate no groups</i></h6>';
             echo '<li><hr></li>';
             echo '<h5 style="margin-left: 10px">Your other groups</h5>';
             if(count($other)>0){
                 foreach ($other as $g) {
-                    echo '<li><a href="/groups/'.$g->idGroup.'">'.$g->nomeGruppo.'</a></li>';
+                    echo '<li><a style="padding-left: 30px;" href="/groups/'.$g->idGroup.'">'.$g->nomeGruppo.'</a></li>';
                 }
             }
             else{
-                echo '<h6 style="text-align: center">You participate in no other groups</h6>';
+                echo '<h6 style="text-align: center"><i>You participate in no other groups</i></h6>';
             }
         }
         else{
-            echo '<h5 style="text-align: center">You participate in no groups, yet</h5>';
-            echo '<li><a href="/groups/create" style="text-align: center">Create Group</a></li>';
+            echo '<h5 style="margin-top: 20px; text-align: center">You participate in no groups, yet</h5>';
+            echo '<li><a href="/groups/create" style="text-align: center; margin-top: 20px;">Create Group</a></li>';
         }
+        echo '<hr>
+                <li>
+                <a href="/home/search/groups?input=" style="text-align: center; margin-bottom: 20px;">Search for public groups</a>
+                </li>';
     }
 
 }

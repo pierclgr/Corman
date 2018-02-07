@@ -160,9 +160,6 @@
                 cache: false,
                 success: function(html){
                     $("#news").html(html);
-                },
-                error: function(){
-                    alert('ciao');
                 }
             });
         }

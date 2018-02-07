@@ -131,20 +131,20 @@
         background-color: rgba(0,0,0,0.4);">
         
         <div class="modal-content" style="background-color: #F0f8ff; margin: auto; padding: 20px;
-            border: 1px solid #888; width: 50%; height: 80%">
+            border: 1px solid #888; width: 50%; height: auto">
             <div class="panel">
                 <div class="panel-body">
                     @if(count($groupUsers)==0 && count($admins)==1)
                         <h3 style="text-align: center">You are the only one in the group. The group will be erased continue?</h3>
-                        <a href="{{route('groups.quit',[$admins[0]->idGroup])}}" style="float: left"><button>Yes</button></a>
-                        <a href="#" style="float: right"><button onclick="hideQuit()">No</button></a>
+                        <center><a href="{{route('groups.quit',[$admins[0]->idGroup])}}"><button class="btn btn-primary">Yes</button></a>
+                        <a href="#"><button class="btn btn-primary" onclick="hideQuit()">No</button></a></center>
                     @elseif(count($admins)==1 && $code==2)
                         <h3 style="text-align: center">You are the only admin, chose a new one before leaving</h3>
-                        <a href="#"><button onclick="switchProm()">Chose</button></a>
+                        <center><a href="#"><button class="btn btn-primary" onclick="switchProm()">Chose</button></a></center>
                     @else
                         <h3 style="text-align: center;">Are you sure about quitting?</h3>
-                        <a href="{{route('groups.quit',[$admins[0]->idGroup])}}" style="float: left"><button>Yes</button></a>
-                        <a href="#" style="float: right"><button onclick="hideQuit()">No</button></a>
+                        <center><a href="{{route('groups.quit',[$admins[0]->idGroup])}}"><button class="btn btn-primary">Yes</button></a>
+                        <a href="#"><button class="btn btn-primary" onclick="hideQuit()">No</button></a></center>
                     @endif
                 </div>
             </div>

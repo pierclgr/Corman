@@ -117,11 +117,17 @@ class SearchController extends Controller
         $users=Search::searchUser($input);
         $groups=Search::searchGroup($input);
         foreach ($users as $user) {
-            echo '<li><a href="/users/'.$users->id.'">'.$user->name.' '.$user->cognome.'</a></li>';
+            echo '<li><a href="/users/'.$user->id.'">'.$user->name.' '.$user->cognome.'</a></li>';
+        }
+        if(count($users)==0){
+            echo '<li style="text-align: center;"><i>No researchers found</i></li>';
         }
         echo '<hr>';
         foreach ($groups as $group) {
             echo '<li><a href="/groups/'.$group->idGroup.'">'.$group->nomeGruppo.'</a></li>';
+        }
+        if(count($groups)==0){
+            echo '<li style="text-align: center;"><i>No groups found</i></li>';
         }
     }
 }
