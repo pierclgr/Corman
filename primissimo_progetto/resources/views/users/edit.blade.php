@@ -5,9 +5,9 @@
     <div class="row">
         <div class="col-lg-3">
             @if(Auth::user()->immagineProfilo === null)
-                <img class="img-responsive center-block" src="http://via.placeholder.com/250x250">
+                <img class="img-responsive center-block" height="250" width="250" src="{{asset('images/default.jpg')}}">
             @else
-                <img class="img-responsive center-block" src="{{ URL::to('../storage/app/public/' . Auth::user()->immagineProfilo) }}">
+                <img class="img-responsive center-block" height="250" width="250" src="{{asset('images/'. Auth::user()->immagineProfilo)}}">
             @endif
             <br>
             <div class="panel panel-default">

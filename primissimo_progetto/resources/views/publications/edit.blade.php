@@ -4,7 +4,11 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-3">
-                <img class="img-responsive center-block" src="http://via.placeholder.com/250x250">
+                @if(Auth::user()->immagineProfilo === null)
+                    <img class="img-responsive center-block" height="250" width="250" src="{{asset('images/default.jpg')}}">
+                @else
+                    <img class="img-responsive center-block" height="250" width="250" src="{{asset('images/'. Auth::user()->immagineProfilo)}}">
+                @endif
                 <br>
                 <div class="panel panel-default">
                     <div class="panel-body">
@@ -28,8 +32,8 @@
                         @endif
                         @if(count($publications) === 1)
                             @foreach($publications as $p)
-                                <form method="post" action="{{action('PublicationController@update', [$p->id] )}}">
-                            @endforeach
+                                <form method="post" action="{{action('PublicationController@update', [$p->id] )}}" enctype="multipart/form-data">
+
                             {{csrf_field()}}
                             <input name="_method" type="hidden" value="PUT">
                             <div class="tab-content">
@@ -39,7 +43,6 @@
                                         <div class="table-responsive">
                                             <table class="table">
                                                 <tbody>
-                                                        @foreach($publications as $p)
                                                             <tr>
                                                                 <td>Title (*)</td><td><input required class="form-control" id="titolo" name="titolo" type="text" value="{{ $p->titolo }}" /></td>
                                                             </tr>
@@ -47,16 +50,10 @@
                                                                 <td>Type (*)</td><td><input required class="form-control" id="tipo" name="tipo" type="text" value="{{ $p->tipo }}" /></td>
                                                             </tr>
                                                             <tr>
-                                                                <td>Paper Year (*)</td><td><input class="form-control" id="year" name="year" type="number" value="{{$p->dataPubblicazione}}" placeholder="Paper Year" min="1900" max="{{date('Y')}}" required></td>
+                                                                <td>Year (*)</td><td><input class="form-control" id="year" name="year" type="number" value="{{$p->dataPubblicazione}}" placeholder="Paper Year" min="1900" max="{{date('Y')}}" required></td>
                                                             </tr>
                                                             <tr>
-                                                                <td>PDF File</td><td>{{ $p->pdf }}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Image</td><td>{{ $p->immagine }}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Multimedia</td><td>{{ $p->multimedia }}</td>
+                                                                <td>PDF</td><td><input type="file" name="pdf" id="pdf"></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Visibility</td><td>
@@ -90,7 +87,6 @@
                                                             <tr>
                                                                 <td>Coauthors</td><td><input class="form-control" id="coautori" name="coautori" type="text" value="{{ $p->coautori }}" /></td>
                                                             </tr>
-                                                        @endforeach
                                                 </tbody>
                                             </table>
                                             <button style="float: right;" class="btn btn-success " name="submit" type="submit">Update</button>
@@ -100,6 +96,7 @@
                                 </div>
                             </div>
                         </form>
+                                @endforeach
                         @endif
                     </div>
                 </div>

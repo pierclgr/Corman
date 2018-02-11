@@ -12,15 +12,6 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
                     <div class="content">
                         <form action="{{ action('GroupController@store') }}" enctype="multipart/form-data" method="POST">
                             {{csrf_field()}}
@@ -33,6 +24,9 @@
                                             <td>
                                                 <div class="col-10">
                                                     <input class="form-control" id="nomeGruppo" name="nomeGruppo" type="text" placeholder="Enter a title (max 100 chars)" required autofocus>
+                                                    @if ($errors->any())
+                                                        <strong style="color: red;">{{ $errors->first() }}</strong>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>

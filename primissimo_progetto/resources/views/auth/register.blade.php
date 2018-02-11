@@ -109,7 +109,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('linea_ricerca') ? ' has-error' : '' }}">
-                            <label for="linea_ricerca" class="col-md-4 control-label">Field of Search</label>
+                            <label for="linea_ricerca" class="col-md-4 control-label">Research Field</label>
 
                             <div class="col-md-6">
                                 <input id="linea_ricerca" type="text" class="form-control" name="linea_ricerca" value="{{ old('linea_ricerca') }}" required>

@@ -59,9 +59,7 @@ class PublicationController extends Controller
             'idUser' => ''
         ]);
         if($request->hasFile('pdf')) {
-            $request->file('pdf');
-            $fileName=$request->file('pdf')->getClientOriginalName();
-            $path=Storage::putFileAs('public', new \Illuminate\Http\File($request->file('pdf')), $fileName);
+            $path=Storage::disk('pdf_upload')->put('',$request->file('pdf'));
             Publication::create([
                 'titolo' => $request['titolo'],
                 'dataPubblicazione' => $request['year'],
@@ -132,7 +130,7 @@ class PublicationController extends Controller
         $this->validate($request, [
             'titolo' => 'required|max:255',
             'dataPubblicazione' => '',
-            'pdf' => 'mimes:application/pdf, application/x-pdf,application/acrobat, applications/vnd.pdf, text/pdf, text/x-pdf|max:10000',
+            'pdf' => '',
             'immagine' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'multimedia' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'tipo' => 'required',
@@ -141,19 +139,29 @@ class PublicationController extends Controller
             'coautori' => '',
             'idUser' => ''
         ]);
-
-        $publication->titolo = $request->get('titolo');
-        $publication->dataPubblicazione = $request->get('year');
-        $publication->pdf = null;
-        $publication->immagine = null;
-        $publication->multimedia = null;
-        $publication->tipo = $request->get('tipo');
-        $publication->visibilita = $request->get('visibilita');
-        $publication->tags = $request->get('tags');
-        $publication->descrizione = $request->get('descrizione');
-        $publication->coautori = $request->get('coautori');
-        $publication->idUser = Auth::id();
+        if($request->hasFile('pdf')) {
+            $path=Storage::disk('pdf_upload')->put('',$request->file('pdf'));
+            $publication->titolo = $request->get('titolo');
+            $publication->dataPubblicazione = $request->get('year');
+            $publication->pdf = $path;
+            $publication->tipo = $request->get('tipo');
+            $publication->visibilita = $request->get('visibilita');
+            $publication->tags = $request->get('tags');
+            $publication->descrizione = $request->get('descrizione');
+            $publication->coautori = $request->get('coautori');
+            $publication->idUser = Auth::id();
+        }else{
+            $publication->titolo = $request->get('titolo');
+            $publication->dataPubblicazione = $request->get('year');
+            $publication->tipo = $request->get('tipo');
+            $publication->visibilita = $request->get('visibilita');
+            $publication->tags = $request->get('tags');
+            $publication->descrizione = $request->get('descrizione');
+            $publication->coautori = $request->get('coautori');
+            $publication->idUser = Auth::id();
+        }
         $publication->save();
+        //$publication=Publication::find($idPublication);
         return redirect('/home/user');
 }
 
@@ -174,7 +182,7 @@ class PublicationController extends Controller
      *
      */
     public static function import(){
-        $res=PaperSearcher::search(Auth::user()->name." ".Auth::user()->cognome);
+        $res=PaperSearcher::search(Auth::user()->name,Auth::user()->cognome);
         foreach($res as $paper){
             $authors=$paper['info']['authors']['author'];
             $coauthors="";
@@ -188,7 +196,7 @@ class PublicationController extends Controller
                 'immagine' => '',
                 'multimedia' => '',
                 'tipo' => $paper['info']['type'],
-                'visibilita' => '0',
+                'visibilita' => '1',
                 'tags' => '',
                 'descrizione' => '',
                 'coautori' => $coauthors,

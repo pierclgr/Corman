@@ -12,12 +12,13 @@
 
         <!-- Styles -->
         <style>
+
             html, body {
-                color: #636b6f;
                 font-family: 'Raleway', sans-serif;
                 font-weight: 100;
                 height: 100vh;
                 margin: 0;
+                background-image: url("{{asset('group_research.png')}}");
             }
 
             .full-height {
@@ -87,23 +88,23 @@
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
-                </div>
-            @endif
+        <div style="color: #f5f5f5;" class="flex-center position-ref full-height">
+                @if (Route::has('login'))
+                    <div class="top-right links">
+                        @auth
+                            <a style="color: #f5f5f5;" href="{{ url('/home') }}"><b>Home</b></a>
+                        @else
+                            <a style="color: #f5f5f5;" href="{{ route('login') }}"><b>Login</b></a>
+                            <a style="color: #f5f5f5;" href="{{ route('register') }}"><b>Register</b></a>
+                        @endauth
+                    </div>
+                @endif
             <div class="content">
                 <div class="title m-b-md">
-                    Welcome to CORMAN
+                    <b>Welcome to CORMAN</b>
                 </div>
                 <div class="subtitle m-b-md">
-                    CORMAN lets you create research groups, publish papers and explore other user's researches
+                    <b>CORMAN lets you create research groups, publish papers and explore other user's researches</b>
                 </div>
             </div>
         </div>

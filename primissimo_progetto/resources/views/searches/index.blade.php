@@ -9,7 +9,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading"><h3>Researchers</h3>
                     </div>
-                    <div class="panel-body" style="max-height: 400px;">
+                    <div class="panel-body">
                         @if (session('status'))
                             <div class="alert alert-success">
                                 {{ session('status') }}
@@ -17,14 +17,26 @@
                         @endif
                         @for($i = 0; $i<count($users) && $i<3; $i++)
                             <div>
-                                <div><img style="float: left;" src="http://via.placeholder.com/75x75"></div>
+                                <div>@if($users[$i]->immagineProfilo === null)
+                                        <img style="float: left;" class="img-responsive center-block" height="75" width="75" src="{{asset('images/default.jpg')}}">
+                                    @else
+                                        <img style="float: left;" class="img-responsive center-block" height="75" width="75" src="{{asset('images/'.$users[$i]->immagineProfilo)}}">
+                                    @endif</div>
                                 <div style="margin-left: 85px;">
                                     <a href="/users/{{$users[$i]->id}}">
                                         <h4><b>{{$users[$i]->name." ".$users[$i]->cognome}}</b></h4>
                                     </a>
                                 </div>
-                                <div style="margin-left: 85px;"><h6>{{$users[$i]->affiliazione}}</h6></div>
-                                <div style="margin-left: 85px;"><h6>{{$users[$i]->linea_ricerca}}</h6></div>
+                                @if($users[$i]->affiliazione=="")
+                                    <br>
+                                @else
+                                    <div style="margin-left: 85px;"><h6>{{$users[$i]->affiliazione}}</h6></div>
+                                @endif
+                                @if($users[$i]->linea_ricerca=="")
+                                    <br>
+                                @else
+                                    <div style="margin-left: 85px;"><h6>{{$users[$i]->linea_ricerca}}</h6></div>
+                                @endif
                             </div>
                             <hr>
                         @endfor
@@ -42,18 +54,32 @@
                 <div class="panel panel-default">
                     <div class="panel-heading" ><h3>Groups</h3>
                     </div>
-                    <div class="panel-body" style="max-height: 400px;">
+                    <div class="panel-body" >
                         @if (session('status'))
                             <div class="alert alert-success">
                                 {{ session('status') }}
                             </div>
                         @endif
                         @for($i = 0; $i<count($groups) && $i<3; $i++)
-                            <a href="/groups/{{$groups[$i]->idGroup}}">
-                                <h4><b>{{$groups[$i]->nomeGruppo}}</b></h4>
-                            </a>
-                            <h6>{{$groups[$i]->descrizioneGruppo}}</h6>
-                            <hr>
+                                <div>
+                                    <div>@if($groups[$i]->immagineGruppo === null)
+                                            <img style="float: left;" class="img-responsive center-block" height="75" width="75" src="{{asset('groups_images/default.jpg')}}">
+                                        @else
+                                            <img style="float: left;" class="img-responsive center-block" height="75" width="75" src="{{asset('groups_images/'.$groups[$i]->immagineGruppo)}}">
+                                        @endif</div>
+                                    <div style="margin-left: 85px;">
+                                        <a href="/groups/{{$groups[$i]->idGroup}}">
+                                            <h4><b>{{$groups[$i]->nomeGruppo}}</b></h4>
+                                        </a>
+                                    </div>
+                                    @if($groups[$i]->descrizioneGruppo=="")
+                                        <br>
+                                    @else
+                                        <div style="margin-left: 85px;"><h6>{{$groups[$i]->descrizioneGruppo}}</h6></div>
+                                    @endif
+                                    <br>
+                                </div>
+                                <hr>
                         @endfor
                         <form action="{{ action('SearchController@searchGroups') }}" method="GET">
                             <div class="buttonHolder" style="text-align: center;">
@@ -78,7 +104,11 @@
                         @endif
                         @foreach($users as $u)
                             <div>
-                                <div><img style="float: left;" src="http://via.placeholder.com/75x75"></div>
+                                <div>@if($u->immagineProfilo === null)
+                                        <img style="float: left;" class="img-responsive center-block" height="75" width="75" src="{{asset('images/default.jpg')}}">
+                                    @else
+                                        <img style="float: left;" class="img-responsive center-block" height="75" width="75" src="{{asset('images/'.$u->immagineProfilo)}}">
+                                    @endif</div>
                                 <div style="margin-left: 85px;">
                                     <a href="/users/{{$u->id}}">
                                         <h4><b>{{$u->name." ".$u->cognome}}</b></h4>
@@ -106,10 +136,25 @@
                             </div>
                         @endif
                         @foreach($groups as $g)
-                            <a href="/groups/{{$g->idGroup}}">
-                            <h4><b>{{$g->nomeGruppo}}</b></h4></a>
-                            <h6>{{$g->descrizioneGruppo}}</h6>
-                            <hr>
+                                <div>
+                                    <div>@if($g->immagineGruppo === null)
+                                            <img style="float: left;" class="img-responsive center-block" height="75" width="75" src="{{asset('groups_images/default.jpg')}}">
+                                        @else
+                                            <img style="float: left;" class="img-responsive center-block" height="75" width="75" src="{{asset('groups_images/'.$g->immagineGruppo)}}">
+                                        @endif</div>
+                                    <div style="margin-left: 85px;">
+                                        <a href="/groups/{{$g->idGroup}}">
+                                            <h4><b>{{$g->nomeGruppo}}</b></h4>
+                                        </a>
+                                    </div>
+                                    @if($g->descrizioneGruppo=="")
+                                        <br>
+                                    @else
+                                        <div style="margin-left: 85px;"><h6>{{$g->descrizioneGruppo}}</h6></div>
+                                    @endif
+                                    <br>
+                                </div>
+                                <hr>
                         @endforeach
                         <h6 style="text-align: center">No more results</h6>
                     </div>

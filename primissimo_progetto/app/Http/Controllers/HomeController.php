@@ -44,6 +44,22 @@ class HomeController extends Controller
             ->orderby('groupspublications.dataoraGP')
             ->get();
 
-        return view ('overviews.index', ['news' => $news]);
+
+        $id=Auth::id();
+
+        $admined=DB::table('groups')
+            ->join('admins', 'admins.idGroup', '=', 'groups.idGroup')
+            ->select('groups.idGroup', 'groups.nomeGruppo' , 'groups.immagineGruppo')
+            ->where('admins.idUser', '=', $id)
+            ->get();
+
+        $other=DB::table('groups')
+            ->join('usersgroups', 'usersgroups.idGroup', '=', 'groups.idGroup')
+            ->select('groups.idGroup', 'groups.nomeGruppo' , 'groups.immagineGruppo')
+            ->where('usersgroups.idUser', '=', $id)
+            ->whereNotIn('groups.idGroup', $admined->pluck('idGroup'))
+            ->get();
+
+        return view ('overviews.index', ['news' => $news, 'admined' => $admined, 'other' => $other]);
     }
 }

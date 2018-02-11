@@ -48,6 +48,21 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'pdf_upload' => [
+            'driver' => 'local',
+            'root'   => public_path() . '/pdf',
+        ],
+
+        'groups_images_upload' => [
+            'driver' => 'local',
+            'root'   => public_path() . '/groups_images',
+        ],
+
+        'images_upload' => [
+            'driver' => 'local',
+            'root'   => public_path() . '/images',
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

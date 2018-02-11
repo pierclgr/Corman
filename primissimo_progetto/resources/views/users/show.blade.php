@@ -4,11 +4,11 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-3">
-                @if(Auth::user()->immagineProfilo === null)
-                <img class="img-responsive center-block" src="http://via.placeholder.com/250x250">
-            @else
-                <img class="img-responsive center-block" src="{{ URL::to('../storage/app/public/' . Auth::user()->immagineProfilo) }}">
-            @endif
+                @if($users[0]->immagineProfilo === null)
+                    <img class="img-responsive center-block" height="250" width="250" src="{{asset('images/default.jpg')}}">
+                @else
+                    <img class="img-responsive center-block" height="250" width="250" src="{{asset('images/'.$users[0]->immagineProfilo)}}">
+                @endif
                 <br>
                 <div class="panel panel-default">
                     <div class="panel-body">
@@ -103,7 +103,7 @@
                                     <p>{{$p->descrizione}}</p>
                                     <br>
                                     @if($p->pdf != "")
-                                        <div><a><span class="material-icons" style="font-size:20px; float: left; vertical-align:middle;">picture_as_pdf</span><h4 style="vertical-align:middle; margin-left: 25px;"><a href="../storage/app/public/{{ $p->pdf }}">PDF</a></h4></a></div>
+                                        <div><a href="{{asset('pdf')."/".$p->pdf}}"><span class="material-icons" style="font-size:20px; float: left; vertical-align:middle;">picture_as_pdf</span><h4 style="vertical-align:middle; margin-left: 25px;">PDF</h4></a></div>
                                         <!--
                                             <div><a><span class="material-icons" style="font-size:20px; float: left; vertical-align:middle;">attach_file</span><h4 style="vertical-align:middle; margin-left: 25px;">nome_file.est</h4></a></div>
                                         -->
@@ -153,8 +153,10 @@
             to_date=document.getElementById('to_date');
             from_date=document.getElementById('from_date');
             if(to_date.value!="" && from_date.value!=""){
-                if(to_date.value<=from_date.value){
-                    to_date.value=from_date.value+1;
+                if(to_date.value<from_date.value){
+                    val=to_date.value;
+                    val++;
+                    to_date.value=val;
                     alert('Inserire una data valida');
                 }
             }

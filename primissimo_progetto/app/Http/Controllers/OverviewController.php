@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Publication;
+use App\Search;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +20,7 @@ class OverviewController extends Controller
         $publications = DB::table('publications')
             ->select('idPublication', 'titolo', 'dataPubblicazione', 'pdf', 'immagine', 'multimedia', 'tipo', 'tags', 'coautori')
             ->where('visibilita', '=', '1')->get();
+
         return view ('overviews.index', ['publications' => $publications]);
     }
 

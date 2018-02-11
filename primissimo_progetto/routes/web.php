@@ -29,6 +29,8 @@ Route::resource('users', 'UserController');
 
 Route::post('users/{id}', 'UserController@update');
 
+Route::post('groups/{idGroup}', 'GroupController@update');
+
 Route::get('/home/user', 'UserController@index');
 
 Route::get('/home/search', 'SearchController@index');

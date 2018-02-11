@@ -21,9 +21,9 @@ class paperSearcher extends Model
   	 * -'ee',  non so bene, ma sembra un url che porta ad una pagina per acquisare l'articolo
   	 * -'url', url dell'articolo in dblp
     */
-    public static function search($fullname){
+    public static function search($name, $surname){
 
-      $url = "http://dblp.org/search/publ/api?q=" . urlencode($fullname) . "&format=json";        
+      $url = "http://dblp.org/search/publ/api?q=".urlencode($name.'_'.$surname)."&format=json";
       $result = file_get_contents($url);
 
     	$var = json_decode($result, true);
@@ -44,7 +44,7 @@ class paperSearcher extends Model
           }
       		foreach ($hit['info']['authors']['author'] as $aut) {
       			# code...
-      			if( strtolower($aut) === strtolower($fullname) ){
+      			if( strtolower($aut) === strtolower($name." ".$surname) ){
       				$add=true;
       			}
       		}

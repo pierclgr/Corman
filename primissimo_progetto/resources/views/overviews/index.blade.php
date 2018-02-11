@@ -8,10 +8,22 @@
                 <div class="panel-body">
                     <a href="/home/user" style=" color: rgb(99,107,111);">
                         <div style="float: left;">
-                            <img  src="http://via.placeholder.com/28x28" height="28" width="28" >
+                            @if(Auth::user()->immagineProfilo === null)
+                                <img class="img-responsive center-block" height="28" width="28" src="{{asset('images/default.jpg')}}">
+                            @else
+                                <img class="img-responsive center-block" height="28" width="28" src="{{asset('images/'. Auth::user()->immagineProfilo)}}">
+                            @endif
                         </div>
                         <div style="margin-left: 40px;">
                             <p style="font-size: 18px;">{{Auth::user()->name." ".Auth::user()->cognome}}</p>
+                        </div>
+                    </a>
+                    <a href="#" onclick="showNewPub()" style=" color: rgb(99,107,111);">
+                        <div style="float: left;">
+                            <span style="font-size:28px;" class="material-icons">add_box</span>
+                        </div>
+                        <div style="margin-left: 40px;">
+                            <p style="font-size: 18px;">Add new paper</p>
                         </div>
                     </a>
                     <hr>
@@ -31,6 +43,45 @@
                             <p style="font-size: 18px;">Search for public groups</p>
                         </div>
                     </a>
+                    @if(count($admined)!=0 || count($other)!=0)
+                        @if(count($admined)!=0 )
+                            <hr>
+                            <h4><b>Administrated Groups</b></h4>
+                        @endif
+                        @foreach($admined as $a)
+                            <a href="/groups/{{$a->idGroup}}" style=" color: rgb(99,107,111);">
+                                <div style="float: left;">
+                                    @if($a->immagineGruppo === null)
+                                        <img class="img-responsive center-block" height="28" width="28" src="{{asset('groups_images/default.jpg')}}">
+                                    @else
+                                        <img class="img-responsive center-block" height="28" width="28" src="{{asset('groups_images/'.$a->immagineGruppo)}}">
+                                    @endif
+                                </div>
+                                <div style="margin-left: 40px;">
+                                    <p style="font-size: 18px;">{{$a->nomeGruppo}}</p>
+                                </div>
+                            </a>
+                        @endforeach
+
+                        @if(count($other)!=0 )
+                            <hr>
+                            <h4><b>Other Groups</b></h4>
+                        @endif
+                        @foreach($other as $o)
+                            <a href="/groups/{{$o->idGroup}}" style=" color: rgb(99,107,111);">
+                                <div style="float: left;">
+                                    @if($o->immagineGruppo === null)
+                                        <img class="img-responsive center-block" height="28" width="28" src="{{asset('groups_images/default.jpg')}}">
+                                    @else
+                                        <img class="img-responsive center-block" height="28" width="28" src="{{asset('groups_images/'.$o->immagineGruppo)}}">
+                                    @endif
+                                </div>
+                                <div style="margin-left: 40px;">
+                                    <p style="font-size: 18px;">{{$o->nomeGruppo}}</p>
+                                </div>
+                            </a>
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>
@@ -88,7 +139,7 @@
                             <p>{{$n->descr}}</p>
                             <br>
                             @if($n->pdf != "")
-                                <div><a><span class="material-icons" style="font-size:20px; float: left; vertical-align:middle;">picture_as_pdf</span><h4 style="vertical-align:middle; margin-left: 25px;"><a href="../storage/app/public/{{ $n->pdf }}">PDF</a></h4></a></div>
+                                <div><a href="{{asset('pdf')."/".$n->pdf}}"><span class="material-icons" style="font-size:20px; float: left; vertical-align:middle;">picture_as_pdf</span><h4 style="vertical-align:middle; margin-left: 25px;">PDF</h4></a></div>
                                 <!--
                                     <div><a><span class="material-icons" style="font-size:20px; float: left; vertical-align:middle;">attach_file</span><h4 style="vertical-align:middle; margin-left: 25px;">nome_file.est</h4></a></div>
                                 -->

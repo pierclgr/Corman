@@ -36,10 +36,10 @@
                         <!-- Niente -->
                     @else
                        <form class="navbar-form navbar-left" action="/home/search/" method="get">
-                            <div class="form-group has-feedback">
-                                <input type="text" class="form-control" id="searchBar" name="input" onkeyup="helpSearch()" placeholder="Search" autocomplete="off">
+                            <div style="margin-left: 60px; width: 150%;" class="form-group has-feedback">
+                                <input type="text" style="width: 100%;" class="form-control" id="searchBar" name="input" onkeyup="helpSearch()" placeholder="Search" autocomplete="off">
                                 
-                                <ul class="dropdown-menu" id="searchDropdown" style="display: none; max-height: 500px; overflow: auto;">
+                                <ul class="dropdown-menu" id="searchDropdown" style="display: none; max-height: 500px; width: 100%; overflow: auto;">
                                     <!-- viene riempito da script -->
                                 </ul>
                                 <span class="glyphicon glyphicon-search form-control-feedback">
@@ -56,7 +56,9 @@
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" onclick="getGroups()">
-                                    👥 <span class="caret"></span>
+                                    <div style="float: left; height: auto;">
+                                        <span class="material-icons" style="margin-top: -1px; margin-right: 2px; font-size: 25px;">people</span>
+                                    </div><span style="margin-top: 10px; margin-bottom: 10px;" class="caret"></span>
                                 </a>
                                 <ul id="groups" class="dropdown-menu" style="max-height: 400px; min-width: 300px; overflow: auto;">
                                     <!-- riempito da script -->
@@ -64,7 +66,9 @@
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" onclick="getNews()">
-                                    🌐 <span id="notifications" class="caret"></span>
+                                    <div style="float: left; height: auto;">
+                                        <span class="material-icons" style="margin-right: 2px; font-size:22px;">public</span>
+                                    </div><span style="margin-top: 10px; margin-bottom: 10px;" class="caret"></span>
                                 </a>
                                 <ul id="news" class="dropdown-menu" style="max-height: 400px; min-width: 300px; overflow: auto;">
                                     <!-- riempito da script -->
@@ -72,11 +76,22 @@
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
-                                    {{Auth::user()->name}} <span class="caret"></span>
+                                        @if(Auth::user()->immagineProfilo==null)
+                                            <img style="float:left; border-radius: 50%; margin-right: 6px;" src="{{asset('images/default.jpg')}}" width="21" height="21">
+                                        @else
+                                            <img style="float:left; border-radius: 50%; margin-right: 6px;" src="{{asset('images/'.Auth::user()->immagineProfilo)}}" width="21" height="21">
+                                        @endif
+                                        <h style="margin-right: 4px;">{{Auth::user()->name}}</h><span style="margin-top: 10px; margin-bottom: 10px;" class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a href="/home/user">Profile</a></li>
-                                    <li><a href="/groups/create">Create Group</a></li>
+                                    <li><a href="#" onclick="showNewPub()">Add new paper</a></li>
+                                    <hr>
+                                    <li><a href="/groups/create">Create a new group</a></li>
+                                    <li>
+                                        <a href="/home/search/groups?input=">Search for public groups</a>
+                                    </li>
+                                    <lI></lI><hr>
                                     <li>
                                         <a href="{{ route('logout') }}"
                                            onclick="event.preventDefault();
@@ -92,6 +107,84 @@
                             @endguest
                     </ul>
                 </div>
+                <div id="addPaper" class="modal" style="display: none; position: fixed; z-index: 1; padding-top: 100px;
+        left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.4);">
+                    <div class="modal-content" style="background-color: #F0f8ff; margin: auto;
+            border: 1px solid #888; width: 70%; height: auto">
+                        <div class="panel">
+                            <div class="panel-body">
+                                <form action="{{ action('PublicationController@store') }}" method="POST" enctype="multipart/form-data">
+                                    {{csrf_field()}}
+                                    <input name="_method" type="hidden" value="POST">
+                                    <h3>New paper</h3>
+                                    <table class="table">
+                                        <tbody>
+                                        <tr>
+                                            <td style="width: 50%;">
+                                                <table class="table">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>Title (*)</td><td><input class="form-control" id="titolo" name="titolo" type="text" placeholder="Title (max 255 chars)" required></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Type (*)</td><td><input class="form-control" id="tipo" name="tipo" type="text" placeholder="Paper Type" required></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Year (*)</td><td><input class="form-control" id="year" name="year" type="number" placeholder="Paper Year" min="1900" max="{{date('Y')}}" required></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>PDF</td>
+                                                        <td><input type="file" name="pdf" id="pdf"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                            <td style="width: 50%;">
+                                                <table class="table">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>Visibility</td>
+                                                        <td class="button-group">
+                                                            <table style="width: 100%;">
+                                                                <tr>
+                                                                    <td>
+                                                                        <center>
+                                                                            <label style="font-size: 15px;"><input type="radio" name="visibilita" value="1" checked="checked">Public</label>
+                                                                        </center>
+                                                                    </td>
+                                                                    <td>
+                                                                        <center>
+                                                                            <label style="margin-left: 5px; font-size: 15px;"><input type="radio" name="visibilita" value="0">Private</label>
+                                                                        </center>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tags</td><td><input class="form-control" id="tags" name="tags" type="text" placeholder="Tags separated by a ',' (max 255 chars)"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Description</td><td><textarea style="resize:none;" maxlength="191" class="form-control" id="descrizione" name="descrizione" type="text" placeholder="Description (max 255 chars)"></textarea></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Coauthors</td><td><input class="form-control" id="coautori" name="coautori" type="text" placeholder="Coauthors separated by a ',' (max 255 chars)"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <h6 style="float: left;">Fields with (*) must be set.</h6>
+                                    <button style="float:right;" class="btn btn-success " name="submit" type="submit">Create</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </nav>
 
@@ -103,7 +196,8 @@
     <script>
 
         window.onclick=function(event){
-
+            if(event.target==document.getElementById('addPaper'))
+                document.getElementById('addPaper').style.display="none";
             //usato nei gruppi
             if(event.target == document.getElementById('addAdmin'))
                 document.getElementById('addAdmin').style.display="none";
@@ -189,6 +283,10 @@
                     $("#groups").html(html);
                 }
             });
+        }
+
+        function showNewPub(){
+            document.getElementById('addPaper').style.display="block";
         }
     </script>
     
