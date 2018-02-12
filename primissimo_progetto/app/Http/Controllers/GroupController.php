@@ -216,6 +216,28 @@ class GroupController extends Controller
         return view('groups.edit', ['groups' => $groups, 'code' => $code]);
     }
 
+
+    public function uploadGroupImage(Request $request, $idGroup){
+        $group=DB::table('groups')
+            ->select('idGroup','nomeGruppo','descrizioneGruppo', 'tipoVisibilita', 'immagineGruppo')
+            ->where('idGroup','=',$idGroup)
+            ->get();
+        $valG=$request->validate([
+            'immagineGruppo' => '',
+        ]);
+
+        if($request->hasFile('immagineGruppo')) {
+            $path=Storage::disk('groups_images_upload')->put('',$request->file('immagineGruppo'));
+
+            $group->immagineGruppo = $path;
+            DB::table('groups')
+                ->where('idGroup','=',$idGroup)
+                ->update(['immagineGruppo' => $group->immagineGruppo]);
+        }
+        //ma poi ne recupero l'id per settare le chiavi esterne nelle due tabelle N:N 'admins' e 'usersgroups'
+
+        return redirect('/groups/'.$idGroup);
+    }
     /**
      * Update the specified resource in storage.
      *

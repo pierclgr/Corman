@@ -67,6 +67,10 @@ Route::get('/getgroups', 'GroupController@getGroups');
 
 Route::get('/getnews', 'NewsController@getNews');
 
+Route::post('/uploadImage/{id}', 'UserController@uploadImage')->name('users.uploadImage');
+
+Route::post('/uploadGroupImage/{idGroup}', 'GroupController@uploadGroupImage')->name('users.uploadGroupImage');
+
 Route::get('/hasnews', 'NewsController@hasNews');
 
 Route::get('/acceptinvite/{idGroup}', 'NewsController@acceptInv');

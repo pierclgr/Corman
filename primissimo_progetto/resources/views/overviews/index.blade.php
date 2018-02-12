@@ -18,6 +18,14 @@
                             <p style="font-size: 18px;">{{Auth::user()->name." ".Auth::user()->cognome}}</p>
                         </div>
                     </a>
+                    <a href="{{action('UserController@edit', Auth::id() )}}" style=" color: rgb(99,107,111);">
+                        <div style="float: left;">
+                            <span style="font-size:28px;" class="material-icons">create</span>
+                        </div>
+                        <div style="margin-left: 40px;">
+                            <p style="font-size: 18px;">Modify profile</p>
+                        </div>
+                    </a>
                     <a href="#" onclick="showNewPub()" style=" color: rgb(99,107,111);">
                         <div style="float: left;">
                             <span style="font-size:28px;" class="material-icons">add_box</span>
@@ -124,7 +132,7 @@
                             @endif
 
                             @if($n->id==Auth::id())
-                                <a style="float: right; margin-left: 10px;" href="{{action('PublicationController@edit', [$n->id] )}}"><span class="material-icons" style="font-size:20px; vertical-align:middle;">create</span></a>
+                                <a style="float: right; margin-left: 10px;" href="{{action('PublicationController@edit', [$n->idPubblicazione] )}}"><span class="material-icons" style="font-size:20px; vertical-align:middle;">create</span></a>
                             @endif
                             <h6 style="float: left;">{{$n->tipo}}</h6><h5 style="text-align: right;">{{$n->dataPubblicazione}}</h5>
                             <!--<img class="img-responsive" style="float: right;" src="http://via.placeholder.com/250x250"> <!-- $->immagine -->
@@ -145,7 +153,10 @@
                                 -->
                             @else
                                 <div><span class="material-icons" style="font-size:20px; float: left; vertical-align:middle;">picture_as_pdf</span><h4 style="vertical-align:middle; margin-left: 25px;">No PDF avaible</h4></div>
-                                <!--
+                                @if($n->id==Auth::id())
+                                    <a href="{{action('PublicationController@edit', [$n->idPubblicazione] )}}" ><span class="material-icons" style="font-size:20px; vertical-align:middle; float: left;">file_upload</span> Upload PDF</a>
+                                @endif
+                                        <!--
                                     <div><a><span class="material-icons" style="font-size:20px; float: left; vertical-align:middle;">attach_file</span><h4 style="vertical-align:middle; margin-left: 25px;">nome_file.est</h4></a></div>
                                 -->
                             @endif

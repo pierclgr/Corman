@@ -5,14 +5,17 @@
     <div class="row">
         <div class="col-lg-3">
             @if(Auth::user()->immagineProfilo === null)
-                <img class="img-responsive center-block" height="250" width="250" src="{{asset('images/default.jpg')}}">
+                <img class="img-responsive center-block" height="250" width="250" onclick="showUploadImage()" src="{{asset('images/default.jpg')}}">
             @else
-                <img class="img-responsive center-block" height="250" width="250" src="{{asset('images/'. Auth::user()->immagineProfilo)}}">
+                <img class="img-responsive center-block" height="250" width="250"  onclick="showUploadImage()" src="{{asset('images/'. Auth::user()->immagineProfilo)}}">
             @endif
+            <br>
+            <center><a href="{{'/users/'.Auth::user()->id}}" class="btn btn-primary">View your public profile</a></center>
             <br>
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div>
+                        <a style="float: right;" href="{{ action('UserController@edit', Auth::id() )}}"><span class="material-icons" style="font-size:20px; vertical-align:middle;">create</span></a>
                         <div style="float: left;">
                             <span class="material-icons" style="font-size:22px; vertical-align:middle;">cake</span>
                         </div>
@@ -56,7 +59,7 @@
             </div>
         </div>
         <div class="col-lg-9">
-            <div><a style="float: right;" href="{{action('UserController@edit', Auth::id() )}}"><span class="material-icons" style="font-size:20px; vertical-align:middle;">create</span></a><h1 style="vertical-align:middle;">{{Auth::user()->name." ".Auth::user()->cognome}}</h1></div>
+            <div><h1 style="vertical-align:middle;">{{Auth::user()->name." ".Auth::user()->cognome}}</h1></div>
             <h4 style="vertical-align:middle;">{{Auth::user()->affiliazione." - ".Auth::user()->linea_ricerca}}</h4>
             <center><button class="btn btn-primary" onclick="showNewPub()">Add new Paper</button></center>
             @if(count($publications) >0)
@@ -105,7 +108,7 @@
                                         <div><a><span class="material-icons" style="font-size:20px; float: left; vertical-align:middle;">attach_file</span><h4 style="vertical-align:middle; margin-left: 25px;">nome_file.est</h4></a></div>
                                     -->
                                 @else
-                                    <div><span class="material-icons" style="font-size:20px; float: left; vertical-align:middle;">picture_as_pdf</span><h4 style="vertical-align:middle; margin-left: 25px;">No PDF avaible</h4></div>
+                                    <div><span class="material-icons" style="font-size:20px; float: left; vertical-align:middle;">picture_as_pdf</span><h4 style="vertical-align:middle; margin-left: 25px;">No PDF avaible</h4> <a href="{{action('PublicationController@edit', [$p->id] )}}" ><span class="material-icons" style="font-size:20px; vertical-align:middle; float: left;">file_upload</span> Upload PDF</a></div>
                                     <!--
                                         <div><a><span class="material-icons" style="font-size:20px; float: left; vertical-align:middle;">attach_file</span><h4 style="vertical-align:middle; margin-left: 25px;">nome_file.est</h4></a></div>
                                     -->
@@ -142,6 +145,37 @@
                     <center><h4><i>You have no papers</i></h4></center>
                 @endif
             @endif
+        </div>
+    </div>
+
+    <div id="uploadImage" class="modal" style="display: none; position: fixed; z-index: 1; padding-top: 100px;
+        left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.4);">
+        <div class="modal-content" style="background-color: #F0f8ff; margin: auto;
+            border: 1px solid #888; width: 50%; height: auto">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h2>Modify Profile Image</h2>
+                </div>
+                <div class="panel-body">
+                    <form action="{{action('UserController@uploadImage', Auth::id())}}" method="POST" enctype="multipart/form-data">
+                        {{csrf_field()}}
+                        <table class="table">
+                            <tr>
+                                <td>Profile Image</td>
+                                <td><input type="file" name="immagineProfilo" id="pdf"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <button style="float:right;" class="btn btn-success " name="submit" type="submit">Upload</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -242,6 +276,10 @@
 
     function showNewPub(){
         document.getElementById('addPaper').style.display="block";
+    }
+
+    function showUploadImage(){
+        document.getElementById('uploadImage').style.display="block";
     }
 </script>
 @endsection

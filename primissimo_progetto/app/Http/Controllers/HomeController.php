@@ -39,7 +39,7 @@ class HomeController extends Controller
             ->join('publications', 'publications.id', '=', 'groupspublications.idPublication')//trova le pubblicazioni
             ->join('users', 'users.id', '=', 'groupspublications.idUser')//trova gli autori
             ->join('usersgroups', 'usersgroups.idGroup', '=', 'groupspublications.idGroup')//trova i miei gruppi
-            ->select('users.id', 'groupspublications.dataoraGP', 'users.name', 'users.cognome', 'groups.idGroup', 'groups.nomeGruppo', 'publications.titolo', 'publications.tipo', 'publications.coautori' , 'publications.dataPubblicazione' , 'publications.pdf' , 'publications.descrizione AS descr', 'publications.tags', 'groupspublications.descrizione')
+            ->select('publications.id AS idPubblicazione', 'users.id', 'groupspublications.dataoraGP', 'users.name', 'users.cognome', 'groups.idGroup', 'groups.nomeGruppo', 'publications.titolo', 'publications.tipo', 'publications.coautori' , 'publications.dataPubblicazione' , 'publications.pdf' , 'publications.descrizione AS descr', 'publications.tags', 'groupspublications.descrizione')
             ->where('usersgroups.idUser', '=', Auth::id())
             ->orderby('groupspublications.dataoraGP')
             ->get();

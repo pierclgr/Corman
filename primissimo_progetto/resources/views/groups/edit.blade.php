@@ -19,11 +19,6 @@
             </div>
 
             <div class="col-md-9">
-                <div name="al_latoDX" style="float: right;">
-                <br>
-                <div><a style="float: right;" href="{{action('GroupController@edit', $groups[0]->idGroup)}}"><span class="material-icons" style="font-size:20px; vertical-align:middle;">create</span></a></div>
-                <br><br>
-                </div>
                 <h1 style="vertical-align:middle;">{{ $groups[0]->nomeGruppo }}</h1>
                 <h4 style="vertical-align:middle;">{{ $groups[0]->descrizioneGruppo }}</h4>
                 <br>

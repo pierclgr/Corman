@@ -199,6 +199,23 @@ class UserController extends Controller
         //
     }
 
+    public function uploadImage(Request $request,$id){
+        $user=User::find($id);
+        $this->validate($request, [
+            'immagineProfilo' => ''
+        ]);
+
+        if($request->hasFile('immagineProfilo')) {
+            $request->file('immagineProfilo');
+            $fileName=$request->file('immagineProfilo')->getClientOriginalName();
+            $path=Storage::disk('images_upload')->put('',$request->file('immagineProfilo'));
+            $user->immagineProfilo = $path;
+        }
+
+        $user->save();
+        return redirect('/home/user');
+    }
+
     public function filter(){
         $id=Auth::id();
         $title=$_GET['title'];

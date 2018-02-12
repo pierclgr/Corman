@@ -11,11 +11,23 @@
     <div class="row">
         <div class="col-md-3">
             @if($admins[0]->immagineGruppo === null)
-                <img class="img-responsive center-block" height="250" width="250" src="{{asset('groups_images/default.jpg')}}">
+                @if($code==2)
+                    <img class="img-responsive center-block" onclick="showUploadGroupImage()" height="250" width="250" src="{{asset('groups_images/default.jpg')}}">
+                @else
+                    <img class="img-responsive center-block" height="250" width="250" src="{{asset('groups_images/default.jpg')}}">
+                @endif
             @else
-                <img class="img-responsive center-block" height="250" width="250" src="{{asset('groups_images/'. $admins[0]->immagineGruppo)}}">
+                @if($code==2)
+                    <img class="img-responsive center-block" onclick="showUploadGroupImage()" height="250" width="250" src="{{asset('groups_images/'. $admins[0]->immagineGruppo)}}">
+                @else
+                    <img class="img-responsive center-block" height="250" width="250" src="{{asset('groups_images/'. $admins[0]->immagineGruppo)}}">
+                @endif
             @endif
             <br>
+            @if($code==2)
+                <center><div><a class="btn btn-primary" href="{{action('GroupController@edit', $admins[0]->idGroup)}}">Edit Group</a></div></center>
+                <br>
+            @endif
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 style="float: left">Admins</h4>
@@ -60,16 +72,15 @@
 
         <div class="col-md-9">
             <div name="al_latoDX" style="float: right;">
-                @if($code==2)
-                    <br>
-                    <div><a style="float: right;" href="{{action('GroupController@edit', $admins[0]->idGroup)}}"><span class="material-icons" style="font-size:20px; vertical-align:middle;">create</span></a></div>
-                    <br><br>
-                @endif
+
                 @if($code==0)
+                    <br>
                     <a href="{{route('groups.sendReq',[$admins[0]->idGroup])}}"><button type="button" class="btn btn-primary" onclick="notify()">Enter group</button></a>
                 @elseif($code==3)
+                    <br>
                     <button type="button" class="btn btn-primary">Request hanging</button>
                 @else
+                    <br>
                     <a href="#"><button type="button" class="btn btn-primary" onclick="quitGroup()">Quit group</button></a>
                 @endif
             </div>
@@ -147,7 +158,10 @@
                                     -->
                                 @else
                                     <div><span class="material-icons" style="font-size:20px; float: left; vertical-align:middle;">picture_as_pdf</span><h4 style="vertical-align:middle; margin-left: 25px;">No PDF avaible</h4></div>
-                                    <!--
+                                    @if($p->id==Auth::id())
+                                        <a href="{{action('PublicationController@edit', [$p->idPub] )}}" ><span class="material-icons" style="font-size:20px; vertical-align:middle; float: left;">file_upload</span> Upload PDF</a>
+                                    @endif
+                                        <!--
                                         <div><a><span class="material-icons" style="font-size:20px; float: left; vertical-align:middle;">attach_file</span><h4 style="vertical-align:middle; margin-left: 25px;">nome_file.est</h4></a></div>
                                     -->
                                 @endif
@@ -194,6 +208,37 @@
         </div>
     </div>
 
+        <div id="uploadGroupImage" class="modal" style="display: none; position: fixed; z-index: 1; padding-top: 100px;
+        left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.4);">
+            <div class="modal-content" style="background-color: #F0f8ff; margin: auto;
+            border: 1px solid #888; width: 50%; height: auto">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h2>Modify Group Image</h2>
+                    </div>
+                    <div class="panel-body">
+                        <form action="{{action('GroupController@uploadGroupImage', $admins[0]->idGroup )}}" method="POST" enctype="multipart/form-data">
+                            {{csrf_field()}}
+                            <table class="table">
+                                <tr>
+                                    <td>Group Image</td>
+                                    <td><input type="file" name="immagineGruppo" id="pdf"></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        <button style="float:right;" class="btn btn-success " name="submit" type="submit">Upload</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     <div id="quitGroup" class="modal" style="display: none; position: fixed; z-index: 1; padding-top: 100px; 
         left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); 
         background-color: rgba(0,0,0,0.4);">
@@ -210,7 +255,7 @@
                         <h3 style="text-align: center">You are the only admin, chose a new one before leaving</h3>
                         <center><a href="#"><button class="btn btn-primary" onclick="switchProm()">Chose</button></a></center>
                     @else
-                        <h3 style="text-align: center;">Are you sure about quitting?</h3>
+                        <h3 style="text-align: center;">Are you sure about quitting? <br> All your publications will not be removed from the group.</h3>
                         <center><a href="{{route('groups.quit',[$admins[0]->idGroup])}}"><button class="btn btn-primary">Yes</button></a>
                         <a href="#"><button class="btn btn-primary" onclick="hideQuit()">No</button></a></center>
                     @endif
@@ -218,7 +263,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 
@@ -248,6 +292,10 @@
     function switchProm(){
         hideQuit();
         display();
+    }
+
+    function showUploadGroupImage(){
+        document.getElementById('uploadGroupImage').style.display="block";
     }
 
     function check(){

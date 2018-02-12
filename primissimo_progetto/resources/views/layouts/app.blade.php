@@ -85,6 +85,7 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a href="/home/user">Profile</a></li>
+                                    <li><a href="{{action('UserController@edit', Auth::id() )}}">Modify profile</a></li>
                                     <li><a href="#" onclick="showNewPub()">Add new paper</a></li>
                                     <hr>
                                     <li><a href="/groups/create">Create a new group</a></li>
@@ -201,6 +202,10 @@
             //usato nei gruppi
             if(event.target == document.getElementById('addAdmin'))
                 document.getElementById('addAdmin').style.display="none";
+            if(event.target == document.getElementById('uploadGroupImage'))
+                document.getElementById('uploadGroupImage').style.display="none";
+            if(event.target == document.getElementById('uploadImage'))
+                document.getElementById('uploadImage').style.display="none";
             if(event.target == document.getElementById('quitGroup'))
                 document.getElementById('quitGroup').style.display="none";
 
